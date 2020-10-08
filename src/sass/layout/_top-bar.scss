@@ -1,0 +1,21 @@
+.top-bar {
+  padding: 20px 0;
+  background-color: $main-color-light;
+}
+
+.top-bar__layout {
+  align-items: center;
+}
+
+.top-bar__categories {
+  width: 70%;
+}
+
+.top-bar__sort {
+  width: 27%;
+}
+
+.top-bar__sort {
+  display: flex;
+  justify-content: flex-end;
+}

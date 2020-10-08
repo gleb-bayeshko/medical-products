@@ -1,0 +1,12 @@
+.button {
+  background-color: $color-add;
+  border-radius: 20px;
+  padding: 5px 20px;
+  position: relative;
+  @extend %cursor-pointer;
+  @extend %transition;
+
+  &:hover {
+    background-color: $color-add-light;
+  }
+}

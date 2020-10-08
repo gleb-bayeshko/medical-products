@@ -1,0 +1,35 @@
+.categories {
+  display: flex;
+  list-style: none;
+  width: 100%;
+
+  & > *:not(:first-child) {
+    margin-left: 10px;
+  }
+}
+
+.categories__link {
+  font-size: 1.8rem;
+
+  a {
+    padding: 2px 20px;
+    border-radius: 20px;
+    color: $main-color;
+    @extend %transition;
+
+    &:hover {
+      background-color: $main-color;
+      color: $color-light;
+      text-decoration: none;
+    }
+  }
+
+  &_active a {
+    background-color: $color-add;
+    color: $color-light;
+
+    &:hover {
+      background-color: $color-add;
+    }
+  }
+}

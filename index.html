@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Saira:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap"
+    rel="stylesheet">
+  <title>Medical products</title>
+</head>
+
+<body>
+  <header class="header">
+    <div class="wrapper">
+      <div class="layout-3-columns header__layout">
+        <div class="header__logo">
+          <a href="#">
+            <img src="src/assets/img/logo/logo.png" alt="logo" class="logo-png">
+          </a>
+          <div class="header__title">
+            <h1>Medical products</h1>
+            <p class="tagline">Care and health</p>
+          </div>
+        </div>
+        <div class="header__search">
+          <form class="search-form">
+            <input type="text" class="search-form__input" placeholder="Enter...">
+            <button type="submit" class="search-form__button">Search</button>
+          </form>
+        </div>
+        <div class="header__links">
+          <a href="#" class="sign-in">Sign In</a>
+          <div class="cart header__cart button">
+            <div class="layout-2-columns">
+              <div class="cart__cost">
+                <span class="total-cost">0</span>
+                <span class="currency-icon cart__currency-icon">$</span>
+              </div>
+              <div class="cart__number-of-goods">
+                <div class="cart-icon"></div>
+                <span class="number-of-goods">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section class="top-bar">
+      <div class="wrapper">
+        <div class="layout-2-columns top-bar__layout">
+          <div class="top-bar__categories">
+            <ul class="categories">
+              <li class="categories__link categories__link_active"><a href="/category/all">All</a></li>
+              <li class="categories__link"><a href="/category/scrubs">Scrubs</a></li>
+              <li class="categories__link"><a href="/category/shoes">Shoes</a></li>
+              <li class="categories__link"><a href="/category/stethoscopes">Stethoscopes</a></li>
+            </ul>
+          </div>
+          <div class="top-bar__sort sort-container">
+            <div class="sort">
+              <b>Sort by:</b>
+              <span>newest</span>
+            </div>
+            <div class="sort-pop-up">
+              <ul>
+                <li class="sort-pop-up__link sort-pop-up__link_active">newest</li>
+                <li class="sort-pop-up__link">oldest</li>
+                <li class="sort-pop-up__link">highest</li>
+                <li class="sort-pop-up__link">lowest</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="content">
+      <div class="wrapper">
+        <div class="content__title">
+          <h2>All</h2>
+        </div>
+        <div class="content__items">
+          <div class="layout-4-columns">
+            <div class="product-block">
+              <div class="product-block__top">
+                <div class="product-block__img">
+                  <a href="#">
+                    <img src="./src/assets/img/products/product-1.png" alt="product" class="product-img">
+                  </a>
+                </div>
+                <div class="product-block__title">
+                  <a href="#">
+                    <h4>MOVEMENT by Butter-Soft Men's Altair V-Neck Scrub Top</h4>
+                  </a>
+                  <div class="product-block__clothes-colors">
+                    <div class="clothes-color clothes-color_blue clothes-color_active"></div>
+                    <div class="clothes-color clothes-color_red"></div>
+                    <div class="clothes-color clothes-color_orange"></div>
+                    <div class="clothes-color clothes-color_green"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="product-block__bottom">
+                <div class="product-block__price">
+                  <span class="product-price">640</span>
+                  <span class="currency-icon price-currency">$</span>
+                </div>
+                <div class="add-button button">
+                  <div class="layout-2-columns add-button__layout">
+                    <span class="add-button__text">+ Add</span>
+                    <span class="add-button__qty">2</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+
+</html>

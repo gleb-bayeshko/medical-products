@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Saira:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap"
+    rel="stylesheet">
+  <title>Medical products</title>
+</head>
+
+<body>
+  <header class="header">
+    <div class="wrapper">
+      <div class="layout-3-columns header__layout">
+        <div class="header__logo">
+          <a href="#">
+            <img src="src/assets/img/logo/logo.png" alt="logo" class="logo-png">
+          </a>
+          <div class="header__title">
+            <h1>Medical products</h1>
+            <p class="tagline">Care and health</p>
+          </div>
+        </div>
+        <div class="header__search">
+          <form class="search-form">
+            <input type="text" class="search-form__input" placeholder="Enter...">
+            <button type="submit" class="search-form__button">Search</button>
+          </form>
+        </div>
+        <div class="header__links">
+          <a href="#" class="sign-in">Sign In</a>
+          <div class="cart header__cart button">
+            <div class="layout-2-columns">
+              <div class="cart__cost">
+                <span class="total-cost">0</span>
+                <span class="currency-icon cart__currency-icon">$</span>
+              </div>
+              <div class="cart__number-of-goods">
+                <div class="cart-icon"></div>
+                <span class="number-of-goods">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section class="cart-list">
+      <div class="wrapper">
+        <div class="layout-2-columns cart-list__layout">
+          <div class="cart-list__title">
+            <h2>Cart</h2>
+            <div class="cart-icon cart-list__icon"></div>
+          </div>
+          <div class="cart-list__empty">
+            <p>Empty cart</p>
+            <object type="image/svg+xml" data="src/assets/icons/trash.svg" class="trash-icon">
+              Empty cart
+            </object>
+          </div>
+        </div>
+        <div class="cart-list__form">
+          <div class="cart-list__item">
+            <div class="cart-list__img">
+              <img src="src/assets/img/products/product-1.png" alt="product" class="cart-img">
+            </div>
+            <div class="cart-list__description">
+              <a href="#">
+                <h4 class="cart-list_-title">MOVEMENT by Butter-Soft Men's Altair V-Neck Scrub Top</h4>
+              </a>
+              <div class="cart-list__color">
+                <div class="product-block__clothes-colors">
+                  <div class="clothes-color clothes-color_blue clothes-color_active"></div>
+                  <div class="clothes-color clothes-color_red"></div>
+                  <div class="clothes-color clothes-color_orange"></div>
+                  <div class="clothes-color clothes-color_green"></div>
+                </div>
+              </div>
+            </div>
+            <div class="cart-list__counter">
+              <div class="controls controls_plus">+</div>
+              <div class="cart-list__qty">1</div>
+              <div class="controls controls_minus">-</div>
+            </div>
+            <div class="cart-list__cost">
+              <span class="product-price">640</span>
+              <span class="currency-icon">$</span>
+            </div>
+            <div class="cart-list__close">
+              <object type="image/svg+xml" data="src/assets/icons/close.svg" class="trash-icon">
+                Close
+              </object>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+
+</html>

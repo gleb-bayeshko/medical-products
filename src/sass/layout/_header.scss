@@ -1,0 +1,53 @@
+.header {
+  background-color: $main-color;
+  padding: 5px 0;
+}
+
+.header__layout {
+  @include flex ($align: center, $justify: space-between);
+}
+
+.header__logo {
+  display: flex;
+}
+
+.header__title {
+  @include flex ($direction: column);
+}
+
+h1 {
+  font-family: 'Cinzel Decorative', serif;
+  color: $color-light;
+  margin-bottom: 0;
+}
+
+.tagline {
+  color: $tagline-color;
+  margin-bottom: 0;
+}
+
+.header__links {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sign-in {
+  @extend %transition;
+  display: flex;
+  align-items: center;
+  color: $color-light;
+  font-size: 1.7rem;
+
+  &:hover {
+    text-decoration: none;
+    color: $color-add-light;
+  }
+}
+
+.header__cart {
+  margin-left: 20px;
+}
+
+.cart__currency-icon {
+  padding-left: 1px;
+}

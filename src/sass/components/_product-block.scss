@@ -1,0 +1,131 @@
+.product-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8px;
+  border-radius: 5px;
+  @extend %transition;
+
+  &:hover {
+    box-shadow: inset 0 0 0 1px $main-color;
+  }
+}
+
+.product-img {
+  width: 100%;
+  @extend %cursor-pointer;
+}
+
+.product-block__title {
+  margin-top: 5px;
+
+  a:hover {
+    text-decoration-color: $color-dark;
+  }
+
+  h4 {
+    font-size: 1.4rem;
+    color: $color-dark;
+  }
+}
+
+.product-block__clothes-colors {
+  display: flex;
+}
+
+.clothes-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  @extend %cursor-pointer;
+  margin-right: 5px;
+  border: 2px solid transparent;
+
+  &_active {
+    border-color: $color-dark;
+  }
+
+  &_red {
+    background-color: $clothes-color-red;
+  }
+
+  &_blue {
+    background-color: $clothes-color-blue;
+  }
+
+  &_orange {
+    background-color: $clothes-color-orange;
+  }
+
+  &_green {
+    background-color: $clothes-color-green;
+  }
+}
+
+.product-block__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+
+  .product-block__price {
+    width: 30%;
+  }
+
+  .add-button {
+    width: 60%;
+  }
+}
+
+.product-price {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.price-currency {
+  color: $color-gray;
+}
+
+.add-button {
+  border: 1px solid $color-add-contrast;
+  background-color: transparent;
+
+  &:hover {
+    background-color: $color-add-contrast;
+
+    .add-button__text {
+      color: $color-light;
+    }
+
+    .add-button__qty {
+      color: $color-add-contrast;
+      background-color: $color-light;
+    }
+  }
+}
+
+.add-button__layout {
+  align-items: center;
+}
+
+.add-button__text {
+  width: 75%;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: $color-add-contrast;
+  @extend %transition;
+}
+
+.add-button__qty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  border-radius: 50%;
+  background-color: $color-add-contrast;
+  color: $color-light;
+  font-size: 1.5rem;
+  width: 25px;
+  height: 25px;
+  @extend %transition;
+}

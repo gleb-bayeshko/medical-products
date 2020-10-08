@@ -1,0 +1,66 @@
+.sort-container {
+  position: relative;
+}
+
+.sort {
+  cursor: default;
+
+  b {
+    font-size: 1.6rem;
+    position: relative;
+    @extend %cursor-pointer;
+
+    &:before {
+      content: '';
+      position: absolute;
+      box-sizing: border-box;
+      left: -13px;
+      top: 50%;
+      transform: translateY(-75%);
+      width: 4px;
+      height: 4px;
+      border: 4px solid $color-dark;
+      border-top-color: transparent;
+      border-left-color: transparent;
+      border-right-color:transparent;
+    }
+
+    &:hover {
+      color: $color-gray;
+    }
+  }
+
+  span {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-left: 3px;
+    color: $color-add-contrast;
+    border-bottom: 1.3px dashed $color-add-contrast;
+    @extend %cursor-pointer;
+    @extend %transition;
+  }
+}
+
+.sort-pop-up {
+  position: absolute;
+  top: 140%;
+  background-color: $color-light;
+  border-radius: 5px;
+  box-shadow: 1px 1px 3px $color-gray;
+
+  & ul {
+    list-style-type: none;
+
+    & li {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: $color-add-contrast;
+      padding: 4px 15px;
+      @extend %cursor-pointer;
+
+      &:hover {
+        background-color: $color-light-red;
+      }
+    }
+  }
+}
