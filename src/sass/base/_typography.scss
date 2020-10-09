@@ -6,3 +6,11 @@ html {
 body {
   font-family: Saira, sans-serif;
 }
+
+.link_not-underlined {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+}

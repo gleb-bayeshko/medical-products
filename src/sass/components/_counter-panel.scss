@@ -1,0 +1,52 @@
+.counter-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 110px;
+}
+
+.counter-panel__controls {
+  @include flex($justify: center, $align: center);
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid $color-add;
+  color: $color-add;
+  font-size: 3rem;
+  @extend %transition;
+  @extend %cursor-pointer;
+
+  p {
+    position: absolute;
+    bottom: -7px;
+    @extend %transition;
+    user-select: none;
+  }
+
+  &:hover {
+    background-color: $color-add;
+
+    p {
+      color: $color-light;
+    }
+  }
+
+  &:active {
+    background-color: $color-add-contrast-dark;
+    border-color: $color-add-contrast-dark;
+
+    p {
+      color: $color-light;
+    }
+  }
+}
+
+.counter-panel__controls_minus p {
+  bottom: -8px;
+}
+
+.cart-list__qty {
+  font-size: 2.5rem;
+  font-weight: 700;
+}

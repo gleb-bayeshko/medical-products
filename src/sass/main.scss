@@ -16,7 +16,13 @@
 @import "./components/categories";
 @import "./components/sort";
 @import "./components/product-block";
+@import "./components/trash-icon";
+@import "./components/close-icon";
+@import "./components/counter-panel";
+@import "./components/item-price";
 
 @import "./layout/header";
 @import "./layout/top-bar";
 @import "./layout/content";
+
+@import './pages/cart-full/cart-list';

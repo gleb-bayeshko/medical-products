@@ -1,12 +1,52 @@
 .button {
   background-color: $color-add;
+  border: 2px solid $color-add;
   border-radius: 20px;
   padding: 5px 20px;
   position: relative;
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: $color-light;
   @extend %cursor-pointer;
   @extend %transition;
 
   &:hover {
     background-color: $color-add-light;
+    border-color: $color-add-light;
+    color: $main-color;
+  }
+}
+
+.button_inverted {
+  border-color: $color-add;
+  color: $color-add;
+  background-color: transparent;
+
+  &:hover {
+    background-color: $color-add-contrast;
+    border-color: $color-add-contrast;
+
+    color: $color-light;
+
+    span, p {
+      color: $color-light;
+    }
+
+  }
+}
+
+.button_disabled {
+  border-color: $color-gray-transparent-extra;
+  color: $color-gray-transparent-extra;
+  cursor: default;
+
+  &:hover {
+    border-color: $color-gray-transparent-extra;
+    color: $color-gray-transparent-extra;
+    background-color: transparent;
+  }
+
+  span, p {
+    color: $color-gray-transparent-extra;
   }
 }
