@@ -1,0 +1,31 @@
+.content {
+  padding-bottom: 30px;
+}
+
+.content__title {
+  font-size: 2.5rem;
+  margin: 10px 0;
+}
+
+.items-layout {
+  justify-content: flex-start;
+  align-items: stretch;
+
+  @include media-tablet {
+    & > * {
+      flex-basis: 33.3%;
+    }
+  }
+
+  @include media-tablet-medium {
+    & > * {
+      flex-basis: 50%;
+    }
+  }
+
+  @include media-mobile-medium {
+    & > * {
+      flex-basis: 100%;
+    }
+  }
+}

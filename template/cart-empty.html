@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Saira:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap"
+    rel="stylesheet">
+  <title>Medical products</title>
+</head>
+
+<body>
+  <header class="header">
+    <div class="wrapper">
+      <div class="layout-3-columns header__layout">
+        <div class="header__logo">
+          <a href="#">
+            <img src="src/assets/img/logo/logo.png" alt="logo" class="logo-png">
+          </a>
+          <div class="header__title">
+            <h1>Medical products</h1>
+            <p class="tagline">Care and health</p>
+          </div>
+        </div>
+        <div class="header__search">
+          <form class="search-form">
+            <input type="text" class="search-form__input header__search-input" placeholder="Enter...">
+            <button type="submit" class="search-form__button header__search-button">Search</button>
+          </form>
+        </div>
+        <div class="header__links">
+          <a href="#" class="sign-in">Sign In</a>
+          <div class="cart header__cart button">
+            <div class="layout-2-columns">
+              <div class="cart__cost">
+                <span class="total-cost">0</span>
+                <span class="currency-icon cart__currency-icon">$</span>
+              </div>
+              <div class="cart__number-of-goods">
+                <div class="cart-icon"></div>
+                <span class="number-of-goods">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section class="cart-list-empty">
+      <div class="wrapper">
+        <div class="cart-list-empty__layout">
+          <div class="cart-list-empty__title">
+            <h2>Your cart is empty</h2>
+          </div>
+          <div class="cart-list-empty__subtitle">
+            <p>You can go back to the main page and order something... or you can console our poor cart</p>
+          </div>
+          <div class="cart-list-empty__img">
+            <img src="src/assets/img/empty-img/empty-cart.png" alt="empty-cart" class="empty-cart-img">
+          </div>
+          <button class="button cart-list-empty__button">Go back</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+
+</html>

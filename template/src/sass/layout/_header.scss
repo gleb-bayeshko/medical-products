@@ -1,0 +1,124 @@
+.header {
+  background-color: $main-color;
+  padding: 5px 0;
+  height: $header-height;
+}
+
+.header__layout {
+  @include flex($align: center, $justify: space-between);
+
+  @include media-tablet {
+    & > * {
+      width: 49%;
+    }
+  }
+}
+
+.header__logo {
+  display: flex;
+
+  @include media-mobile {
+    width: calc(100% - #{$header-links-mobile-width});
+  }
+}
+
+.header__title {
+  @include flex($direction: column, $justify: center);
+
+  @include media-mobile-medium {
+    display: none;
+  }
+}
+
+h1 {
+  font-family: "Cinzel Decorative", serif;
+  color: $color-light;
+  margin-bottom: 0;
+
+  @include media-tablet-small {
+    font-size: 1.5rem;
+  }
+}
+
+.tagline {
+  color: $tagline-color;
+  margin-bottom: 0;
+}
+
+.header__search {
+  @extend %transition;
+
+  @include media-tablet {
+    position: absolute;
+    right: 220px;
+    width: $header-input-tablet-width;
+    background-color: $color-light;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: $color-add-light;
+    }
+  }
+
+  @include media-mobile {
+    right: 190px;
+  }
+}
+
+.header__search-input {
+  @include media-tablet {
+    background-color: transparent;
+    width: $header-input-tablet-width;
+    background-position: 50% 50%;
+    padding-left: 35px;
+    cursor: pointer;
+
+    &::placeholder {
+      color: transparent;
+    }
+  }
+}
+
+.header__search-button {
+  @include media-tablet {
+    display: none;
+  }
+}
+
+.header__links {
+  display: flex;
+  justify-content: flex-end;
+
+  @include media-mobile {
+    width: $header-links-mobile-width;
+  }
+}
+
+.sign-in {
+  @extend %transition;
+  display: flex;
+  align-items: center;
+  color: $color-light;
+  font-size: 1.7rem;
+
+  &:hover {
+    text-decoration: none;
+    color: $color-add-light;
+  }
+
+  @include media-mobile {
+    font-size: 1.5rem;
+  }
+}
+
+.header__cart {
+  margin-left: 20px;
+
+  @include media-mobile {
+    padding: 5px 5px;
+  }
+}
+
+.cart__currency-icon {
+  padding-left: 1px;
+}
