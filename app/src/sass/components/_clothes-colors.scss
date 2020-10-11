@@ -1,0 +1,36 @@
+.clothes-colors {
+  display: flex;
+}
+
+.clothes-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  @extend %cursor-pointer;
+  margin-right: 5px;
+  border: 2px solid transparent;
+
+  &_active {
+    border-color: $color-dark;
+  }
+
+  &_red {
+    background-color: $clothes-color-red;
+  }
+
+  &_blue {
+    background-color: $clothes-color-blue;
+  }
+
+  &_orange {
+    background-color: $clothes-color-orange;
+  }
+
+  &_green {
+    background-color: $clothes-color-green;
+  }
+
+  &_black {
+    background-color: $clothes-color-black;
+  }
+}

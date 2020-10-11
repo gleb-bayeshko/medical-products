@@ -1,0 +1,13 @@
+.rating {
+  color: $color-add;
+  font-size: 1.4rem;
+  @extend %cursor-pointer;
+}
+
+.rating__star {
+  margin-right: 2px;
+}
+
+.rating__reviews-num a {
+  color: $main-color;
+}

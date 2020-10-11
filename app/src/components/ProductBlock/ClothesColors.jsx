@@ -1,0 +1,18 @@
+import React, { Component } from "react";
+
+class ClothesColors extends Component {
+  render() {
+    return (
+      <>
+      {
+        this.props.colors !== null &&
+        this.props.colors.map(color => {
+          return <div className={`clothes-color clothes-color_${color}`}></div>
+        })
+      }
+      </>
+    )
+  }
+}
+
+export default ClothesColors;

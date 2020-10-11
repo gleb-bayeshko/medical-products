@@ -64,6 +64,10 @@ module.exports = (env, options) => {
                 template: 'cart-empty.html',
                 filename: "cart-empty.html",
             }),
+            new HtmlWebpackPlugin({
+                template: 'product-page.html',
+                filename: "product-page.html",
+            }),
             new MiniCssExtractPlugin({
                 filename: 'style.css',
             })

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Saira:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/f28b8f5475.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>Medical products</title>
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="wrapper">
+        <div class="layout-3-columns header__layout">
+          <div class="header__logo">
+            <a href="#">
+              <img
+                src="src/assets/img/logo/logo.png"
+                alt="logo"
+                class="logo-png"
+              />
+            </a>
+            <div class="header__title">
+              <h1>Medical products</h1>
+              <p class="tagline">Care and health</p>
+            </div>
+          </div>
+          <div class="header__search">
+            <form class="search-form">
+              <input
+                type="text"
+                class="search-form__input header__search-input"
+                placeholder="Enter..."
+              />
+              <button
+                type="submit"
+                class="search-form__button header__search-button"
+              >
+                Search
+              </button>
+            </form>
+          </div>
+          <div class="header__links">
+            <a href="#" class="sign-in-ref">Sign In</a>
+            <a href="#" class="cart-ref">
+              <div class="cart header__cart button">
+                <div class="layout-2-columns">
+                  <div class="cart__cost">
+                    <span class="total-cost">0</span>
+                    <span class="currency-icon cart__currency-icon">$</span>
+                  </div>
+                  <div class="cart__number-of-goods">
+                    <div class="cart-icon"></div>
+                    <span class="number-of-goods">0</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main>
+      <section class="product-content">
+        <div class="wrapper">
+          <div class="layout-2-columns product-content__product-layout">
+            <div class="product-content__image">
+              <img
+                src="src/assets/img/products/product-1.png"
+                alt=""
+                class="product-img"
+              />
+            </div>
+            <div class="product-content__details">
+              <div class="product-content__title">
+                <a href="#" class="link_not-underlined">
+                  <h4 class="product-content__header">
+                    MOVEMENT by Butter-Soft Men's Altair V-Neck Scrub Top
+                  </h4>
+                </a>
+                <div class="rating">
+                  <i class="fas fa-star rating__star"></i>
+                  <i class="fas fa-star rating__star"></i>
+                  <i class="fas fa-star rating__star"></i>
+                  <i class="fas fa-star-half-alt rating__star"></i>
+                  <i class="far fa-star rating__star"></i>
+                  <span class="rating__reviews-num"
+                    ><a href="#reviews">10 reviews</a></span
+                  >
+                </div>
+                <div
+                  class="layout-2-columns product-content__price-and-counter-layout"
+                >
+                  <div class="product-content__price">
+                    <span class="item-price product-content__item-price"
+                      >640</span
+                    >
+                    <span class="currency-icon product-content__currency-icon"
+                      >$</span
+                    >
+                  </div>
+                  <div class="counter-panel product-content__counter-panel">
+                    <div
+                      class="counter-panel__controls counter-panel__controls_plus"
+                    >
+                      <p>+</p>
+                    </div>
+                    <div class="cart-list__qty counter-panel__qty">1</div>
+                    <div
+                      class="counter-panel__controls counter-panel__controls_minus"
+                    >
+                      <p>-</p>
+                    </div>
+                  </div>
+                </div>
+                <h4 class="colors-description">Colors:</h4>
+                <div class="clothes-colors">
+                  <div
+                    class="clothes-color clothes-color_blue clothes-color_active"
+                  ></div>
+                  <div class="clothes-color clothes-color_red"></div>
+                  <div class="clothes-color clothes-color_orange"></div>
+                  <div class="clothes-color clothes-color_green"></div>
+                </div>
+                <div class="product-content__description">
+                  <p class="product-content__description-text">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem
+                    amet corporis dolore vero quis dolores, ipsa culpa. Expedita
+                    dolorem quod aspernatur quia ex saepe impedit architecto
+                    odio voluptates? Nihil necessitatibus libero reiciendis
+                    facere quia. Eligendi voluptate ullam facilis! Minima iusto
+                    hic quos sit rerum veniam, explicabo inventore adipisci fuga
+                    beatae illum dicta, sapiente distinctio maxime suscipit nam
+                    omnis ipsa consectetur! Saepe suscipit hic ipsa sint
+                    laudantium dolor recusandae illum, aperiam soluta id
+                    corporis nihil est, aspernatur et aliquam facere veniam
+                    ullam. Error asperiores eaque cum pariatur rem commodi
+                    aspernatur at modi laborum officiis voluptates, veniam
+                    obcaecati neque id vitae facere?
+                  </p>
+                </div>
+                <div
+                  class="add-button button button_inverted product-content__add-button"
+                >
+                  <span class="add-button__text">Add to cart</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="product-content__reviews">
+            <h3 class="reviews-title" id="reviews">Reviews:</h3>
+            <div class="review">
+              <div class="reviews__rating-container">
+                <div class="reviews__nickname">
+                  John <span class="review__date">2020-02-02</span>
+                </div>
+                <div class="rating reviews__rating">
+                  <i class="fas fa-star rating__star review__star"></i>
+                  <i class="fas fa-star rating__star review__star"></i>
+                  <i class="fas fa-star rating__star review__star"></i>
+                  <i class="fas fa-star-half-alt rating__star review__star"></i>
+                  <i class="far fa-star rating__star review__star"></i>
+                </div>
+              </div>
+              <div class="review__comment">It is awesome!</div>
+            </div>
+            <div class="review">
+              <div class="reviews__rating-container">
+                <div class="reviews__nickname">
+                  John <span class="review__date">2020-02-02</span>
+                </div>
+                <div class="rating reviews__rating">
+                  <i class="fas fa-star rating__star review__star"></i>
+                  <i class="fas fa-star rating__star review__star"></i>
+                  <i class="fas fa-star rating__star review__star"></i>
+                  <i class="fas fa-star-half-alt rating__star review__star"></i>
+                  <i class="far fa-star rating__star review__star"></i>
+                </div>
+              </div>
+              <div class="review__comment">It is awesome!</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

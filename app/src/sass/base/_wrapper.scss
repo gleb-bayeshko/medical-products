@@ -1,0 +1,8 @@
+.wrapper {
+  width: 100%;
+  padding: 0 25px;
+
+  @include media-mobile {
+    padding: 0 10px;
+  }
+}

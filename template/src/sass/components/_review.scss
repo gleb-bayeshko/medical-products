@@ -1,0 +1,27 @@
+.review {
+  margin: 15px 0;
+}
+
+.review__star {
+  font-size: 1rem;
+  margin-right: 1px;
+}
+
+.reviews__nickname {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 0;
+  line-height: 1.4rem;
+  color: $main-color;
+}
+
+.review__date {
+  font-size: 1.3rem;
+  font-weight: normal;
+  color: $color-gray;
+  margin-left: 5px;
+}
+
+.review__comment {
+  font-size: 1.5rem;
+}

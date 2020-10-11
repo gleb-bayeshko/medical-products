@@ -1,0 +1,24 @@
+.close-icon {
+  width: 30px;
+  @extend %cursor-pointer;
+
+  path {
+    fill: $color-gray-transparent;
+    @extend %transition;
+  }
+
+  polygon {
+    fill: $color-gray-transparent;
+    @extend %transition;
+  }
+
+  &:hover {
+    path {
+      fill: $color-dark;
+    }
+  
+    polygon {
+      fill: $color-dark;
+    }
+  }
+}

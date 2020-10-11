@@ -1,0 +1,30 @@
+.cart__cost {
+  display: flex;
+  align-items: center;
+  min-width: 30px;
+  color: $main-color;
+}
+
+.total-cost, .number-of-goods  {
+  font-size: 2rem;
+}
+
+.cart__number-of-goods {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  margin-left: 10px;
+  position: relative;
+  color: $main-color;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background-color: #fff;
+  }
+}
