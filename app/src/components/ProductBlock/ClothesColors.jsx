@@ -6,8 +6,9 @@ class ClothesColors extends Component {
       <>
       {
         this.props.colors !== null &&
+        this.props.colors !== undefined &&
         this.props.colors.map(color => {
-          return <div className={`clothes-color clothes-color_${color}`}></div>
+          return <div className={`clothes-color clothes-color_${color}`} key={`${this.props.productId}_${color}`}></div>
         })
       }
       </>
