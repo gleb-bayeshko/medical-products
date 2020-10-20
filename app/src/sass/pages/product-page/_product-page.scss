@@ -46,7 +46,7 @@
 }
 
 .product-content__counter-panel {
-  width: 90px;
+  width: 100px;
 }
 
 .colors-description {
@@ -75,6 +75,30 @@
 
   @include media-tablet {
     width: 100%;
+  }
+}
+
+.add-button__added {
+  position: relative;
+  background-color: $color-add-contrast-dark;
+  border-color: $color-add-contrast-dark;
+
+  .add-button__text {
+    color: $color-light;
+
+    &:before {
+      content: '✓';
+      color: $color-light;
+      margin-right: 4px;
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  &:hover {
+    background-color: $color-add-contrast-dark;
   }
 }
 

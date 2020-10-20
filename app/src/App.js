@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Header from './components/Header';
 import ProductScreen from './components/screens/ProductScreen';
 import HomeScreen from './components/screens/HomeScreen';
+import CartScreen from './components/screens/CartScreen';
 
 import ScrollToTop from './ScrollToTop';
 
@@ -15,10 +16,8 @@ function App() {
     <Header />
     <main>
       <Switch>
-        <Route exact path="/cart">
-          ddfsdfds
-        </Route>
-        <Route exact path="/products/:id" component={ProductScreen} />
+        <Route exact path="/cart" component={CartScreen}/>
+        <Route exact path="/products/:category/:id" component={ProductScreen} />
         <Route exact path="/" component={HomeScreen} />
       </Switch>
     </main>

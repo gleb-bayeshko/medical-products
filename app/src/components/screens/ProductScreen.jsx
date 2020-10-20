@@ -1,36 +1,41 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { detailsProduct } from "../../actions/productActions";
+import { detailsProduct, productsToCart } from "../../actions/productActions";
+import CounterPanel from "../CounterPanel";
 
 import ClothesColor from "../ProductBlock/ClothesColors";
 
-function ProductScreen(props) {
-  const productDetails = useSelector(state => state.productDetails);
+import { Link } from "react-router-dom";
+import Preloader from "../preloaders/Preloader";
 
+function ProductScreen(props) {
+  const productDetails = useSelector((state) => state.productDetails);
   const { product, loading, error } = productDetails;
+
+  const params = props.match.params;
+  const [counter, setCounter] = useState(1);
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(detailsProduct(props.match.params.id));
-  }, [])
+    dispatch(detailsProduct(params.id, params.category));
+  }, []);
+
+  const dispatchToCart = () => {
+    dispatch(productsToCart(product, counter));
+    setIsAddedToCart(true);
+  };
 
   return loading ? (
     <section className="content">
       <div className="wrapper">
-        <div className="preloader-container content__preloader-container">
-          <img
-            src="/assets/preloader/preloader.gif"
-            alt="Loading"
-            className="preloader-img"
-          />
-        </div>
+        <Preloader />
       </div>
     </section>
   ) : error ? (
     <div>{error}</div>
   ) : (
     <section className="product-content">
-      {console.log(product)}
       <div className="wrapper">
         <div className="layout-2-columns product-content__product-layout">
           <div className="product-content__image">
@@ -64,15 +69,11 @@ function ProductScreen(props) {
                     $
                   </span>
                 </div>
-                <div className="counter-panel product-content__counter-panel">
-                  <div className="counter-panel__controls counter-panel__controls_plus">
-                    <p>+</p>
-                  </div>
-                  <div className="cart-list__qty counter-panel__qty">1</div>
-                  <div className="counter-panel__controls counter-panel__controls_minus">
-                    <p>-</p>
-                  </div>
-                </div>
+                <CounterPanel
+                  addCounterClass="product-content__counter-panel"
+                  counter={counter}
+                  setCounter={setCounter}
+                />
               </div>
               <h4 className="colors-description">Colors:</h4>
               <div className="clothes-colors">
@@ -83,9 +84,25 @@ function ProductScreen(props) {
                   {product.description}
                 </p>
               </div>
-              <div className="add-button button button_inverted product-content__add-button">
-                <span className="add-button__text">Add to cart</span>
-              </div>
+              {
+              isAddedToCart ? (
+                <Link to="/cart">
+                  <div
+                    className="add-button button button_inverted product-content__add-button add-button__added"
+                    onClick={dispatchToCart}
+                  >
+                    <span className="add-button__text">Added to cart</span>
+                  </div>
+                </Link>
+              ) : (
+                <div
+                  className="add-button button button_inverted product-content__add-button"
+                  onClick={dispatchToCart}
+                >
+                  <span className="add-button__text">Add to cart</span>
+                </div>
+              )
+              }
             </div>
           </div>
         </div>

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import ProductBlock from "./ProductBlock/ProductBlock";
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../actions/productActions";
+import Preloader from "./preloaders/Preloader";
 
 function Content() {
   const productList = useSelector((state) => state.productList);
@@ -16,17 +17,13 @@ function Content() {
   return loading ? (
     <section className="content">
       <div className="wrapper">
-        <div className="preloader-container content__preloader-container">
-          <img
-            src="/assets/preloader/preloader.gif"
-            alt="Loading"
-            className="preloader-img"
-          />
-        </div>
+        <Preloader />
       </div>
     </section>
   ) : error ? (
-    <div>{error}</div>
+    <section className="content">
+      <div className="wrapper">{error}</div>
+    </section>
   ) : (
     <section className="content">
       <div className="wrapper">

@@ -36,7 +36,7 @@ class Header extends Component {
               <a href="#" className="sign-in-ref">
                 Sign In
               </a>
-              <a href="#" className="cart-ref">
+              <Link to="/cart" className="cart-ref">
                 <button className="cart header__cart button">
                   <div className="layout-2-columns">
                     <div className="cart__cost">
@@ -51,7 +51,7 @@ class Header extends Component {
                     </div>
                   </div>
                 </button>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

@@ -1,9 +1,12 @@
 .preloader-container {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .preloader-img {
+  position: absolute;
+  top: 0;
   width: 60px;
 }

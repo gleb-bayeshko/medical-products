@@ -3,11 +3,12 @@ import data from './data';
 
 const app = express();
 
-app.get('/api/products/:id', (req, res) => {
-  console.log('server');
+app.get('/api/products/:category/:id', (req, res) => {
   const productId = req.params.id;
+  const productCategory = req.params.category;
   const product = data.products.find(
-    currentProduct => currentProduct._id === productId
+    currentProduct => currentProduct.category === productCategory &&
+    currentProduct._id === productId
   )
 
   product ? res.send(product)
@@ -18,4 +19,4 @@ app.get('/api/products', (req, res) => {
   res.send(data.products);
 });
 
-app.listen(5000, console.log('server started'))
+app.listen(5000)
