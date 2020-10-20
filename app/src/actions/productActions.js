@@ -3,6 +3,7 @@ import { PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS, PRODUCT_DETAILS_FAIL 
 import { PRODUCT_TO_CART } from "../constants/productConstants";
 
 import axios from 'axios';
+import Cookie from 'js-cookie';
 
 const listProducts = () => async (dispatch) => {
   try {
@@ -24,13 +25,16 @@ const detailsProduct = (productId, productCategory) => async (dispatch) => {
   }
 }
 
-const productsToCart = (product, qty, color = null) => {
+const productsToCart = (product, qty, color = null) => (dispatch, getState) => {
   product.qty = qty;
   product.colorActive = color;
-  return {
+  dispatch( {
     type: PRODUCT_TO_CART,
     payload: product,
-  }
+  })
+
+  const { productsToCart: cartProducts } = getState();
+  Cookie.set('cartProducts', JSON.stringify(cartProducts));
 }
 
 export { listProducts, detailsProduct, productsToCart };

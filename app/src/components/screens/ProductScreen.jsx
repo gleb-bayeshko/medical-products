@@ -81,19 +81,23 @@ function ProductScreen(props) {
                   setCounter={setCounter}
                 />
               </div>
-              <h4 className="colors-description">Colors:</h4>
-              <div className="clothes-colors">
-                <ClothesColor
-                  colors={product.color}
-                  id={product._id}
-                  activeColorName={activeColorName}
-                  setActiveColorName={setActiveColorName}
-                  isSelectable={true}
-                />
-                <div ref={colorPopUpRef} className="clothes-color__pop-up">
-                  Choose color
-                </div>
-              </div>
+              {product.color !== null && (
+                <>
+                  <h4 className="colors-description">Colors:</h4>
+                  <div className="clothes-colors">
+                    <ClothesColor
+                      colors={product.color}
+                      id={product._id}
+                      activeColorName={activeColorName}
+                      setActiveColorName={setActiveColorName}
+                      isSelectable={true}
+                    />
+                    <div ref={colorPopUpRef} className="clothes-color__pop-up">
+                      Choose color
+                    </div>
+                  </div>
+                </>
+              )}
               <div className="product-content__description">
                 <p className="product-content__description-text">
                   {product.description}

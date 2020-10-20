@@ -12,15 +12,15 @@ function ProductInCartBlock(props) {
 
   useEffect(() => {
     dispatch(productInCartQty(props.product._id, counter));
-  }, [counter])
+  }, [counter]);
 
   useEffect(() => {
     setCounter(props.product.qty);
-  })
+  }, [props.product.qty]);
 
   const deletePosition = () => {
     dispatch(productDelete(props.product._id));
-  }
+  };
 
   return (
     <div className="cart-list__item" key={`cart-product_${props.product._id}`}>
@@ -28,7 +28,10 @@ function ProductInCartBlock(props) {
         <img src={props.product.image} alt="product" className="cart-img" />
       </div>
       <div className="cart-list__description">
-        <Link to={`/products/${props.product.category}/${props.product._id}`} className="link_not-underlined">
+        <Link
+          to={`/products/${props.product.category}/${props.product._id}`}
+          className="link_not-underlined"
+        >
           <h4 className="cart-list__item-title">{props.product.name}</h4>
         </Link>
         <div className="product-block__rating rating">
@@ -38,10 +41,15 @@ function ProductInCartBlock(props) {
           <i className="fas fa-star-half-alt rating__star"></i>
           <i className="far fa-star rating__star"></i>
         </div>
-        <div className="cart-list__color">
-          <p>Color:</p>
-          <ClothesColors isSelectable={false} colors={[props.product.colorActive]}/>
-        </div>
+        {props.product.color !== null && (
+          <div className="cart-list__color">
+            <p>Color:</p>
+            <ClothesColors
+              isSelectable={false}
+              colors={[props.product.colorActive]}
+            />
+          </div>
+        )}
       </div>
       <CounterPanel counter={counter} setCounter={setCounter} />
       <div className="cart-list__cost">

@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { productsToCart } from "../../actions/productActions";
@@ -28,7 +28,7 @@ function ProductBlock(props) {
     if (productsInCartList.some((product) => product._id === productData._id)) {
       setIsAddedToCart(true);
     }
-  });
+  }, [productsInCartList, productData._id]);
 
   return (
     <div className="product-block">
