@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { detailsProduct, productsToCart } from "../../actions/productActions";
 import CounterPanel from "../CounterPanel";
@@ -11,10 +11,11 @@ import Preloader from "../preloaders/Preloader";
 function ProductScreen(props) {
   const productDetails = useSelector((state) => state.productDetails);
   const { product, loading, error } = productDetails;
-
   const params = props.match.params;
   const [counter, setCounter] = useState(1);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
+  const [activeColorName, setActiveColorName] = useState(null);
+  const colorPopUpRef = useRef(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,7 +23,12 @@ function ProductScreen(props) {
   }, []);
 
   const dispatchToCart = () => {
-    dispatch(productsToCart(product, counter));
+    if (product.color !== null && !activeColorName) {
+      colorPopUpRef.current.classList.add("clothes-color__pop-up_shown");
+      return;
+    }
+
+    dispatch(productsToCart(product, counter, activeColorName));
     setIsAddedToCart(true);
   };
 
@@ -77,15 +83,23 @@ function ProductScreen(props) {
               </div>
               <h4 className="colors-description">Colors:</h4>
               <div className="clothes-colors">
-                <ClothesColor colors={product.color} />
+                <ClothesColor
+                  colors={product.color}
+                  id={product._id}
+                  activeColorName={activeColorName}
+                  setActiveColorName={setActiveColorName}
+                  isSelectable={true}
+                />
+                <div ref={colorPopUpRef} className="clothes-color__pop-up">
+                  Choose color
+                </div>
               </div>
               <div className="product-content__description">
                 <p className="product-content__description-text">
                   {product.description}
                 </p>
               </div>
-              {
-              isAddedToCart ? (
+              {isAddedToCart ? (
                 <Link to="/cart">
                   <div
                     className="add-button button button_inverted product-content__add-button add-button__added"
@@ -101,8 +115,7 @@ function ProductScreen(props) {
                 >
                   <span className="add-button__text">Add to cart</span>
                 </div>
-              )
-              }
+              )}
             </div>
           </div>
         </div>

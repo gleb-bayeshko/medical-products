@@ -3,13 +3,13 @@ import {
   PRODUCT_LIST_SUCCESS,
   PRODUCT_LIST_FAIL,
   PRODUCT_QTY_CHANGE,
-} from "../constants/productConstants";
-import {
+  PRODUCT_DELETE,
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
+  PRODUCT_TO_CART,
+  CART_CLEAN
 } from "../constants/productConstants";
-import { PRODUCT_TO_CART } from "../constants/productConstants";
 
 function productListReducer(state = { products: [] }, action) {
   switch (action.type) {
@@ -59,9 +59,23 @@ function productsToCartReducer(state = { products: [] }, action) {
             }
 
             return product;
-          })
+          }),
         ],
       };
+    case PRODUCT_DELETE:
+      return {
+        ...state,
+        products: [
+          ...state.products.filter(
+            (product) => product._id !== action.payload._id
+          ),
+        ],
+      };
+    case CART_CLEAN:
+      return {
+        ...state,
+        products: []
+      }
     default:
       return state;
   }

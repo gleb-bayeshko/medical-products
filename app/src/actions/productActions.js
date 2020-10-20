@@ -24,8 +24,9 @@ const detailsProduct = (productId, productCategory) => async (dispatch) => {
   }
 }
 
-const productsToCart = (product, qty) => {
+const productsToCart = (product, qty, color = null) => {
   product.qty = qty;
+  product.colorActive = color;
   return {
     type: PRODUCT_TO_CART,
     payload: product,

@@ -70,14 +70,16 @@
 }
 
 .add-button__layout {
+  display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .add-button__text {
-  width: 75%;
   font-size: 1.8rem;
   font-weight: 600;
   color: $color-add-contrast;
+  text-align: center;
   @extend %transition;
 }
 

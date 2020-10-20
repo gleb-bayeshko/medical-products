@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
 
 import EmptyCart from "../EmptyCart";
 import ProductInCartBlock from '../ProductInCartBlock';
 
-import ClothesColor from "../ProductBlock/ClothesColors";
+import { cleanCart } from '../../actions/cartActions';
 
 function CartScreen(props) {
   const productsInCartList = useSelector((state) => state.productsToCart.products);
-
   const dispatch = useDispatch();
+
+  const clean = () => {
+    dispatch(cleanCart())
+  }
+
 
   return (
     <section className="cart-list">
@@ -24,7 +28,7 @@ function CartScreen(props) {
                 <div className="cart-icon cart-list__icon"></div>
                 <h2>Cart</h2>
               </div>
-              <div className="cart-list__clean-cart">
+              <div className="cart-list__clean-cart" onClick={clean}>
                 <div className="svg-container">
                   <svg
                     className="trash-icon cart-list__trash-icon"

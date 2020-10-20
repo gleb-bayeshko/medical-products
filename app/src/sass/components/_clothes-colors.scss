@@ -1,4 +1,5 @@
 .clothes-colors {
+  position: relative;
   display: flex;
 }
 
@@ -9,9 +10,11 @@
   @extend %cursor-pointer;
   margin-right: 5px;
   border: 2px solid transparent;
+  @extend %transition;
 
   &_active {
-    border-color: $color-dark;
+    border-color: $color-light;
+    box-shadow: 0 0 0 2px $main-color;
   }
 
   &_red {
@@ -33,4 +36,34 @@
   &_black {
     background-color: $clothes-color-black;
   }
+}
+
+.clothes-color__pop-up {
+  display: none;
+  position: absolute;
+  font-size: 2rem;
+  padding: 3px 6px;
+  z-index: 10;
+  color: $color-light;
+  top: calc(100% + 7px);
+  border-radius: 5px;
+  background-color: $color-warning;
+  box-shadow: 1px 1px 7px $color-dark ;
+
+  &:before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: -13px;
+    left: 7px;
+    border: 7px solid transparent;
+    background-color: transparent;
+    border-bottom-color: $color-warning;
+
+  }
+}
+
+.clothes-color__pop-up_shown {
+  display: block;
 }

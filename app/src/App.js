@@ -8,8 +8,11 @@ import HomeScreen from './components/screens/HomeScreen';
 import CartScreen from './components/screens/CartScreen';
 
 import ScrollToTop from './ScrollToTop';
+import { deleteColorPopUp } from './ListenersFunctions';
 
 function App() {
+  window.addEventListener("click", deleteColorPopUp);
+
   return (
   <BrowserRouter>
     <ScrollToTop />

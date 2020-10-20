@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { productInCartQty } from "../actions/cartActions";
+import { Link } from "react-router-dom";
+import { productDelete, productInCartQty } from "../actions/cartActions";
 
 import CounterPanel from "./CounterPanel";
+import ClothesColors from "./ProductBlock/ClothesColors";
 
 function ProductInCartBlock(props) {
   const [counter, setCounter] = useState(props.product.qty);
@@ -12,15 +14,23 @@ function ProductInCartBlock(props) {
     dispatch(productInCartQty(props.product._id, counter));
   }, [counter])
 
+  useEffect(() => {
+    setCounter(props.product.qty);
+  })
+
+  const deletePosition = () => {
+    dispatch(productDelete(props.product._id));
+  }
+
   return (
     <div className="cart-list__item" key={`cart-product_${props.product._id}`}>
       <div className="cart-list__img">
         <img src={props.product.image} alt="product" className="cart-img" />
       </div>
       <div className="cart-list__description">
-        <a href="#" className="link_not-underlined">
+        <Link to={`/products/${props.product.category}/${props.product._id}`} className="link_not-underlined">
           <h4 className="cart-list__item-title">{props.product.name}</h4>
-        </a>
+        </Link>
         <div className="product-block__rating rating">
           <i className="fas fa-star rating__star"></i>
           <i className="fas fa-star rating__star"></i>
@@ -30,7 +40,7 @@ function ProductInCartBlock(props) {
         </div>
         <div className="cart-list__color">
           <p>Color:</p>
-          <div className="clothes-color clothes-color_blue"></div>
+          <ClothesColors isSelectable={false} colors={[props.product.colorActive]}/>
         </div>
       </div>
       <CounterPanel counter={counter} setCounter={setCounter} />
@@ -40,7 +50,7 @@ function ProductInCartBlock(props) {
         </span>
         <span className="currency-icon cart-list__currency-icon">$</span>
       </div>
-      <div className="cart-list__close">
+      <div className="cart-list__close" onClick={deletePosition}>
         <div className="svg-container">
           <svg
             id="Outlined"

@@ -3,7 +3,7 @@ import React from "react";
 
 export default function CounterPanel(props) {
   const counterIncrement = () => {
-    props.setCounter((prevCounter) => prevCounter + 1);
+    props.setCounter((prevCounter) => prevCounter === 99 ? prevCounter : prevCounter + 1);
   };
 
   const counterDecrement = () => {
@@ -13,7 +13,7 @@ export default function CounterPanel(props) {
   };
 
   return (
-    <div className={`counter-panel ${props.addCounterClass && props.addCounterClass}`}>
+    <div className={`counter-panel ${props.addCounterClass ? props.addCounterClass : ''}`}>
       <div className="counter-panel__controls counter-panel__controls_plus" onClick={counterIncrement}>
         <p>+</p>
       </div>
