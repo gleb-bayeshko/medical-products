@@ -35,6 +35,23 @@
   }
 }
 
+.button_highlighted {
+  border-color: $color-green-light;
+  background-color: $color-green;
+  color: $color-light;
+
+  &:hover {
+    border-color: $color-green;
+    color: $color-green;
+    background-color: $color-green-light;
+
+    span, p {
+      color: $color-light;
+    }
+
+  }
+}
+
 .button_disabled {
   border-color: $color-gray-transparent-extra;
   color: $color-gray-transparent-extra;

@@ -8,6 +8,9 @@ function Header() {
     (state) => state.productsToCart.products
   );
 
+  const userSignIn = useSelector((state) => state.userSignIn);
+  const { userInfo } = userSignIn;
+
   return (
     <header className="header">
       <div className="wrapper">
@@ -37,9 +40,17 @@ function Header() {
             </form>
           </div>
           <div className="header__links">
-            <a href="#" className="sign-in-ref">
-              Sign In
-            </a>
+            {
+              userInfo ? (
+                <Link to="/profile" className="sign-in-ref">
+                  {userInfo.name}
+                </Link>
+              ) : (
+                <Link to="/signin" className="sign-in-ref">
+                  Sign In
+                </Link>
+              )
+            }
             <Link to="/cart" className="cart-ref">
               <button className="cart header__cart button">
                 <div className="cart__number-of-goods">
