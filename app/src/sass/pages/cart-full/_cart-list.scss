@@ -69,7 +69,7 @@
 
 .cart-list__item {
   display: grid;
-  grid-template: 100% / 140px 1fr repeat(2, 110px) 70px;
+  grid-template: 100% / 140px 1fr repeat(2, 130px) 70px;
   border-bottom: 2px solid $color-gray-transparent;
 
   & > * {

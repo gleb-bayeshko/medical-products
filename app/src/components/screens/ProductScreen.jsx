@@ -23,7 +23,7 @@ function ProductScreen(props) {
   }, []);
 
   const dispatchToCart = () => {
-    if (product.color !== null && !activeColorName) {
+    if (product.color.length !== 0 && !activeColorName) {
       colorPopUpRef.current.classList.add("clothes-color__pop-up_shown");
       return;
     }
@@ -81,7 +81,7 @@ function ProductScreen(props) {
                   setCounter={setCounter}
                 />
               </div>
-              {product.color !== null && (
+              {product.color !== undefined && product.color.length !== 0 && (
                 <>
                   <h4 className="colors-description">Colors:</h4>
                   <div className="clothes-colors">

@@ -17,7 +17,7 @@ function ProductBlock(props) {
   const dispatch = useDispatch();
 
   const dispatchToCart = () => {
-    if (productData.color !== null && !activeColorName) {
+    if (productData.color.length !== 0 && !activeColorName) {
       colorPopUpRef.current.classList.add("clothes-color__pop-up_shown");
       return;
     }

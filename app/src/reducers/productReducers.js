@@ -8,13 +8,20 @@ import {
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
   PRODUCT_TO_CART,
-  CART_CLEAN
+  CART_CLEAN,
+  PRODUCT_CREATION_REQUEST,
+  PRODUCT_CREATION_SUCCESS,
+  PRODUCT_CREATION_FAIL,
+  PRODUCT_CREATION_CLEAN_ERROR,
+  PRODUCT_DELETION_REQUEST,
+  PRODUCT_DELETION_SUCCESS,
+  PRODUCT_DELETION_FAIL
 } from "../constants/productConstants";
 
 function productListReducer(state = { products: [] }, action) {
   switch (action.type) {
     case PRODUCT_LIST_REQUEST:
-      return { loading: true };
+      return { loading: true, products: [] };
     case PRODUCT_LIST_SUCCESS:
       return { loading: false, products: action.payload };
     case PRODUCT_LIST_FAIL:
@@ -81,4 +88,32 @@ function productsToCartReducer(state = { products: [] }, action) {
   }
 }
 
-export { productListReducer, productDetailsReducer, productsToCartReducer };
+function productCreateReducer(state = { product: {} }, action) {
+  switch (action.type) {
+    case PRODUCT_CREATION_REQUEST:
+      return { loadingCreation: true };
+    case PRODUCT_CREATION_SUCCESS:
+      return { loading: false, successCreation: true, product: action.payload };
+    case PRODUCT_CREATION_FAIL:
+      return { loadingCreation: false, errorCreation: action.payload };
+    case PRODUCT_CREATION_CLEAN_ERROR:
+      return { loadingCreation: false, errorCreation: null };
+    default:
+      return state;
+  }
+}
+
+function productDeleteReducer(state = { product: {} }, action) {
+  switch (action.type) {
+    case PRODUCT_DELETION_REQUEST:
+      return { loadingDeletion: true };
+    case PRODUCT_DELETION_SUCCESS:
+      return { loading: false, successDeletion: true, product: action.payload };
+    case PRODUCT_DELETION_FAIL:
+      return { loadingDeletion: false, errorDeletion: action.payload };
+    default:
+      return state;
+  }
+}
+
+export { productListReducer, productDetailsReducer, productsToCartReducer, productCreateReducer, productDeleteReducer };

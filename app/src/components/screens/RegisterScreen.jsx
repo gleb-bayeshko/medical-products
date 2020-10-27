@@ -1,8 +1,7 @@
-import React, { useRef } from "react";
+import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { register } from "../../actions/userActions";
 import Preloader from "../preloaders/Preloader";
 

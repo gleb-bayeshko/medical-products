@@ -22,6 +22,10 @@
   width: 100%;
 }
 
+.create-product__form {
+  max-width: 100%;
+}
+
 .sign-in__input-label {
   font-size: 2rem;
   color: $color-light;
@@ -69,4 +73,35 @@
   background-color: $color-warning;
   border-radius: 5px;
   padding: 2px;
+}
+
+.text-area-input {
+  resize: none;
+  height: inherit;
+}
+
+.colors-field {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  flex-wrap: wrap;
+
+  & > * {
+    width: 45%;
+  }
+}
+
+.color-checkbox-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: $color-light-red;
+  margin: 5px 0;
+  padding: 5px;
+  border-radius: 5px;
+
+  & label {
+    font-size: 1.5rem;
+    color: $color-dark;
+  }
 }

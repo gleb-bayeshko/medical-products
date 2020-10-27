@@ -11,6 +11,7 @@ import RegisterScreen from './components/screens/RegisterScreen';
 
 import ScrollToTop from './ScrollToTop';
 import { deleteColorPopUp } from './ListenersFunctions';
+import ProductAdminScreen from './components/screens/ProductAdminScreen';
 
 function App() {
   window.addEventListener("click", deleteColorPopUp);
@@ -24,6 +25,7 @@ function App() {
         <Route exact path="/signin" component={SignInScreen}/>
         <Route exact path="/register" component={RegisterScreen}/>
         <Route exact path="/cart" component={CartScreen}/>
+        <Route exact path="/product-admin" component={ProductAdminScreen}/>
         <Route exact path="/products/:category/:id" component={ProductScreen} />
         <Route exact path="/" component={HomeScreen} />
       </Switch>

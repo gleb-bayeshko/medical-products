@@ -41,7 +41,7 @@ function ProductInCartBlock(props) {
           <i className="fas fa-star-half-alt rating__star"></i>
           <i className="far fa-star rating__star"></i>
         </div>
-        {props.product.color !== null && (
+        {props.product.color !== undefined && props.product.color.length !== 0 && (
           <div className="cart-list__color">
             <p>Color:</p>
             <ClothesColors
@@ -54,7 +54,7 @@ function ProductInCartBlock(props) {
       <CounterPanel counter={counter} setCounter={setCounter} />
       <div className="cart-list__cost">
         <span className="item-price cart-list__price">
-          {props.product.price * props.product.qty}
+          {(props.product.price * props.product.qty).toFixed(2)}
         </span>
         <span className="currency-icon cart-list__currency-icon">$</span>
       </div>

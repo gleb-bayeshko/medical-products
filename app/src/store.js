@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import Cookie from 'js-cookie';
-import { productListReducer, productDetailsReducer, productsToCartReducer } from './reducers/productReducers';
+import { productListReducer, productDetailsReducer, productsToCartReducer, productCreateReducer, productDeleteReducer } from './reducers/productReducers';
 import { userSignInReducer, userRegisterReducer } from './reducers/userReducers';
 
 const cartProducts = Cookie.getJSON('cartProducts') || {products: []};
@@ -15,6 +15,8 @@ const reducer = combineReducers({
   productsToCart: productsToCartReducer,
   userSignIn: userSignInReducer,
   userRegister: userRegisterReducer,
+  productCreate: productCreateReducer,
+  productDelete: productDeleteReducer
 })
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

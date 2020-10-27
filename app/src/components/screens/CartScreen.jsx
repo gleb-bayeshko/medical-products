@@ -73,7 +73,7 @@ function CartScreen(props) {
                   </div>
                   <div className="cart-list__order-price">
                     <p>
-                      Order-price: <span className="order-price__sum-number">{productsInCartList.reduce((acc, current) => acc += current.price * current.qty, 0)}</span>{" "}
+                      Order-price: <span className="order-price__sum-number">{productsInCartList.reduce((acc, current) => acc += current.price * current.qty, 0).toFixed(2)}</span>{" "}
                       <span className="currency-icon order-price__currency">
                         $
                       </span>

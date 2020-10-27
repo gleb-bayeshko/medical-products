@@ -35,9 +35,6 @@ router.post(
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
-    console.log('-------------');
-    console.log(hashPassword);
-    console.log('-------------');
 
     const user = new User({
       name,
@@ -83,8 +80,8 @@ router.post(
       return res.status(401).json({ message: "Enter password" });
     }
 
-    let isPasswordsMatch = false;
     const signInUser = await User.findOne({ email });
+    let isPasswordsMatch = false;
 
     if (signInUser) {
       isPasswordsMatch = await bcrypt.compare(password, signInUser.password);
@@ -106,10 +103,12 @@ router.post(
 
 router.get("/admincreate", async (req, res) => {
   try {
+    const hashPassword = await bcrypt.hash('12345', 10);
+
     const user = new User({
       name: "Gleb Bayeshko",
       email: "bayeshko_gleb@mail.ru",
-      password: "12345",
+      password: hashPassword,
       isAdmin: true,
     });
     const newUser = await user.save();

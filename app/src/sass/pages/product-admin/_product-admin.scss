@@ -1,0 +1,67 @@
+.product-admin__title {
+  font-size: 3rem;
+}
+
+.create-button-back {
+  margin-top: 10px;
+}
+
+.product-admin__product-list {
+  & table {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .product-admin__row-title {
+    background-color: $main-color-light;
+  }
+
+  & th {
+    font-size: 1.6rem;
+    color: $color-light;
+  }
+
+  & td {
+    font-size: 1.5rem;
+  }
+
+  & th,
+  & td {
+    padding: 2px 5px;
+  }
+
+  & tbody > tr:nth-child(even) {
+    background: $color-gray-transparent-extra;
+  }
+}
+
+.product-admin__id {
+  font-weight: 700;
+}
+
+.product-admin__row {
+  border-bottom: 2px solid $color-gray;
+}
+
+.product-admin__action {
+  display: flex;
+  flex-direction: column;
+}
+
+.action-button {
+  background-color: $main-color-dark;
+  margin: 2px 0;
+  color: $color-light;
+
+  &:hover {
+    background-color: $main-color;
+  }
+}
+
+.action-button_danger {
+  background-color: $color-warning;
+
+  &:hover {
+    background-color: $color-warning-dark;
+  }
+}
