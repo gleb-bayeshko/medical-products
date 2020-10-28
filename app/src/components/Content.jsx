@@ -3,16 +3,24 @@ import ProductBlock from "./ProductBlock/ProductBlock";
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../actions/productActions";
 import Preloader from "./preloaders/Preloader";
+import { useState } from "react";
 
-function Content() {
+function Content(props) {
   const productList = useSelector((state) => state.productList);
-
   const { products, loading, error } = productList;
+
+  const [category, setCategory] = useState(props.productCategory || "all");
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(listProducts());
-  }, []);
+    if (props.productCategory) {
+      setCategory(props.productCategory);
+    }
+  }, [props.productCategory]);
+
+  useEffect(() => {
+    dispatch(listProducts(category));
+  }, [category]);
 
   return loading ? (
     <section className="content">
@@ -28,7 +36,7 @@ function Content() {
     <section className="content">
       <div className="wrapper">
         <div className="content__title">
-          <h2>All</h2>
+          <h2>{`${category[0].toUpperCase()}${category.slice(1)}`}</h2>
         </div>
         <div className="content__items">
           <div className="layout-4-columns items-layout">

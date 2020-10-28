@@ -6,9 +6,20 @@ import { getToken, isAdmin, isAuth } from "../util";
 
 const router = Router();
 
-router.get('/', async (req, res) => {
-  const products = await Product.find({});
-  res.send(products);
+router.post('/', async (req, res) => {
+  const categoryReq = req.body.category;
+  const category = `${categoryReq[0].toUpperCase()}${categoryReq.slice(1)}`;
+  try {
+    if (category === 'All') {
+      const products = await Product.find({});
+      res.send(products);
+    } else {
+      const products = await Product.find({ category });
+      res.send(products);
+    }
+  } catch (error) {
+    res.status(400).json({message: 'Server error'})
+  }
 });
 
 router.post('/save-card', isAuth, isAdmin, async (req, res) => {
@@ -64,12 +75,10 @@ router.put('/save-card/:id', isAuth, isAdmin, async (req, res) => {
       productExisting.description = description;
     }
 
-    console.log(productExisting);
     const updatedProduct = await productExisting.save();
 
     if (updatedProduct) return res.status(200).json({message: 'Product card updated successfully', data: updatedProduct})
   } catch (error) {
-    console.log(error);
     res.status(400).json({message: 'An error occurred while updating a product card. Fill the fields correctly'})
   }
 });

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class TopBar extends Component {
   render() {
@@ -9,16 +10,16 @@ class TopBar extends Component {
             <div className="top-bar__categories">
               <ul className="categories top-bar__categories-list">
                 <li className="categories__link categories__link_active top-bar__link">
-                  <a href="/category/all">All</a>
+                  <Link to="/products/all">All</Link>
                 </li>
                 <li className="categories__link top-bar__link">
-                  <a href="/category/scrubs">Scrubs</a>
+                  <Link to="/products/scrubs">Scrubs</Link>
                 </li>
                 <li className="categories__link top-bar__link">
-                  <a href="/category/shoes">Shoes</a>
+                  <Link to="/products/shoes">Shoes</Link>
                 </li>
                 <li className="categories__link top-bar__link">
-                  <a href="/category/stethoscopes">Stethoscopes</a>
+                  <Link to="/products/stethoscopes">Stethoscopes</Link>
                 </li>
               </ul>
             </div>

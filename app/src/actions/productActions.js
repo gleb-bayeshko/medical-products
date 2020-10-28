@@ -5,10 +5,10 @@ import { PRODUCT_TO_CART } from "../constants/productConstants";
 import axios from 'axios';
 import Cookie from 'js-cookie';
 
-const listProducts = () => async (dispatch) => {
+const listProducts = (category) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
-    const { data } = await axios.get('/api/products');
+    const { data } = await axios.post('/api/products', { category: category });
     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data })
   } catch(error) {
     dispatch({ type: PRODUCT_LIST_FAIL, payload: error.message })

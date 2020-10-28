@@ -1,17 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
 
 import TopBar from '../TopBar';
 import Content from '../Content';
 
-class HomeScreen extends Component {
-  render() {
-    return (
-      <>
-        <TopBar />
-        <Content />
-      </>
-    )
-  }
+function HomeScreen (props) {
+  return (
+    <>
+      <TopBar />
+      <Content productCategory={props.match.params.category || 'all'} />
+    </>
+  )
 }
 
 export default HomeScreen;
