@@ -105,3 +105,41 @@
     color: $color-dark;
   }
 }
+
+#image-upload::-webkit-file-upload-button {
+  margin-top: 5px;
+  background-color: $color-add;
+  border: 2px solid $color-add;
+  border-radius: 5px;
+  padding: 5px;
+  position: relative;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: $color-light;
+  @extend %cursor-pointer;
+  @extend %transition;
+
+  &:hover {
+    background-color: $color-add-light;
+    border-color: $color-add-light;
+    color: $main-color;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:active {
+    outline: none;
+  }
+}
+
+#image-upload {
+  &:focus {
+    outline: none;
+  }
+
+  &:active {
+    outline: none;
+  }
+}

@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import userRoute from './routes/userRoute';
 import productRoute from './routes/productRoute';
+import uploadRoute from './routes/uploadRoute';
+import path from 'path';
 
 dotenv.config();
 
@@ -17,9 +19,12 @@ mongoose.connect(mongodbURL, {
 
 const app = express();
 
+app.use('/uploads', express.static(path.join(__dirname, '/../uploads')));
+
 app.use(bodyParser.json());
 
 app.use('/api/users', userRoute);
 app.use('/api/products', productRoute);
+app.use('/api/uploads', uploadRoute)
 
 app.listen(5000)
