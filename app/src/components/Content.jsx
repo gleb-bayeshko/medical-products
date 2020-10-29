@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../actions/productActions";
 import Preloader from "./preloaders/Preloader";
 import { useState } from "react";
+import TopBar from "./TopBar";
 
 function Content(props) {
   const productList = useSelector((state) => state.productList);
@@ -22,31 +23,36 @@ function Content(props) {
     dispatch(listProducts(category));
   }, [category]);
 
-  return loading ? (
-    <section className="content">
-      <div className="wrapper">
-        <Preloader />
-      </div>
-    </section>
-  ) : error ? (
-    <section className="content">
-      <div className="wrapper">{error}</div>
-    </section>
-  ) : (
-    <section className="content">
-      <div className="wrapper">
-        <div className="content__title">
-          <h2>{`${category[0].toUpperCase()}${category.slice(1)}`}</h2>
-        </div>
-        <div className="content__items">
-          <div className="layout-4-columns items-layout">
-            {products.map((product) => (
-              <ProductBlock productData={product} key={product._id} />
-            ))}
+  return (
+    <>
+      <TopBar currentCategory={category} />
+      {loading ? (
+        <section className="content">
+          <div className="wrapper">
+            <Preloader />
           </div>
-        </div>
-      </div>
-    </section>
+        </section>
+      ) : error ? (
+        <section className="content">
+          <div className="wrapper">{error}</div>
+        </section>
+      ) : (
+        <section className="content">
+          <div className="wrapper">
+            <div className="content__title">
+              <h2>{`${category[0].toUpperCase()}${category.slice(1)}`}</h2>
+            </div>
+            <div className="content__items">
+              <div className="layout-4-columns items-layout">
+                {products.map((product) => (
+                  <ProductBlock productData={product} key={product._id} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+    </>
   );
 }
 

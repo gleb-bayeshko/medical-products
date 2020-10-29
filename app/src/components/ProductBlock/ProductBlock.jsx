@@ -34,7 +34,7 @@ function ProductBlock(props) {
     <div className="product-block">
       <div className="product-block__top">
         <div className="product-block__img">
-          <Link to={`/products/${productData.category}/${productData._id}`}>
+          <Link to={`/products/${productData.category.toLowerCase()}/${productData._id}`}>
             <img
               src={productData.image}
               alt="product"
@@ -43,7 +43,7 @@ function ProductBlock(props) {
           </Link>
         </div>
         <div className="product-block__title">
-          <Link to={`/products/${productData.category}/${productData._id}`}>
+          <Link to={`/products/${productData.category.toLowerCase()}/${productData._id}`}>
             <h4>{productData.name}</h4>
           </Link>
           <div className="product-block__rating rating">

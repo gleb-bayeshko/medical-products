@@ -92,7 +92,7 @@ function CreateProduct(props) {
       })
       .catch((error) => {
         setUploadingImage(false);
-        setUploadingImageError(error);
+        setUploadingImageError(error.response.data && error.response.data.message || 'Error');
       })
   };
 
@@ -186,7 +186,7 @@ function CreateProduct(props) {
               onChange={handleUploadImage}
             />
             {uploadingImage && <div>Uploading...</div>}
-            {uploadingImageError && <div>{uploadingImageError}</div>}
+            {uploadingImageError && <div className="auth-warning-message">{uploadingImageError}</div>}
             <fieldset className="colors-field">
               <legend className="sign-in__input-label">Color</legend>
               <div className="color-checkbox-container">

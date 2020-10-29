@@ -29,7 +29,7 @@ function ProductInCartBlock(props) {
       </div>
       <div className="cart-list__description">
         <Link
-          to={`/products/${props.product.category}/${props.product._id}`}
+          to={`/products/${props.product.category.toLowerCase()}/${props.product._id}`}
           className="link_not-underlined"
         >
           <h4 className="cart-list__item-title">{props.product.name}</h4>

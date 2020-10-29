@@ -1,6 +1,6 @@
 import React from 'react';
 import './sass/main.scss';
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 
 import Header from './components/Header';
 import ProductScreen from './components/screens/ProductScreen';
@@ -28,6 +28,9 @@ function App() {
         <Route exact path="/product-admin" component={ProductAdminScreen}/>
         <Route exact path="/products/:category/:id" component={ProductScreen} />
         <Route exact path="/products/:category" component={HomeScreen} />
+        <Route exact path="/products" component={HomeScreen}>
+          <Redirect to="/products/all"/>
+        </Route>
         <Route exact path="/" component={HomeScreen} />
       </Switch>
     </main>

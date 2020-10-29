@@ -5,7 +5,7 @@ import { PRODUCT_TO_CART } from "../constants/productConstants";
 import axios from 'axios';
 import Cookie from 'js-cookie';
 
-const listProducts = (category) => async (dispatch) => {
+const listProducts = (category = 'all') => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
     const { data } = await axios.post('/api/products', { category: category });
@@ -18,7 +18,7 @@ const listProducts = (category) => async (dispatch) => {
 const detailsProduct = (productId, productCategory) => async (dispatch) => {
   try {
     dispatch({type: PRODUCT_DETAILS_REQUEST, payload: productId});
-    const { data } = await axios.get(`/api/products/${productCategory}/${productId}`);
+    const { data } = await axios.get(`/api/products/${productCategory.toLowerCase()}/${productId}`);
     dispatch({type: PRODUCT_DETAILS_SUCCESS, payload: data})
   } catch (error) {
     dispatch({type: PRODUCT_DETAILS_FAIL, payload: error.message})
