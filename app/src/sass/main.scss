@@ -25,6 +25,8 @@
 @import "./components/review";
 @import "./components/preloader";
 @import "./components/signin";
+@import "./components/input-file";
+@import "./components/cancel-action";
 
 @import "./layout/header";
 @import "./layout/top-bar";
@@ -34,3 +36,4 @@
 @import './pages/cart-empty/cart-list-empty';
 @import './pages/product-page/product-page';
 @import './pages/product-admin/product-admin';
+@import './pages/profile/profile';

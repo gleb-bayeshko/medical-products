@@ -17,7 +17,7 @@ function ProductCreateScreen(props) {
   const { successCreation } = productCreate;
 
   const productDelete = useSelector((state) => state.productDelete);
-  const { successDeletion } = productDelete;
+  const { successDeletion, errorDeletion } = productDelete;
 
   const dispatch = useDispatch();
 
@@ -30,38 +30,38 @@ function ProductCreateScreen(props) {
   const handleEditButton = (product) => {
     setFields(product);
     setCreateModalVisible(true);
-  }
+  };
 
   const handleDeleteButton = (product) => {
     dispatch(deleteProduct(product._id));
-  }
+  };
 
   useEffect(() => {
     if (!createModalVisible) {
       setFields({});
     }
-  }, [createModalVisible])
+  }, [createModalVisible]);
 
   useEffect(() => {
-    if(successCreation) {
+    if (successCreation) {
       setCreateModalVisible(false);
     }
     dispatch(listProducts());
-  }, [successCreation, successDeletion])
+  }, [successCreation, successDeletion]);
 
   return (
     <>
       {createModalVisible ? (
-        <CreateProduct setVisibility={setCreateModalVisible} fields={fields}/>
+        <CreateProduct setVisibility={setCreateModalVisible} fields={fields} />
       ) : loading ? (
-          <section className="product-admin">
-            <div className="wrapper">
-              <Preloader />
-            </div>
-          </section>
-        ) : error ? (
-          <section className="product-admin">
-            <div className="wrapper">
+        <section className="product-admin">
+          <div className="wrapper">
+            <Preloader />
+          </div>
+        </section>
+      ) : error ? (
+        <section className="product-admin">
+          <div className="wrapper">
             {error && error.errors
               ? error.errors.map((currentError) => {
                   return (
@@ -74,9 +74,9 @@ function ProductCreateScreen(props) {
                 error.message && (
                   <div className="auth-warning-message">{error.message}</div>
                 )}
-            </div>
-          </section>
-        ) :(
+          </div>
+        </section>
+      ) : (
         <section className="product-admin">
           <div className="wrapper">
             <h2 className="product-admin__title">Products</h2>
@@ -87,6 +87,21 @@ function ProductCreateScreen(props) {
             >
               Create new product
             </button>
+            {errorDeletion && errorDeletion.errors ? (
+              errorDeletion.errors.map((currentError) => {
+                return (
+                  <div className="auth-warning-message">{currentError.msg}</div>
+                );
+              })
+            ) : errorDeletion && errorDeletion.message ? (
+              <div className="auth-warning-message">
+                {errorDeletion.message}
+              </div>
+            ) : (
+              errorDeletion && (
+                <div className="auth-warning-message">{errorDeletion}</div>
+              )
+            )}
             <div className="product-admin__product-list">
               <table>
                 <thead>
@@ -100,23 +115,36 @@ function ProductCreateScreen(props) {
                   </tr>
                 </thead>
                 <tbody>
-                  {
-                    products.map(product => {
-                      return (
-                        <tr  className="product-admin__row" key={`product-table-row_${product._id}`}>
-                          <td className="product-admin__id">{product._id}</td>
-                          <td>{product.name}</td>
-                          <td>{product.price}</td>
-                          <td>{product.category}</td>
-                          <td>{product.brand}</td>
-                          <td className="product-admin__action">
-                            <button type="button" className="action-button" onClick={() => handleEditButton(product)}>Edit</button>
-                            <button type="button" className="action-button action-button_danger" onClick={() => handleDeleteButton(product)}>Delete</button>
-                          </td>
-                        </tr>
-                      )
-                    })
-                  }
+                  {products.map((product) => {
+                    return (
+                      <tr
+                        className="product-admin__row"
+                        key={`product-table-row_${product._id}`}
+                      >
+                        <td className="product-admin__id">{product._id}</td>
+                        <td>{product.name}</td>
+                        <td>{product.price}</td>
+                        <td>{product.category}</td>
+                        <td>{product.brand}</td>
+                        <td className="product-admin__action">
+                          <button
+                            type="button"
+                            className="action-button"
+                            onClick={() => handleEditButton(product)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            type="button"
+                            className="action-button action-button_danger"
+                            onClick={() => handleDeleteButton(product)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

@@ -1,0 +1,195 @@
+// Local vars
+$profile-content-width: 900px;
+
+.profile {
+  position: relative;
+  background-color: $color-gray-transparent-extra;
+  min-height: calc(100vh - #{$header-height});
+  overflow: hidden;
+  padding-top: 10px;
+}
+
+.profile__container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile__top {
+  max-width: $profile-content-width;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile__title {
+  font-size: 4rem;
+}
+
+.profile__info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: $profile-content-width;
+  width: 100%;
+  background-color: $color-gray-dark;
+  box-shadow: 0 0 20px $color-gray-transparent;
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.profile__info_top-borders-radius-none {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.profile__warning_bottom-borders-radius-none {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  max-width: 900px
+}
+
+.profile__field {
+  font-size: 2.5rem;
+  font-weight: normal;
+  color: $color-light;
+}
+
+.profile__user-data {
+  font-weight: 700;
+  color: $color-add;
+
+}
+
+.profile__fields-container {
+  max-width: 500px;
+}
+
+.profile__fields-container_full-width {
+  width: 100%;
+}
+
+.profile__password-container {
+  display: flex;
+  position: relative;
+}
+
+.button-change-password {
+  margin-left: 10px;
+}
+
+.profile__avatar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center
+}
+
+.profile__avatar-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  border: 5px solid $color-add;
+  background-color: $color-gray-transparent;
+  overflow: hidden;
+}
+
+.profile__avatar {
+  max-width: 200px;
+  @extend %cursor-pointer;
+  border-radius: 50%;
+
+  &:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: $color-gray-transparent;
+    opacity: 0;
+    z-index: 10;
+    @extend %transition;
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
+
+  &:hover {
+    .profile__input-file {
+      opacity: 1;
+    }
+  }
+}
+
+.profile__input-file {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  z-index: 15;
+  @extend %transition;
+}
+
+.profile__go-to-cart-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.profile__go-to-cart-button {
+  font-size: 2.5rem;
+  color: $color-dark;
+
+  &:hover {
+    border-color: $main-color;
+    background-color: $main-color;
+    color: $color-light;
+  }
+}
+
+.profile__action-button {
+  padding: 3px 20px;
+  font-size: 2rem;
+  margin-left: 20px;
+  border-radius: 3px;
+}
+
+.profile__action-button_save {
+  background-color: $color-green;
+  border: none;
+
+  &:hover {
+    background-color: $color-green-light-semi;
+    border: none;
+  }
+}
+
+.profile__input {
+  width: 100%;
+}
+
+.profile__cancel-action {
+  margin-left: 10px;
+}
+
+.profile__loading-text {
+  display: flex;
+  align-items: center;
+  color: $color-add-contrast;
+  font-size: 1.5rem;
+  margin-left: 10px;
+}
+
+.profile__message-success {
+  background-color: $color-green;
+}

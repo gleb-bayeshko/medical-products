@@ -76,12 +76,12 @@ function CreateProduct(props) {
   const handleUploadImage = (e) => {
     const imageUpload = e.target.files[0];
     const bodyFormData = new FormData();
-    bodyFormData.append("image", imageUpload);
+    bodyFormData.append("product-image", imageUpload);
 
     setUploadingImageError(false);
     setUploadingImage(true);
     axios
-      .post("/api/uploads", bodyFormData, {
+      .post("/api/uploads/product-image", bodyFormData, {
         headers: {
           "Content-type": "multipart/form-data",
         },
@@ -92,8 +92,10 @@ function CreateProduct(props) {
       })
       .catch((error) => {
         setUploadingImage(false);
-        setUploadingImageError(error.response.data && error.response.data.message || 'Error');
-      })
+        setUploadingImageError(
+          (error.response.data && error.response.data.message) || error
+        );
+      });
   };
 
   function checkColor(color) {
@@ -125,20 +127,24 @@ function CreateProduct(props) {
             className="sign-in__form create-product__form"
             onSubmit={submitHandler}
           >
-            {errorCreation && errorCreation.errors
-              ? errorCreation.errors.map((currentError) => {
-                  return (
-                    <div className="auth-warning-message">
-                      {currentError.msg}
-                    </div>
-                  );
-                })
-              : errorCreation &&
-                errorCreation.message && (
-                  <div className="auth-warning-message">
-                    {errorCreation.message}
-                  </div>
-                )}
+            {errorCreation && errorCreation.errors ? (
+              errorCreation.errors.map((currentError) => {
+                return (
+                  <div className="auth-warning-message">{currentError.msg}</div>
+                );
+              })
+            ) : errorCreation && errorCreation.message ? (
+              <div className="auth-warning-message">
+                {errorCreation.message}
+              </div>
+            ) : (
+              errorCreation && (
+                <div className="auth-warning-message">
+                  {window.scrollTo(0, 0)}
+                  {errorCreation}
+                </div>
+              )
+            )}
             <label htmlFor="name" className="sign-in__input-label">
               Name
             </label>
@@ -186,7 +192,9 @@ function CreateProduct(props) {
               onChange={handleUploadImage}
             />
             {uploadingImage && <div>Uploading...</div>}
-            {uploadingImageError && <div className="auth-warning-message">{uploadingImageError}</div>}
+            {uploadingImageError && (
+              <div className="auth-warning-message">{uploadingImageError}</div>
+            )}
             <fieldset className="colors-field">
               <legend className="sign-in__input-label">Color</legend>
               <div className="color-checkbox-container">

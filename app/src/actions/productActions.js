@@ -41,6 +41,9 @@ const createProduct = (product) => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_CREATION_REQUEST, payload: product});
     const { userSignIn: { userInfo } } = getState();
+    if (!userInfo) {
+      throw new Error('Sign in as administrator')
+    }
     if (!product._id) {
       const { data } = await axios.post('/api/products/save-card', product, { headers: {
         'Authorization': `Bearer ${userInfo.token}`
@@ -53,7 +56,7 @@ const createProduct = (product) => async (dispatch, getState) => {
       dispatch({ type: PRODUCT_CREATION_SUCCESS, payload: data});
     }
   } catch (error) {
-    dispatch({ type: PRODUCT_CREATION_FAIL, payload: error.response.data});
+    dispatch({ type: PRODUCT_CREATION_FAIL, payload: (error.response && error.response.data) || error.message || error});
   }
 }
 
@@ -65,12 +68,15 @@ const deleteProduct = (productId) => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_DELETION_REQUEST, payload: productId});
     const { userSignIn: { userInfo } } = getState();
+    if (!userInfo) {
+      throw new Error('Sign in as administrator')
+    }
     const { data } = await axios.delete(`/api/products/delete-card/${productId}`, { headers: {
       'Authorization': `Bearer ${userInfo.token}`
     } });
     dispatch({ type: PRODUCT_DELETION_SUCCESS, payload: data});
   } catch (error) {
-    dispatch({ type: PRODUCT_DELETION_FAIL, payload: error.response.data});
+    dispatch({ type: PRODUCT_DELETION_FAIL, payload: (error.response && error.response.data) || error.message || error});
   }
 }
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 
-function EmptyCart() {
+function EmptyCart(props) {
   return (
     <div className="cart-list-empty__layout">
       <div className="cart-list-empty__title">
@@ -13,8 +13,8 @@ function EmptyCart() {
       <div className="cart-list-empty__img">
         <img src="/assets/img/empty-img/empty-cart.png" alt="empty-cart" className="empty-cart-img" />
       </div>
-      <Link to="/">
-        <button className="button cart-list-empty__button">Go back</button>
+      <Link to='/'>
+        <button className="button cart-list-empty__button">Go to Main page</button>
       </Link>
     </div>
   );

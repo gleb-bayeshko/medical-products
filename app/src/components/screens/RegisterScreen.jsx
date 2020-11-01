@@ -45,18 +45,7 @@ function RegisterScreen(props) {
         <div className="sign-in__container">
           <h2 className="sign-in__title">Registration</h2>
           <form className="sign-in__form" onSubmit={submitHandler}>
-            {error && error.errors
-              ? error.errors.map((currentError) => {
-                  return (
-                    <div className="auth-warning-message">
-                      {currentError.msg}
-                    </div>
-                  );
-                })
-              : error &&
-                error.message && (
-                  <div className="auth-warning-message">{error.message}</div>
-                )}
+            {error && <div className="auth-warning-message">{error}</div>}
             <label htmlFor="name" className="sign-in__input-label">
               Name
             </label>

@@ -11,6 +11,9 @@ function Header() {
   const userSignIn = useSelector((state) => state.userSignIn);
   const { userInfo } = userSignIn;
 
+  const handleAvatarError = (e) =>
+    (e.target.src = "assets/img/profile-img/profile-img-empty.png");
+
   return (
     <header className="header">
       <div className="wrapper">
@@ -44,6 +47,7 @@ function Header() {
               userInfo ? (
                 <Link to="/profile" className="sign-in-ref">
                   {userInfo.name}
+                  <img src={userInfo.avatar} className="header__avatar" alt="avatar" onError={handleAvatarError}/>
                 </Link>
               ) : (
                 <Link to="/signin" className="sign-in-ref">
