@@ -11,7 +11,8 @@ const getToken = (user) => {
     sex: user.sex || '',
     avatar: user.avatar || '',
     email: user.email,
-    isAdmin: user.isAdmin
+    isAdmin: user.isAdmin,
+    cart: user.cart || [],
   }, config.JWT_SECRET, {
     expiresIn: '1h'
   });

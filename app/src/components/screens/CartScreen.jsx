@@ -1,25 +1,65 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 import EmptyCart from "../EmptyCart";
-import ProductInCartBlock from '../ProductInCartBlock';
+import ProductInCartBlock from "../ProductInCartBlock";
 
-import { cleanCart } from '../../actions/cartActions';
+import { cleanCart } from "../../actions/cartActions";
+import { useEffect } from "react";
+import { loadCartProducts } from "../../actions/productActions";
+
+import Preloader from "../preloaders/Preloader";
+import { useRef } from "react";
 
 function CartScreen(props) {
-  const productsInCartList = useSelector((state) => state.productsToCart.products);
   const dispatch = useDispatch();
 
-  const clean = () => {
-    dispatch(cleanCart())
-  }
+  const productsInCartList = useSelector(
+    (state) => state.productsToCart.products
+  );
+  const productsInCartListLoaded = useSelector(
+    (state) => state.loadCartProducts
+  );
+  const {
+    loadingCartProducts,
+    errorCartProducts,
+    cartProducts,
+  } = productsInCartListLoaded;
 
+  useEffect(() => {
+    if(productsInCartList.length === cartProducts.length) {
+      dispatch(loadCartProducts(productsInCartList, true));
+    }
+    else {
+      dispatch(loadCartProducts(productsInCartList, false));
+    }
+
+  }, [productsInCartList]);
+
+
+  const clean = () => {
+    dispatch(cleanCart());
+  };
+
+  const productQty = (product) => {
+    if (product) {
+      return product.qty;
+    } else {
+      return null
+    }
+  }
 
   return (
     <section className="cart-list">
       <div className="wrapper">
-        {productsInCartList.length === 0 ? (
+        {loadingCartProducts ? (
+          <Preloader />
+        ) : errorCartProducts ? (
+          <div className="auth-warning-message profile__warning_bottom-borders-radius-none">
+            {errorCartProducts}
+          </div>
+        ) : cartProducts && cartProducts.length === 0 ? (
           <EmptyCart />
         ) : (
           <>
@@ -59,21 +99,35 @@ function CartScreen(props) {
               </div>
             </div>
             <div className="cart-list__form">
-              {productsInCartList.map((product) => {
-                return (
-                  <ProductInCartBlock product={product} />
-                );
+              {cartProducts && cartProducts.map((product) => {
+                return <ProductInCartBlock product={product} qty={productQty(productsInCartList.find(productInCartList => productInCartList._id === product.foundProduct._id))} />;
               })}
               <div className="cart-list__bottom">
                 <div className="layout-2-columns cart-list__total">
                   <div className="cart-list__total-qty">
                     <p>
-                      Total quantity: <span className="total-qty__number">{productsInCartList.reduce((acc, current) => acc += current.qty, 0)} pcs.</span>
+                      Total quantity:{" "}
+                      <span className="total-qty__number">
+                        {cartProducts && cartProducts.reduce(
+                          (acc, current) => (acc += current.qty),
+                          0
+                        )}{" "}
+                        pcs.
+                      </span>
                     </p>
                   </div>
                   <div className="cart-list__order-price">
                     <p>
-                      Order-price: <span className="order-price__sum-number">{productsInCartList.reduce((acc, current) => acc += current.price * current.qty, 0).toFixed(2)}</span>{" "}
+                      Order-price:{" "}
+                      <span className="order-price__sum-number">
+                        {cartProducts && cartProducts
+                          .reduce(
+                            (acc, current) =>
+                              (acc += current.foundProduct.price * current.qty),
+                            0
+                          )
+                          .toFixed(2)}
+                      </span>{" "}
                       <span className="currency-icon order-price__currency">
                         $
                       </span>
@@ -82,9 +136,7 @@ function CartScreen(props) {
                 </div>
                 <div className="layout-2-columns cart-list__buttons">
                   <Link to="/">
-                    <button
-                      className="button button_inverted cart-list__button"
-                    >
+                    <button className="button button_inverted cart-list__button">
                       Go back
                     </button>
                   </Link>

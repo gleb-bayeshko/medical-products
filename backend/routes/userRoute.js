@@ -53,6 +53,7 @@ router.post(
         avatar: newUser.avatar || '',
         email: newUser.email,
         isAdmin: newUser.isAdmin,
+        cart: newUser.cart || [],
         token: getToken(newUser),
       });
     } else {
@@ -100,10 +101,59 @@ router.post(
       avatar: signInUser.avatar || '',
       email: signInUser.email,
       isAdmin: signInUser.isAdmin,
+      cart: signInUser.cart || [],
       token: getToken(signInUser),
     });
   }
 );
+
+router.post("/update-user-cart", isAuth, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { currentCart, userCart } = req.body;
+
+    if (!userCart) {
+      const user = await User.findById(userId);
+
+      if (!user) {
+        return res.status(404).send('User is not found');
+      } else {
+        user.cart = currentCart;
+      }
+
+      const updatedUser = await user.save();
+
+      return res.status(200).send('User cart is updated successfully');
+    }
+
+    const updatedCart = [...userCart.filter((product) => {
+      const currId = currentCart.map(curr => curr._id);
+
+      for (let id of currId) {
+        if (id === product._id) {
+          return false
+        }
+      }
+
+      return true
+    }), ...currentCart];
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).send('User is not found');
+    } else {
+      user.cart = updatedCart;
+    }
+
+    const updatedUser = await user.save();
+
+    res.send(updatedCart)
+  } catch (error) {
+    console.log(error);
+    res.status(400).send('Error while updating user cart');
+  }
+})
 
 router.post("/update-info", isAuth, async (req, res) => {
   try {
@@ -163,7 +213,6 @@ router.post("/update-password", isAuth, async (req, res) => {
 router.post("/update-avatar", isAuth, async (req, res) => {
   try {
     const { avatar: { avatar } } = req.body;
-    console.log(avatar);
     const user = await User.findById(req.user._id);
 
     if (user) {

@@ -8,17 +8,47 @@ const router = Router();
 
 router.post('/', async (req, res) => {
   const categoryReq = req.body.category;
+  const sort = req.body.sort;
   const category = `${categoryReq[0].toUpperCase()}${categoryReq.slice(1)}`;
   try {
+    let products = [];
     if (category === 'All') {
-      const products = await Product.find({});
-      res.send(products);
+      products = await Product.find({});
     } else {
-      const products = await Product.find({ category });
-      res.send(products);
+      products = await Product.find({ category });
     }
+
+    switch(sort) {
+      case 'PRODUCTS_SORT_DATE_DESC':
+        products = products.sort((a, b) => b.date.getTime() - a.date.getTime());
+        break;
+      case 'PRODUCTS_SORT_DATE_ASC':
+        products = products.sort((a, b) => a.date.getTime() - b.date.getTime());
+        break;
+    }
+
+    res.send(products);
   } catch (error) {
-    res.status(400).json({message: 'Server error'})
+    res.status(400).json({message: 'Server error: unable to load product list'})
+  }
+});
+
+router.post('/cart-products-list', async (req, res) => {
+  try {
+    const { productsToLoad } = req.body;
+    const productsList = await Promise.all(productsToLoad.map(async product => {
+      const foundProduct = await Product.findById(product._id);
+      if (foundProduct) {
+        foundProduct.qty = product.qty;
+        return { foundProduct, qty: product.qty, colorActive: product.colorActive };
+      } else {
+        throw new Error('Cart product is not found');
+      }
+    }))
+    res.send(productsList);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({message: 'Server error: unable to load cart product list'})
   }
 });
 
@@ -33,7 +63,8 @@ router.post('/save-card', isAuth, isAdmin, async (req, res) => {
       color,
       price,
       brand,
-      description
+      description,
+      date: Date.now()
     })
 
     const newProduct = await product.save();

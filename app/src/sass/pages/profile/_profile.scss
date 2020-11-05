@@ -23,6 +23,15 @@ $profile-content-width: 900px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @include media-tablet-small {
+    flex-direction: column;
+    margin: 0 0 10px;
+
+    & .profile__action-button {
+      margin: 0;
+    }
+  }
 }
 
 .profile__title {
@@ -39,6 +48,16 @@ $profile-content-width: 900px;
   box-shadow: 0 0 20px $color-gray-transparent;
   border-radius: 15px;
   padding: 20px;
+
+  @include media-tablet-small {
+    flex-direction: column-reverse;
+    width: initial;
+    padding: 20px;
+
+    .profile__fields-container {
+      margin: 10px 0 0;
+    }
+  }
 }
 
 .profile__info_top-borders-radius-none {
@@ -61,7 +80,7 @@ $profile-content-width: 900px;
 .profile__user-data {
   font-weight: 700;
   color: $color-add;
-
+  overflow-wrap: break-word;
 }
 
 .profile__fields-container {
@@ -139,11 +158,13 @@ $profile-content-width: 900px;
   @extend %transition;
 }
 
-.profile__go-to-cart-button-container {
+.profile__bottom{
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  margin-top: 20px;
+  align-items: center;
+  padding: 25px 0;
 }
 
 .profile__go-to-cart-button {
@@ -158,8 +179,8 @@ $profile-content-width: 900px;
 }
 
 .profile__action-button {
-  padding: 3px 20px;
-  font-size: 2rem;
+  padding: 1px 10px;
+  font-size: 1.6rem;
   margin-left: 20px;
   border-radius: 3px;
 }
@@ -167,6 +188,7 @@ $profile-content-width: 900px;
 .profile__action-button_save {
   background-color: $color-green;
   border: none;
+  font-size: 2rem;
 
   &:hover {
     background-color: $color-green-light-semi;
@@ -192,4 +214,15 @@ $profile-content-width: 900px;
 
 .profile__message-success {
   background-color: $color-green;
+}
+
+.profile__log-out__button {
+  color: $color-warning-dark;
+  font-size: 1.6rem;
+  margin-top: 10px;
+
+  &:hover {
+    text-decoration: underline;
+    color: $color-warning;
+  }
 }

@@ -8,6 +8,7 @@ import {
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
   PRODUCT_TO_CART,
+  PRODUCT_TO_CART_UPDATE_AFTER_SIGN_IN,
   CART_CLEAN,
   PRODUCT_CREATION_REQUEST,
   PRODUCT_CREATION_SUCCESS,
@@ -15,7 +16,13 @@ import {
   PRODUCT_CREATION_CLEAN_ERROR,
   PRODUCT_DELETION_REQUEST,
   PRODUCT_DELETION_SUCCESS,
-  PRODUCT_DELETION_FAIL
+  PRODUCT_DELETION_FAIL,
+  PRODUCT_CART_PRODUCTS_LIST_REQUEST,
+  PRODUCT_CART_PRODUCTS_LIST_SUCCESS,
+  PRODUCT_CART_PRODUCTS_LIST_FAIL,
+  PRODUCT_CART_PRODUCTS_LIST_QTY_CHANGE,
+  PRODUCTS_SORT_DATE_DESC,
+  PRODUCTS_SORT_DATE_ASC,
 } from "../constants/productConstants";
 
 function productListReducer(state = { products: [] }, action) {
@@ -26,6 +33,38 @@ function productListReducer(state = { products: [] }, action) {
       return { loading: false, products: action.payload };
     case PRODUCT_LIST_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}
+
+function sortProductsReducer(
+  state = { sortType: PRODUCTS_SORT_DATE_DESC },
+  action
+) {
+  switch (action.type) {
+    case PRODUCTS_SORT_DATE_DESC:
+      return { sortType: PRODUCTS_SORT_DATE_DESC };
+    case PRODUCTS_SORT_DATE_ASC:
+      return { sortType: PRODUCTS_SORT_DATE_ASC };
+    default:
+      return state;
+  }
+}
+
+function loadCartProductsReducer(
+  state = { cartProducts: [], loadingCartProducts: true },
+  action
+) {
+  switch (action.type) {
+    case PRODUCT_CART_PRODUCTS_LIST_REQUEST:
+      return { loadingCartProducts: true, products: [] };
+    case PRODUCT_CART_PRODUCTS_LIST_SUCCESS:
+      return { loadingCartProducts: false, cartProducts: action.payload };
+    case PRODUCT_CART_PRODUCTS_LIST_FAIL:
+      return { loadingCartProducts: false, errorCartProducts: action.payload };
+    case PRODUCT_CART_PRODUCTS_LIST_QTY_CHANGE:
+      return { loadingCartProducts: false, cartProducts: action.payload };
     default:
       return state;
   }
@@ -56,6 +95,11 @@ function productsToCartReducer(state = { products: [] }, action) {
           action.payload,
         ],
       };
+    case PRODUCT_TO_CART_UPDATE_AFTER_SIGN_IN:
+      return {
+        ...state,
+        products: action.payload,
+      };
     case PRODUCT_QTY_CHANGE:
       return {
         ...state,
@@ -81,8 +125,8 @@ function productsToCartReducer(state = { products: [] }, action) {
     case CART_CLEAN:
       return {
         ...state,
-        products: []
-      }
+        products: [],
+      };
     default:
       return state;
   }
@@ -116,4 +160,12 @@ function productDeleteReducer(state = { product: {} }, action) {
   }
 }
 
-export { productListReducer, productDetailsReducer, productsToCartReducer, productCreateReducer, productDeleteReducer };
+export {
+  productListReducer,
+  productDetailsReducer,
+  productsToCartReducer,
+  productCreateReducer,
+  productDeleteReducer,
+  loadCartProductsReducer,
+  sortProductsReducer,
+};

@@ -1,13 +1,43 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
+import { useEffect } from "react";
+import { useRef } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { sortProducts } from "../actions/productActions";
+import { PRODUCTS_SORT_DATE_ASC, PRODUCTS_SORT_DATE_DESC } from "../constants/productConstants";
 
 function TopBar(props) {
+  const popUpRef = useRef();
+  const dispatch = useDispatch();
+
+  const [isDirectionDesc, setIsDirectionDesc] = useState(true)
+
   const checkActive = (current) => {
     if (props.currentCategory.toLowerCase() === current.toLowerCase()) {
       return 'categories__link_active'
     } else {
       return ''
     }
+  }
+
+  const popUpShow = () => {
+    popUpRef.current.classList.toggle('sort-pop-up_shown')
+  }
+
+  const handleDateSort = () => {
+    if (isDirectionDesc) {
+      dispatch(sortProducts(PRODUCTS_SORT_DATE_DESC));
+    } else {
+      dispatch(sortProducts(PRODUCTS_SORT_DATE_ASC));
+    }
+  }
+
+  useEffect(() => {
+    handleDateSort();
+  }, [isDirectionDesc])
+
+  const handleDirectionSort = () => {
+    setIsDirectionDesc(!isDirectionDesc)
   }
 
   return (
@@ -32,17 +62,17 @@ function TopBar(props) {
           </div>
           <div className="top-bar__sort-container sort-container">
             <div className="top-bar__sort sort">
-              <b>Sort by:</b>
-              <span>newest</span>
+              <b onClick={handleDirectionSort} className={isDirectionDesc ? `sort-by sort-by_desc` : `sort-by sort-by_asc`}>Sort by:</b>
+              <span className="sort-category" onClick={popUpShow}>date</span>
             </div>
-            <div className="sort-pop-up">
+            <div className="sort-pop-up" ref={popUpRef}>
               <ul>
-                <li className="sort-pop-up__link sort-pop-up__link_active">
-                  newest
+                <li className="sort-pop-up__link sort-pop-up__link_active" onClick={handleDateSort}>
+                  date
                 </li>
-                <li className="sort-pop-up__link">oldest</li>
-                <li className="sort-pop-up__link">highest</li>
-                <li className="sort-pop-up__link">lowest</li>
+                <li className="sort-pop-up__link">
+                  rating
+                </li>
               </ul>
             </div>
           </div>

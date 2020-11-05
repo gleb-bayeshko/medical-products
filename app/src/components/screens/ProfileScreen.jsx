@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
+  signOut,
   userUpdateAvatar,
   userUpdateInfo,
   userUpdatePassword,
@@ -107,6 +108,11 @@ function ProfileScreen(props) {
   useEffect(() => {
     dispatch(userUpdatePasswordCleanState());
   }, [])
+
+  const handleLogOutButton = () => {
+    dispatch(signOut());
+    props.history.push("/signin");
+  }
 
   return (
     <section className="profile">
@@ -347,12 +353,13 @@ function ProfileScreen(props) {
               </div>
             )}
           </div>
-          <div className="profile__go-to-cart-button-container">
+          <div className="profile__bottom">
             <Link to="/cart">
               <button className="button profile__go-to-cart-button">
                 Go to own cart
               </button>
             </Link>
+            <button className="profile__log-out__button" onClick={handleLogOutButton}>Log out</button>
           </div>
         </div>
       </div>

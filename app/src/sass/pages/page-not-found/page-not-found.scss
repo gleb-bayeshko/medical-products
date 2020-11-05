@@ -1,0 +1,28 @@
+.page-not-found {
+  width: 100%;
+}
+
+.page-not-found__container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  a {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.page-not-found__title {
+  font-size: 6rem;
+  margin: 20px 0 0;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.page-not-found__error {
+  font-size: 10rem;
+}

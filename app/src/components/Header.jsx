@@ -45,9 +45,11 @@ function Header() {
           <div className="header__links">
             {
               userInfo ? (
-                <Link to="/profile" className="sign-in-ref">
-                  {userInfo.name}
-                  <img src={userInfo.avatar} className="header__avatar" alt="avatar" onError={handleAvatarError}/>
+                <Link to={userInfo.isAdmin ? `/product-admin` : '/profile'} className="sign-in-ref">
+                  {userInfo.isAdmin ? <><span className="sign-in_admin">Admin: </span> {`${userInfo.name}`}</> : userInfo.name}
+                  {!userInfo.isAdmin &&
+                    <img src={userInfo.avatar} className="header__avatar" alt="avatar" onError={handleAvatarError}/>
+                  }
                 </Link>
               ) : (
                 <Link to="/signin" className="sign-in-ref">

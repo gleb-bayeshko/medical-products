@@ -10,6 +10,8 @@ function Content(props) {
   const productList = useSelector((state) => state.productList);
   const { products, loading, error } = productList;
 
+  const { sortType } = useSelector((state) => state.sortProducts);
+
   const [category, setCategory] = useState(props.productCategory || "all");
   const dispatch = useDispatch();
 
@@ -20,8 +22,8 @@ function Content(props) {
   }, [props.productCategory]);
 
   useEffect(() => {
-    dispatch(listProducts(category));
-  }, [category]);
+    dispatch(listProducts(category, sortType));
+  }, [category, sortType]);
 
   return (
     <>

@@ -45,7 +45,6 @@ function ProductScreen(props) {
       <div className="wrapper">
         <div className="layout-2-columns product-content__product-layout">
           <div className="product-content__image">
-            {console.log(product.image)}
             <img
               src={product.image}
               alt="product-img"

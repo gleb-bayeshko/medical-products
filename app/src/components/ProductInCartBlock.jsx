@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { productDelete, productInCartQty } from "../actions/cartActions";
@@ -8,31 +9,35 @@ import ClothesColors from "./ProductBlock/ClothesColors";
 
 function ProductInCartBlock(props) {
   const [counter, setCounter] = useState(props.product.qty);
+  const counterRef = useRef(props.product.qty)
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(productInCartQty(props.product._id, counter));
+    if (counter !== counterRef.current) {
+      dispatch(productInCartQty(props.product.foundProduct._id, counter));
+      counterRef.current = counter;
+    }
   }, [counter]);
 
   useEffect(() => {
-    setCounter(props.product.qty);
-  }, [props.product.qty]);
+    setCounter(props.qty);
+  }, [props.qty]);
 
   const deletePosition = () => {
-    dispatch(productDelete(props.product._id));
+    dispatch(productDelete(props.product.foundProduct._id));
   };
 
   return (
     <div className="cart-list__item" key={`cart-product_${props.product._id}`}>
       <div className="cart-list__img">
-        <img src={props.product.image} alt="product" className="cart-img" />
+        <img src={props.product.foundProduct.image} alt="product" className="cart-img" />
       </div>
       <div className="cart-list__description">
         <Link
-          to={`/products/${props.product.category.toLowerCase()}/${props.product._id}`}
+          to={`/products/${props.product.foundProduct.category.toLowerCase()}/${props.product.foundProduct._id}`}
           className="link_not-underlined"
         >
-          <h4 className="cart-list__item-title">{props.product.name}</h4>
+          <h4 className="cart-list__item-title">{props.product.foundProduct.name}</h4>
         </Link>
         <div className="product-block__rating rating">
           <i className="fas fa-star rating__star"></i>
@@ -41,7 +46,7 @@ function ProductInCartBlock(props) {
           <i className="fas fa-star-half-alt rating__star"></i>
           <i className="far fa-star rating__star"></i>
         </div>
-        {props.product.color !== undefined && props.product.color.length !== 0 && (
+        {props.product.foundProduct.color !== undefined && props.product.foundProduct.color.length !== 0 && (
           <div className="cart-list__color">
             <p>Color:</p>
             <ClothesColors
@@ -54,7 +59,7 @@ function ProductInCartBlock(props) {
       <CounterPanel counter={counter} setCounter={setCounter} />
       <div className="cart-list__cost">
         <span className="item-price cart-list__price">
-          {(props.product.price * props.product.qty).toFixed(2)}
+          {(props.product.foundProduct.price * props.qty).toFixed(2)}
         </span>
         <span className="currency-icon cart-list__currency-icon">$</span>
       </div>

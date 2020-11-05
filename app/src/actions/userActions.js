@@ -1,22 +1,45 @@
 import axios from "axios";
-import { USER_SIGN_IN_FAIL, USER_SIGN_IN_REQUEST, USER_SIGN_IN_SUCCESS, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_UPDATE_INFO_REQUEST, USER_UPDATE_INFO_SUCCESS, USER_UPDATE_INFO_FAIL, USER_SIGN_IN_AFTER_REG, USER_SIGN_IN_AFTER_UPDATE_INFO, USER_SIGN_IN_AFTER_UPDATE_AVATAR, USER_UPDATE_AVATAR_REQUEST, USER_UPDATE_AVATAR_SUCCESS, USER_UPDATE_AVATAR_FAIL, USER_UPDATE_PASSWORD_REQUEST, USER_UPDATE_PASSWORD_SUCCESS, USER_UPDATE_PASSWORD_FAIL, USER_UPDATE_PASSWORD_CLEAN_STATE } from "../constants/userConstants";
+import { USER_SIGN_IN_FAIL, USER_SIGN_IN_REQUEST, USER_SIGN_IN_UPDATE_CART, USER_SIGN_IN_SUCCESS, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_UPDATE_INFO_REQUEST, USER_UPDATE_INFO_SUCCESS, USER_UPDATE_INFO_FAIL, USER_SIGN_IN_AFTER_REG, USER_SIGN_IN_AFTER_UPDATE_INFO, USER_SIGN_IN_AFTER_UPDATE_AVATAR, USER_UPDATE_AVATAR_REQUEST, USER_UPDATE_AVATAR_SUCCESS, USER_UPDATE_AVATAR_FAIL, USER_UPDATE_PASSWORD_REQUEST, USER_UPDATE_PASSWORD_SUCCESS, USER_UPDATE_PASSWORD_FAIL, USER_UPDATE_PASSWORD_CLEAN_STATE, USER_SIGN_IN_OUT } from "../constants/userConstants";
 import Cookie from 'js-cookie';
+import { CART_CLEAN, PRODUCT_TO_CART_UPDATE_AFTER_SIGN_IN } from "../constants/productConstants";
 
-const signIn = (email, password) => async (dispatch) => {
+const signIn = (email, password) => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_SIGN_IN_REQUEST, payload: { email } });
     const { data } = await axios.post('api/users/signin', { email, password });
+
+    const { productsToCart } = getState();
+    const updatedUserCart = await axios.post('api/users/update-user-cart', { currentCart: productsToCart.products, userCart: data.cart }, { headers: {
+      'Authorization': `Bearer ${data.token}`
+    } });
+
+    data.cart = updatedUserCart.data;
+    dispatch({ type: PRODUCT_TO_CART_UPDATE_AFTER_SIGN_IN, payload: updatedUserCart.data });
     dispatch({ type: USER_SIGN_IN_SUCCESS, payload: data });
-    Cookie.set('userInfo', JSON.stringify(data))
+    Cookie.set('userInfo', JSON.stringify(data));
   } catch (error) {
     dispatch({ type: USER_SIGN_IN_FAIL, payload: error});
   }
+}
+
+const signOut = () => (dispatch) => {
+  Cookie.remove('userInfo');
+  Cookie.remove('cartProducts');
+  dispatch({ type: CART_CLEAN })
+  dispatch({ type: USER_SIGN_IN_OUT });
 }
 
 const register = (name, email, password) => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_REGISTER_REQUEST, payload: { name, email } });
     const { data } = await axios.post('api/users/register', { name, email, password });
+
+    const { productsToCart } = getState();
+    const updatedUserCart = await axios.post('api/users/update-user-cart', { currentCart: productsToCart.products, userCart: data.cart }, { headers: {
+      'Authorization': `Bearer ${data.token}`
+    } });
+
+    data.cart = updatedUserCart.data;
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
 
     const { userRegister } = getState();
@@ -81,4 +104,4 @@ const userUpdateAvatar = (avatar) => async (dispatch, getState) => {
   }
 }
 
-export { signIn, register, userUpdateInfo, userUpdateAvatar, userUpdatePassword, userUpdatePasswordCleanState };
+export { signIn, register, userUpdateInfo, userUpdateAvatar, userUpdatePassword, userUpdatePasswordCleanState, signOut };
