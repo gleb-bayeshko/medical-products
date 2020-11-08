@@ -28,7 +28,7 @@ function CartScreen(props) {
   } = productsInCartListLoaded;
 
   useEffect(() => {
-    if(productsInCartList.length === cartProducts.length) {
+    if(cartProducts && productsInCartList.length === cartProducts.length) {
       dispatch(loadCartProducts(productsInCartList, true));
     }
     else {
@@ -112,7 +112,6 @@ function CartScreen(props) {
                           (acc, current) => (acc += current.qty),
                           0
                         )}{" "}
-                        pcs.
                       </span>
                     </p>
                   </div>

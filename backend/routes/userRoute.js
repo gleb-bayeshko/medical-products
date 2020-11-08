@@ -37,6 +37,7 @@ router.post(
       name,
       email,
       password: hashPassword,
+      avatar: '/uploads/profile-img-empty.png',
       isAdmin: false,
     });
 

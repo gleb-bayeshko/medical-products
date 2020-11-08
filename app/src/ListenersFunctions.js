@@ -11,7 +11,7 @@ export const deleteColorPopUp = (e) => {
 
 export const deleteSortPopUp = (e) => {
   if (document
-    .querySelectorAll(".sort-pop-up_shown").length === 0 || e.target.classList.contains("top-bar__sort-category")) return;
+    .querySelectorAll(".sort-pop-up_shown").length === 0 || e.target.classList.contains("sort-category")) return;
   document
     .querySelectorAll(".sort-pop-up_shown")
     .forEach((sortPopUp) => {

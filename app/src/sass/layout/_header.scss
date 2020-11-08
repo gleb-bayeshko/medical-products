@@ -6,6 +6,9 @@
 
 .header__layout {
   @include flex($align: center, $justify: space-between);
+  & > * {
+    width: 49%;
+  }
 
   @include media-tablet {
     & > * {
@@ -31,7 +34,7 @@ h1 {
   color: $color-light;
   margin-bottom: 0;
 
-  @include media-tablet-small {
+  @include media-tablet-medium {
     font-size: 1.5rem;
   }
 }
@@ -115,7 +118,7 @@ h1 {
 
 .header__cart {
   margin-left: 20px;
-
+  min-width: 80px;
   @include media-mobile {
     padding: 5px 5px;
   }
@@ -126,8 +129,6 @@ h1 {
 }
 
 .header__avatar {
-  width: 40px;
-  border-radius: 5px;
   margin-left: 10px;
 }
 

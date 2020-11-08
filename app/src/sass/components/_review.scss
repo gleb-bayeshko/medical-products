@@ -1,5 +1,28 @@
+.reviews__no-reviews {
+  text-align: center;
+  font-size: 1.7rem;
+  font-style: italic;
+  margin: 0 0 10px;
+}
+
 .review {
-  margin: 15px 0;
+  margin: 0;
+  border-top: 2px solid $color-gray-transparent-extra;
+  padding: 10px 0;
+}
+
+.review__layout {
+  display: flex;
+}
+
+.review__avatar-container {
+  margin-right: 8px;
+}
+
+.review__avatar {
+  margin-right: 5px;
+  border-radius: 4px;
+  width: 50px;
 }
 
 .review__star {
@@ -19,7 +42,7 @@
   font-size: 1.3rem;
   font-weight: normal;
   color: $color-gray;
-  margin-left: 5px;
+  margin: 6px 0 0;
 }
 
 .review__comment {

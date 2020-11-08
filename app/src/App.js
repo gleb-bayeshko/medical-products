@@ -25,29 +25,31 @@ function App() {
 
   return (
   <BrowserRouter>
-    <ScrollToTop />
-    <Header />
-    <main>
-      <Switch>
-        <Route exact path="/signin" component={SignInScreen}/>
-        <Route exact path="/register" component={RegisterScreen}/>
-        <Route exact path="/cart" component={CartScreen}/>
-        <Route exact path="/product-admin" component={ProductAdminScreen}>
-          {!userInfo && <Redirect to="/signin"/> || !userInfo.isAdmin && <Redirect to="/page-not-found"/>}
-        </Route>
-        <Route exact path="/products/:category/:id" component={ProductScreen} />
-        <Route exact path="/products/:category" component={HomeScreen} />
-        <Route exact path="/profile" component={ProfileScreen}>
-          {!userInfo && <Redirect to="/signin"/>}
-        </Route>
-        <Route exact path="/products" component={HomeScreen}>
-          <Redirect to="/products/all"/>
-        </Route>
-        <Route exact path="/page-not-found" component={PageNotFoundScreen} />
-        <Route exact path="/" component={HomeScreen} />
-        <Route path="/" component={PageNotFoundScreen} />
-      </Switch>
-    </main>
+    <div>
+      <ScrollToTop />
+      <Header />
+      <main>
+        <Switch>
+          <Route exact path="/signin" component={SignInScreen}/>
+          <Route exact path="/register" component={RegisterScreen}/>
+          <Route exact path="/cart" component={CartScreen}/>
+          <Route exact path="/product-admin" component={ProductAdminScreen}>
+            {(!userInfo && <Redirect to="/signin"/>) || (!userInfo.isAdmin && <Redirect to="/page-not-found"/>)}
+          </Route>
+          <Route exact path="/products/:category/:id" component={ProductScreen} />
+          <Route exact path="/products/:category" component={HomeScreen} />
+          <Route exact path="/profile" component={ProfileScreen}>
+            {!userInfo && <Redirect to="/signin"/>}
+          </Route>
+          <Route exact path="/products" component={HomeScreen}>
+            <Redirect to="/products/all"/>
+          </Route>
+          <Route exact path="/page-not-found" component={PageNotFoundScreen} />
+          <Route exact path="/" component={HomeScreen} />
+          <Route path="/" component={PageNotFoundScreen} />
+        </Switch>
+      </main>
+    </div>
   </BrowserRouter>
   );
 }

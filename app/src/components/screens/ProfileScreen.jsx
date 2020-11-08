@@ -1,4 +1,5 @@
 import axios from "axios";
+import { set } from "js-cookie";
 import React from "react";
 import { useEffect } from "react";
 import { useRef } from "react";
@@ -12,6 +13,7 @@ import {
   userUpdatePassword,
   userUpdatePasswordCleanState,
 } from "../../actions/userActions";
+import { DEFAULT_AVATAR } from "../../constants/userConstants";
 import Preloader from "../preloaders/Preloader";
 
 function ProfileScreen(props) {
@@ -53,6 +55,7 @@ function ProfileScreen(props) {
       .post("/api/uploads/avatar-image", bodyFormData, {
         headers: {
           "Content-type": "multipart/form-data",
+          'Authorization': `Bearer ${userInfo.token}`
         },
       })
       .then((response) => {
@@ -62,15 +65,12 @@ function ProfileScreen(props) {
       .catch((error) => {
         setUploadingAvatar(false);
         setUploadingAvatarError(
-          (error.response.data && error.response.data.message) ||
-            error.response.message ||
-            error
-        );
+          error.message)
       });
   };
 
   const handleAvatarError = (e) =>
-    (e.target.src = "assets/img/profile-img/profile-img-empty.png");
+    (e.target.src = DEFAULT_AVATAR);
 
   useEffect(() => {
     if (avatar !== userInfo.avatar) {
@@ -321,7 +321,7 @@ function ProfileScreen(props) {
                   <img
                     src={`${
                       !avatar
-                        ? `assets/img/profile-img/profile-img-empty.png`
+                        ? DEFAULT_AVATAR
                         : avatar
                     }`}
                     alt="avatar"

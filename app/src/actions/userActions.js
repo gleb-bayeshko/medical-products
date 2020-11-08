@@ -17,6 +17,8 @@ const signIn = (email, password) => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_TO_CART_UPDATE_AFTER_SIGN_IN, payload: updatedUserCart.data });
     dispatch({ type: USER_SIGN_IN_SUCCESS, payload: data });
     Cookie.set('userInfo', JSON.stringify(data));
+    const { productsToCart: cartProducts } = getState();
+    Cookie.set("cartProducts", JSON.stringify(cartProducts));
   } catch (error) {
     dispatch({ type: USER_SIGN_IN_FAIL, payload: error});
   }

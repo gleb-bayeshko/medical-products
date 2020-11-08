@@ -4,13 +4,14 @@ import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { sortProducts } from "../actions/productActions";
-import { PRODUCTS_SORT_DATE_ASC, PRODUCTS_SORT_DATE_DESC } from "../constants/productConstants";
+import { PRODUCTS_SORT_DATE_ASC, PRODUCTS_SORT_DATE_DESC, PRODUCTS_SORT_RATING_ASC, PRODUCTS_SORT_RATING_DESC } from "../constants/productConstants";
 
 function TopBar(props) {
   const popUpRef = useRef();
   const dispatch = useDispatch();
 
-  const [isDirectionDesc, setIsDirectionDesc] = useState(true)
+  const [isDirectionDesc, setIsDirectionDesc] = useState(true);
+  const [sortType, setSortType] = useState('date');
 
   const checkActive = (current) => {
     if (props.currentCategory.toLowerCase() === current.toLowerCase()) {
@@ -32,9 +33,24 @@ function TopBar(props) {
     }
   }
 
+  const handleRatingSort = () => {
+    if (isDirectionDesc) {
+      dispatch(sortProducts(PRODUCTS_SORT_RATING_DESC));
+    } else {
+      dispatch(sortProducts(PRODUCTS_SORT_RATING_ASC));
+    }
+  }
+
   useEffect(() => {
-    handleDateSort();
-  }, [isDirectionDesc])
+    switch(sortType) {
+      case 'date':
+        handleDateSort();
+        break;
+      case 'rating':
+        handleRatingSort();
+        break;
+    }
+  }, [sortType, isDirectionDesc])
 
   const handleDirectionSort = () => {
     setIsDirectionDesc(!isDirectionDesc)
@@ -63,14 +79,14 @@ function TopBar(props) {
           <div className="top-bar__sort-container sort-container">
             <div className="top-bar__sort sort">
               <b onClick={handleDirectionSort} className={isDirectionDesc ? `sort-by sort-by_desc` : `sort-by sort-by_asc`}>Sort by:</b>
-              <span className="sort-category" onClick={popUpShow}>date</span>
+              <span className="sort-category" onClick={popUpShow}>{sortType}</span>
             </div>
             <div className="sort-pop-up" ref={popUpRef}>
               <ul>
-                <li className="sort-pop-up__link sort-pop-up__link_active" onClick={handleDateSort}>
+                <li className={`sort-pop-up__link ${sortType === 'date' ? `sort-pop-up__link_active` : ''}`} onClick={() => setSortType('date')}>
                   date
                 </li>
-                <li className="sort-pop-up__link">
+                <li className={`sort-pop-up__link ${sortType === 'rating' ? `sort-pop-up__link_active` : ''}`} onClick={() => setSortType('rating')}>
                   rating
                 </li>
               </ul>

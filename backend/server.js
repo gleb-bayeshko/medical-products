@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import userRoute from './routes/userRoute';
 import productRoute from './routes/productRoute';
 import uploadRoute from './routes/uploadRoute';
+import productCommentRoute from './routes/productCommentRoute';
 import path from 'path';
 
 dotenv.config();
@@ -25,6 +26,7 @@ app.use(bodyParser.json());
 
 app.use('/api/users', userRoute);
 app.use('/api/products', productRoute);
+app.use('/api/product-comments', productCommentRoute);
 app.use('/api/uploads', uploadRoute)
 
 app.listen(5000)

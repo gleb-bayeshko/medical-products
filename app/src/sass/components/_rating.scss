@@ -1,7 +1,6 @@
 .rating {
   color: $color-add;
   font-size: 1.4rem;
-  @extend %cursor-pointer;
 }
 
 .rating__star {
@@ -10,4 +9,10 @@
 
 .rating__reviews-num a {
   color: $main-color;
+  font-size: 1.7rem;
+  margin-left: 5px;
+}
+
+.product-content__rating-and-reviews-num {
+  display: flex;
 }

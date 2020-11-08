@@ -8,6 +8,7 @@ import {
   FIELDNAME_PRODUCT_IMAGE,
   multerErrorMessages,
 } from "../constants";
+import { isAuth } from "../util";
 
 const storage = multer.diskStorage({
   destination(req, file, callback) {
@@ -87,7 +88,7 @@ const uploadAvatarImage = multer({
 
 const router = express.Router();
 
-router.post("/:fieldname", (req, res) => {
+router.post("/:fieldname", isAuth, (req, res) => {
   const multerErrors = multerErrorMessages;
 
   try {

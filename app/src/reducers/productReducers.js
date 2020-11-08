@@ -23,6 +23,8 @@ import {
   PRODUCT_CART_PRODUCTS_LIST_QTY_CHANGE,
   PRODUCTS_SORT_DATE_DESC,
   PRODUCTS_SORT_DATE_ASC,
+  PRODUCTS_SORT_RATING_DESC,
+  PRODUCTS_SORT_RATING_ASC,
 } from "../constants/productConstants";
 
 function productListReducer(state = { products: [] }, action) {
@@ -47,6 +49,10 @@ function sortProductsReducer(
       return { sortType: PRODUCTS_SORT_DATE_DESC };
     case PRODUCTS_SORT_DATE_ASC:
       return { sortType: PRODUCTS_SORT_DATE_ASC };
+    case PRODUCTS_SORT_RATING_DESC:
+      return { sortType: PRODUCTS_SORT_RATING_DESC };
+    case PRODUCTS_SORT_RATING_ASC:
+      return { sortType: PRODUCTS_SORT_RATING_ASC };
     default:
       return state;
   }

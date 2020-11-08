@@ -80,14 +80,11 @@ const productsToCart = (product, qty, color = null) => async (dispatch, getState
     });
   
     const { userSignIn: { userInfo } } = getState();
-    console.log(userInfo);
     if (userInfo) {
       const { productsToCart } = getState();
-      console.log(productsToCart);
       const updatedUserCart = await axios.post('/api/users/update-user-cart', { currentCart: productsToCart.products, userCart: null }, { headers: {
         'Authorization': `Bearer ${userInfo.token}`
       } });
-      console.log(updatedUserCart);
     }
   
     const { productsToCart: cartProducts } = getState();

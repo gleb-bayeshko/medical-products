@@ -14,7 +14,7 @@ const getToken = (user) => {
     isAdmin: user.isAdmin,
     cart: user.cart || [],
   }, config.JWT_SECRET, {
-    expiresIn: '1h'
+    expiresIn: '24h'
   });
 }
 

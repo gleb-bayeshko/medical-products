@@ -2,11 +2,12 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { signIn } from "../../actions/userActions";
 import Preloader from "../preloaders/Preloader";
 
 function SignInScreen(props) {
+  const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const userSignIn = useSelector((state) => state.userSignIn);
@@ -16,7 +17,15 @@ function SignInScreen(props) {
 
   useEffect(() => {
     if (userInfo) {
-      props.history.push("/");
+      const historyState = history.location.state;
+      console.log(history.location.state);
+      if (historyState && historyState.isAvailableToGoBack) {
+        historyState.isAvailableToGoBack = false;
+        console.log(history.location.state.isAvailableToGoBack);
+        history.goBack();
+      } else {
+        history.push("/");
+      }
     }
   }, [userInfo]);
 

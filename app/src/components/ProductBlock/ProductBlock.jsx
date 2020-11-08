@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
+import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { productsToCart } from "../../actions/productActions";
+import Rating from "../Rating";
 
 import ClothesColor from "./ClothesColors";
+import Preloader from "../preloaders/Preloader";
 
 function ProductBlock(props) {
   const productData = props.productData;
@@ -13,6 +16,8 @@ function ProductBlock(props) {
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const [activeColorName, setActiveColorName] = useState(null);
   const colorPopUpRef = useRef(null);
+
+  const [productRating, setProductRating] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -30,6 +35,15 @@ function ProductBlock(props) {
     }
   }, [productsInCartList, productData._id]);
 
+  const loadProductRatingAndReviewsNum = async (productId) => {
+    const productRatingAndReviewsNum = await axios.post('/api/product-comments/product-rating', { productId });
+    setProductRating(productRatingAndReviewsNum.data.rating || 0);
+  }
+
+  useEffect(() => {
+    loadProductRatingAndReviewsNum(productData._id)
+  }, []);
+
   return (
     <div className="product-block">
       <div className="product-block__top">
@@ -46,13 +60,7 @@ function ProductBlock(props) {
           <Link to={`/products/${productData.category.toLowerCase()}/${productData._id}`}>
             <h4>{productData.name}</h4>
           </Link>
-          <div className="product-block__rating rating">
-            <i className="fas fa-star rating__star"></i>
-            <i className="fas fa-star rating__star"></i>
-            <i className="fas fa-star rating__star"></i>
-            <i className="fas fa-star-half-alt rating__star"></i>
-            <i className="far fa-star rating__star"></i>
-          </div>
+          <Rating rating={productRating} starContainerClass={`product-block__rating`}/>
           <div className="product-block__clothes-colors clothes-colors">
             <ClothesColor
               colors={productData.color}
