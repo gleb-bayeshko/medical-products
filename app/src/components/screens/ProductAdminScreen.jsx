@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -51,6 +52,9 @@ function ProductCreateScreen(props) {
 
   return (
     <>
+      <Helmet>
+        <title>Admin panel</title>
+      </Helmet>
       {createModalVisible ? (
         <CreateProduct setVisibility={setCreateModalVisible} fields={fields} />
       ) : loading ? (

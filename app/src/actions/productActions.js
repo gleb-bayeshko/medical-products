@@ -19,6 +19,7 @@ import {
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
+  PRODUCT_DETAILS_CLEAN,
 } from "../constants/productConstants";
 import { PRODUCT_TO_CART } from "../constants/productConstants";
 
@@ -60,8 +61,12 @@ const loadCartProducts = (loadCartProductsList, withoutReq = false) => async (di
   }
 };
 
-const detailsProduct = (productId, productCategory) => async (dispatch) => {
+const detailsProduct = (productId = null, productCategory = null) => async (dispatch) => {
   try {
+    if (!productId || !productCategory) {
+      dispatch({ type: PRODUCT_DETAILS_CLEAN});
+      return
+    }
     dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
     const { data } = await axios.get(
       `/api/products/${productCategory.toLowerCase()}/${productId}`

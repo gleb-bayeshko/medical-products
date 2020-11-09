@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import ProductBlock from "./ProductBlock/ProductBlock";
+import ProductBlock from "./ProductBlock";
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../actions/productActions";
 import Preloader from "./preloaders/Preloader";

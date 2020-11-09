@@ -24,7 +24,7 @@
 .header__title {
   @include flex($direction: column, $justify: center);
 
-  @include media-mobile {
+  @include media-mobile-medium {
     display: none;
   }
 }
@@ -36,6 +36,10 @@ h1 {
 
   @include media-tablet-medium {
     font-size: 1.5rem;
+  }
+
+  @include media-mobile {
+    font-size: 1.1rem;
   }
 }
 

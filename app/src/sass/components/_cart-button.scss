@@ -1,3 +1,5 @@
+$cart-icon-width: 30px;
+
 .header__cart {
   padding: 2px 8px;
 }
@@ -10,6 +12,10 @@
   color: $main-color;
 
   .cart-icon {
-    width: 30px;
+    width: $cart-icon-width;
   }
+}
+
+.number-of-goods-container {
+  width: calc(100% - #{$cart-icon-width});
 }

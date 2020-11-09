@@ -15,13 +15,13 @@
   justify-content: flex-start;
   align-items: stretch;
 
-  @include media-tablet {
+  @include media-laptop {
     & > * {
       flex-basis: 33.3%;
     }
   }
 
-  @include media-tablet-medium {
+  @include media-tablet {
     & > * {
       flex-basis: 50%;
     }

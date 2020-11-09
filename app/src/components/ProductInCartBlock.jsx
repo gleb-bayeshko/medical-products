@@ -6,12 +6,11 @@ import { Link } from "react-router-dom";
 import { productDelete, productInCartQty } from "../actions/cartActions";
 
 import CounterPanel from "./CounterPanel";
-import ClothesColors from "./ProductBlock/ClothesColors";
+import ClothesColors from "./ClothesColors";
 import Rating from "./Rating";
 
 function ProductInCartBlock(props) {
   const [counter, setCounter] = useState(props.product.qty);
-  const [productRating, setProductRating] = useState(0);
   const counterRef = useRef(props.product.qty)
   const dispatch = useDispatch();
 
@@ -30,15 +29,6 @@ function ProductInCartBlock(props) {
     dispatch(productDelete(props.product.foundProduct._id));
   };
 
-  const loadProductRatingAndReviewsNum = async (productId) => {
-    const productRatingAndReviewsNum = await axios.post('/api/product-comments/product-rating', { productId });
-    setProductRating(productRatingAndReviewsNum.data.rating || 0);
-  }
-
-  useEffect(() => {
-    loadProductRatingAndReviewsNum(props.product.foundProduct._id)
-  }, []);
-
   return (
     <div className="cart-list__item" key={`cart-product_${props.product._id}`}>
       <div className="cart-list__img">
@@ -51,14 +41,7 @@ function ProductInCartBlock(props) {
         >
           <h4 className="cart-list__item-title">{props.product.foundProduct.name}</h4>
         </Link>
-        <Rating rating={productRating} starContainerClass={`product-block__rating`}/>
-        <div className="product-block__rating rating">
-          <i className="fas fa-star rating__star"></i>
-          <i className="fas fa-star rating__star"></i>
-          <i className="fas fa-star rating__star"></i>
-          <i className="fas fa-star-half-alt rating__star"></i>
-          <i className="far fa-star rating__star"></i>
-        </div>
+        <Rating rating={props.product.foundProduct.rating} starContainerClass={`product-block__rating`}/>
         {props.product.foundProduct.color !== undefined && props.product.foundProduct.color.length !== 0 && (
           <div className="cart-list__color">
             <p>Color:</p>

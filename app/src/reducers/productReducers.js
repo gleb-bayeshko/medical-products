@@ -25,6 +25,7 @@ import {
   PRODUCTS_SORT_DATE_ASC,
   PRODUCTS_SORT_RATING_DESC,
   PRODUCTS_SORT_RATING_ASC,
+  PRODUCT_DETAILS_CLEAN,
 } from "../constants/productConstants";
 
 function productListReducer(state = { products: [] }, action) {
@@ -84,6 +85,8 @@ function productDetailsReducer(state = { product: {} }, action) {
       return { loading: false, product: action.payload };
     case PRODUCT_DETAILS_FAIL:
       return { loading: false, error: action.payload };
+    case PRODUCT_DETAILS_CLEAN:
+      return { loading: false, product: {} };
     default:
       return state;
   }

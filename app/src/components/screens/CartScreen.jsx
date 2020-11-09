@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -52,6 +53,9 @@ function CartScreen(props) {
 
   return (
     <section className="cart-list">
+      <Helmet>
+        <title>Cart</title>
+      </Helmet>
       <div className="wrapper">
         {loadingCartProducts ? (
           <Preloader />

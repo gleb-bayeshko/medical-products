@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Helmet } from "react-helmet";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { detailsProduct, productsToCart } from "../../actions/productActions";
 import CounterPanel from "../CounterPanel";
 
-import ClothesColor from "../ProductBlock/ClothesColors";
+import ClothesColor from "../ClothesColors";
 
 import { Link } from "react-router-dom";
 import Preloader from "../preloaders/Preloader";
@@ -31,13 +32,21 @@ function ProductScreen(props) {
   const [reviewFieldsError, setReviewFieldsError] = useState("");
   const [isReviewSent, setIsReviewSent] = useState(false);
   const [reviews, setReviews] = useState([]);
-  const [productRating, setProductRating] = useState(0);
-  const [productReviewsNumber, setProductReviewsNumber] = useState(0);
+  const [isReviewsLoaded, setIsReviewsLoaded] = useState(false);
+  const [productRating, setProductRating] = useState(null);
+  const [productReviewsNumber, setProductReviewsNumber] = useState(null);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(detailsProduct(params.id, params.category));
+
+    return function cleanup() {
+      dispatch(detailsProduct());
+      setReviews([]);
+      setProductRating(0);
+      setProductReviewsNumber(0);
+    };
   }, []);
 
   const dispatchToCart = () => {
@@ -125,7 +134,7 @@ function ProductScreen(props) {
       console.log(error);
       setReviewFieldsError(error.response.data);
     } finally {
-      setCommentText('');
+      setCommentText("");
       setRatingSelected(null);
     }
   };
@@ -140,38 +149,53 @@ function ProductScreen(props) {
     const reviews = await axios.post("/api/product-comments/reviews", {
       productId,
     });
-    console.log(reviews.data);
     setReviews(reviews.data);
   };
 
   const setReviewDate = (milliseconds) => {
     const date = new Date(milliseconds);
 
-    return date.toLocaleString().replace(/\//g, '.');
-  }
+    return date.toLocaleString().replace(/\//g, ".");
+  };
 
   const loadProductRatingAndReviewsNum = async (productId) => {
-    const productRatingAndReviewsNum = await axios.post('/api/product-comments/product-rating', { productId });
+    const productRatingAndReviewsNum = await axios.post(
+      "/api/product-comments/product-rating",
+      { productId }
+    );
     setProductRating(productRatingAndReviewsNum.data.rating || 0);
     setProductReviewsNumber(productRatingAndReviewsNum.data.reviewsNumber || 0);
-  }
+    setIsReviewsLoaded(true);
+  };
 
   useEffect(() => {
-    if (loading || !product) return;
+    if (loading || !product._id) return;
     loadReviews(product._id);
     loadProductRatingAndReviewsNum(product._id);
   }, [isReviewSent, loading]);
 
+  if (product && product.name) document.title = product.name;
+
   return loading ? (
     <section className="content">
+      {product && product.name && (
+        <Helmet>
+          <title>{product.name}</title>
+        </Helmet>
+      )}
       <div className="wrapper">
         <Preloader />
       </div>
     </section>
   ) : error ? (
-    <div>{error}</div>
+    <>
+      <div>{error}</div>
+    </>
   ) : (
     <section className="product-content">
+      <Helmet>
+        <title>{product.name}</title>
+      </Helmet>
       <div className="wrapper">
         <div className="layout-2-columns product-content__product-layout">
           <div className="product-content__image">
@@ -187,10 +211,9 @@ function ProductScreen(props) {
                 <h4 className="product-content__header">{product.name}</h4>
               </a>
               <div className="product-content__rating-and-reviews-num">
-                {console.log(productRating)}
-                <Rating rating={productRating} />
+                <Rating rating={productRating === null ? product.rating : productRating} />
                 <span className="rating__reviews-num">
-                  <a href="#reviews">{productReviewsNumber} reviews</a>
+                  <a href="#reviews">{productReviewsNumber === null ? product.reviewsNumber : productReviewsNumber} reviews</a>
                 </span>
               </div>
               <div className="layout-2-columns product-content__price-and-counter-layout">
@@ -226,9 +249,7 @@ function ProductScreen(props) {
                 </>
               )}
               <div className="product-content__description">
-                <p className="product-content__description-text">
-                  {product.description}
-                </p>
+                {product.description && product.description.split('\n').map(paragraph => <p className="product-content__description-text">{paragraph}</p>)}
               </div>
               {isAddedToCart ? (
                 <Link to="/cart">
@@ -253,22 +274,40 @@ function ProductScreen(props) {
                 Reviews:
               </h3>
               {reviews.length === 0 ? (
-                <p className="reviews__no-reviews">This product has no reviews yet. Be the first!</p>
+                <p className="reviews__no-reviews">
+                  This product has no reviews yet. Be the first!
+                </p>
               ) : (
                 reviews.map((review) => {
                   return (
                     <div className="review">
                       <div className="review__layout">
                         <div className="review__avatar-container">
-                          <img src={review.userAvatar || DEFAULT_AVATAR} alt="avatar" className="review__avatar" />
+                          <img
+                            src={review.userAvatar || DEFAULT_AVATAR}
+                            alt="avatar"
+                            className="review__avatar"
+                          />
                         </div>
                         <div className="reviews__rating-container">
                           <div className="reviews__nickname">
-                            {`${review.userName}${review.userSecondName ? ` ${review.userSecondName}` : ''}`}
-                            <div className="review__date">{setReviewDate(review.userReviewDate)}</div>
+                            {`${review.userName}${
+                              review.userSecondName
+                                ? ` ${review.userSecondName}`
+                                : ""
+                            }`}
+                            <div className="review__date">
+                              {setReviewDate(review.userReviewDate)}
+                            </div>
                           </div>
-                          <Rating rating={review.userRating} starClass={`review__star`} starContainerClass={`reviews__rating`}/>
-                          <div className="review__comment">{review.userComment}</div>
+                          <Rating
+                            rating={review.userRating}
+                            starClass={`review__star`}
+                            starContainerClass={`reviews__rating`}
+                          />
+                          <div className="review__comment">
+                            {review.userComment}
+                          </div>
                         </div>
                       </div>
                     </div>

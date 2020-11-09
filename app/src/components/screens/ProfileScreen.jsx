@@ -1,6 +1,7 @@
+import React from "react";
+import { Helmet } from "react-helmet";
 import axios from "axios";
 import { set } from "js-cookie";
-import React from "react";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { useState } from "react";
@@ -116,6 +117,15 @@ function ProfileScreen(props) {
 
   return (
     <section className="profile">
+      <Helmet>
+        <title>
+          {
+            userInfo && (userInfo.name && userInfo.secondName)
+            ? document.title = `${userInfo.name} ${userInfo.secondName} - Profile`
+            : document.title = `${userInfo.name} - Profile`
+          }
+        </title>
+      </Helmet>
       <div className="wrapper">
         <div className="profile__container">
           <div className="profile__top">
