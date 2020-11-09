@@ -1,11 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "../assets/img/logo/logo.png";
 import { DEFAULT_AVATAR } from "../constants/userConstants";
 
-function Header() {
-  const history = useHistory();
+function Header(props) {
   const productsInCartList = useSelector(
     (state) => state.productsToCart.products
   );
@@ -13,10 +12,10 @@ function Header() {
   const userSignIn = useSelector((state) => state.userSignIn);
   const { userInfo } = userSignIn;
 
-  const handleAvatarError = (e) =>{
+  const handleAvatarError = (e) => {
     e.preventDefault();
-    (e.target.src = DEFAULT_AVATAR);
-  }
+    e.target.src = DEFAULT_AVATAR;
+  };
 
   return (
     <header className="header">
@@ -32,30 +31,48 @@ function Header() {
             </div>
           </div>
           <div className="header__links">
-            {
-              userInfo ? (
-                <Link to={userInfo.isAdmin ? `/product-admin` : '/profile'} className="sign-in-ref">
-                  {userInfo.isAdmin ? <><span className="sign-in_admin">Admin: </span> {`${userInfo.name}`}</> : userInfo.name}
-                  {!userInfo.isAdmin &&
-                    <img src={userInfo.avatar || DEFAULT_AVATAR} className="avatar-mini header__avatar" alt="avatar" onError={handleAvatarError}/>
-                  }
-                </Link>
-              ) : (
-                <Link to="/signin" className="sign-in-ref">
-                  Sign In
-                </Link>
-              )
-            }
+            {userInfo ? (
+              <Link to={"/profile"} className="sign-in-ref">
+                {userInfo.isAdmin ? (
+                  <>
+                    <span className="sign-in_admin">Admin: </span>{" "}
+                    {`${
+                      userInfo.name.length > 8
+                        ? `${userInfo.name.slice(0, 8)}...`
+                        : userInfo.name
+                    }`}
+                  </>
+                ) : userInfo.name.length > 8 ? (
+                  `Hello, ${userInfo.name.slice(0, 8)}...`
+                ) : (
+                  `Hello, ${userInfo.name}`
+                )}
+                {!userInfo.isAdmin && (
+                  <img
+                    src={userInfo.avatar || DEFAULT_AVATAR}
+                    className="avatar-mini header__avatar"
+                    alt="avatar"
+                    onError={handleAvatarError}
+                  />
+                )}
+              </Link>
+            ) : (
+              <Link to="/signin" className="sign-in-ref">
+                Sign In
+              </Link>
+            )}
             <Link to="/cart" className="cart-ref">
               <button className="cart header__cart button">
                 <div className="cart__number-of-goods">
                   <div className="cart-icon"></div>
                   <div className="number-of-goods-container">
                     <span className="number-of-goods">
-                      {productsInCartList.reduce((acc, current) => acc += current.qty, 0)}
+                      {productsInCartList.reduce(
+                        (acc, current) => (acc += current.qty),
+                        0
+                      )}
                     </span>
                   </div>
-                  
                 </div>
               </button>
             </Link>

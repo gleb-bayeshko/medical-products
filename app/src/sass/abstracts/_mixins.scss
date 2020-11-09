@@ -1,4 +1,4 @@
-@mixin flex ($justify: flex-start, $align: flex-start, $direction: row) {
+@mixin flex($justify: flex-start, $align: flex-start, $direction: row) {
   display: flex;
   justify-content: $justify;
   align-items: $align;
@@ -8,29 +8,43 @@
 // Media-queries
 
 @mixin media-laptop {
-  @media (max-width: $width-laptop) { @content; }
+  @media (max-width: $width-laptop) {
+    @content;
+  }
 }
 
 @mixin media-tablet {
-  @media (max-width: $width-tablet) { @content; }
+  @media (max-width: $width-tablet) {
+    @content;
+  }
 }
 
 @mixin media-tablet-medium {
-  @media (max-width: $width-tablet-medium) { @content; }
+  @media (max-width: $width-tablet-medium) {
+    @content;
+  }
 }
 
 @mixin media-tablet-small {
-  @media (max-width: $width-tablet-small) { @content; }
+  @media (max-width: $width-tablet-small) {
+    @content;
+  }
 }
 
 @mixin media-mobile {
-  @media (max-width: $width-mobile) { @content; }
+  @media (max-width: $width-mobile) {
+    @content;
+  }
 }
 
 @mixin media-mobile-medium {
-  @media (max-width: $width-mobile-medium) { @content; }
+  @media (max-width: $width-mobile-medium) {
+    @content;
+  }
 }
 
 @mixin media-mobile-small {
-  @media (max-width: $width-mobile-small) { @content; }
+  @media (max-width: $width-mobile-small) {
+    @content;
+  }
 }

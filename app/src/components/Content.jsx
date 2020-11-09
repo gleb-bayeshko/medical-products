@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import ProductBlock from "./ProductBlock";
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../actions/productActions";
-import Preloader from "./preloaders/Preloader";
+import Preloader from "./Preloader";
 import { useState } from "react";
 import TopBar from "./TopBar";
 
@@ -23,7 +23,7 @@ function Content(props) {
 
   useEffect(() => {
     dispatch(listProducts(category, sortType));
-  }, [category, sortType]);
+  }, [category, sortType, dispatch]);
 
   return (
     <>

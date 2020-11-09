@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { productsToCart } from "../actions/productActions";
 import Rating from "./Rating";
 
 import ClothesColor from "./ClothesColors";
-import Preloader from "./preloaders/Preloader";
 
 function ProductBlock(props) {
   const productData = props.productData;
@@ -37,7 +35,11 @@ function ProductBlock(props) {
     <div className="product-block">
       <div className="product-block__top">
         <div className="product-block__img">
-          <Link to={`/products/${productData.category.toLowerCase()}/${productData._id}`}>
+          <Link
+            to={`/products/${productData.category.toLowerCase()}/${
+              productData._id
+            }`}
+          >
             <img
               src={productData.image}
               alt="product"
@@ -46,10 +48,17 @@ function ProductBlock(props) {
           </Link>
         </div>
         <div className="product-block__title">
-          <Link to={`/products/${productData.category.toLowerCase()}/${productData._id}`}>
+          <Link
+            to={`/products/${productData.category.toLowerCase()}/${
+              productData._id
+            }`}
+          >
             <h4>{productData.name}</h4>
           </Link>
-          <Rating rating={productData.rating} starContainerClass={`product-block__rating`}/>
+          <Rating
+            rating={productData.rating}
+            starContainerClass={`product-block__rating`}
+          />
           <div className="product-block__clothes-colors clothes-colors">
             <ClothesColor
               colors={productData.color}

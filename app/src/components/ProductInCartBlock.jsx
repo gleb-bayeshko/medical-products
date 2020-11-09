@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from 'axios';
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -11,7 +10,7 @@ import Rating from "./Rating";
 
 function ProductInCartBlock(props) {
   const [counter, setCounter] = useState(props.product.qty);
-  const counterRef = useRef(props.product.qty)
+  const counterRef = useRef(props.product.qty);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -19,7 +18,7 @@ function ProductInCartBlock(props) {
       dispatch(productInCartQty(props.product.foundProduct._id, counter));
       counterRef.current = counter;
     }
-  }, [counter]);
+  }, [counter, dispatch, props.product.foundProduct._id]);
 
   useEffect(() => {
     setCounter(props.qty);
@@ -32,25 +31,37 @@ function ProductInCartBlock(props) {
   return (
     <div className="cart-list__item" key={`cart-product_${props.product._id}`}>
       <div className="cart-list__img">
-        <img src={props.product.foundProduct.image} alt="product" className="cart-img" />
+        <img
+          src={props.product.foundProduct.image}
+          alt="product"
+          className="cart-img"
+        />
       </div>
       <div className="cart-list__description">
         <Link
-          to={`/products/${props.product.foundProduct.category.toLowerCase()}/${props.product.foundProduct._id}`}
+          to={`/products/${props.product.foundProduct.category.toLowerCase()}/${
+            props.product.foundProduct._id
+          }`}
           className="link_not-underlined"
         >
-          <h4 className="cart-list__item-title">{props.product.foundProduct.name}</h4>
+          <h4 className="cart-list__item-title">
+            {props.product.foundProduct.name}
+          </h4>
         </Link>
-        <Rating rating={props.product.foundProduct.rating} starContainerClass={`product-block__rating`}/>
-        {props.product.foundProduct.color !== undefined && props.product.foundProduct.color.length !== 0 && (
-          <div className="cart-list__color">
-            <p>Color:</p>
-            <ClothesColors
-              isSelectable={false}
-              colors={[props.product.colorActive]}
-            />
-          </div>
-        )}
+        <Rating
+          rating={props.product.foundProduct.rating}
+          starContainerClass={`product-block__rating`}
+        />
+        {props.product.foundProduct.color !== undefined &&
+          props.product.foundProduct.color.length !== 0 && (
+            <div className="cart-list__color">
+              <p>Color:</p>
+              <ClothesColors
+                isSelectable={false}
+                colors={[props.product.colorActive]}
+              />
+            </div>
+          )}
       </div>
       <CounterPanel counter={counter} setCounter={setCounter} />
       <div className="cart-list__cost">

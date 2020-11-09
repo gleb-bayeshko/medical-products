@@ -1,11 +1,10 @@
 import React from "react";
-import { Helmet } from "react-helmet";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { signIn } from "../../actions/userActions";
-import Preloader from "../preloaders/Preloader";
+import Preloader from "../Preloader";
 
 function SignInScreen(props) {
   const history = useHistory();
@@ -19,27 +18,25 @@ function SignInScreen(props) {
   useEffect(() => {
     if (userInfo) {
       const historyState = history.location.state;
-      console.log(history.location.state);
+
       if (historyState && historyState.isAvailableToGoBack) {
         historyState.isAvailableToGoBack = false;
-        console.log(history.location.state.isAvailableToGoBack);
         history.goBack();
       } else {
         history.push("/");
       }
     }
-  }, [userInfo]);
+  }, [userInfo, history]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(signIn(email, password));
   };
 
+  document.title = `Sign In`;
+
   return (
     <>
-      <Helmet>
-        <title>Sign In</title>
-      </Helmet>
       {loading ? (
         <section className="content">
           <div className="wrapper">

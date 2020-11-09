@@ -1,7 +1,5 @@
 import React from "react";
-import { Helmet } from "react-helmet";
 import axios from "axios";
-import { set } from "js-cookie";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { useState } from "react";
@@ -15,7 +13,7 @@ import {
   userUpdatePasswordCleanState,
 } from "../../actions/userActions";
 import { DEFAULT_AVATAR } from "../../constants/userConstants";
-import Preloader from "../preloaders/Preloader";
+import Preloader from "../Preloader";
 
 function ProfileScreen(props) {
   const dispatch = useDispatch();
@@ -26,7 +24,7 @@ function ProfileScreen(props) {
   const userSignIn = useSelector((state) => state.userSignIn);
   const { userInfo } = userSignIn;
 
-  const [name, setName] = useState(userInfo.name || "");
+  const [name, setName] = useState(userInfo.name);
   const [secondName, setSecondName] = useState(userInfo.secondName || "");
   const [country, setCountry] = useState(userInfo.country || "");
   const [city, setCity] = useState(userInfo.city || "");
@@ -42,6 +40,7 @@ function ProfileScreen(props) {
     successUpdatePassword,
     errorUpdatePassword,
   } = useSelector((state) => state.userUpdatePassword);
+  const [isNameFilled, setIsNameFilled] = useState(true);
 
   const avatarPathRef = useRef();
 
@@ -56,7 +55,7 @@ function ProfileScreen(props) {
       .post("/api/uploads/avatar-image", bodyFormData, {
         headers: {
           "Content-type": "multipart/form-data",
-          'Authorization': `Bearer ${userInfo.token}`
+          Authorization: `Bearer ${userInfo.token}`,
         },
       })
       .then((response) => {
@@ -65,22 +64,28 @@ function ProfileScreen(props) {
       })
       .catch((error) => {
         setUploadingAvatar(false);
-        setUploadingAvatarError(
-          error.message)
+        setUploadingAvatarError(error.message);
       });
   };
 
-  const handleAvatarError = (e) =>
-    (e.target.src = DEFAULT_AVATAR);
+  const handleAvatarError = (e) => (e.target.src = DEFAULT_AVATAR);
 
   useEffect(() => {
     if (avatar !== userInfo.avatar) {
       dispatch(userUpdateAvatar({ avatar: avatar }));
     }
-  }, [avatar]);
+  }, [avatar, userInfo.avatar, dispatch]);
 
   const handleSaveButton = () => {
     setIsEditMode(false);
+
+    if (!name) {
+      setIsNameFilled(false);
+      setName(userInfo.name);
+      return;
+    } else {
+      setIsNameFilled(true);
+    }
 
     dispatch(
       userUpdateInfo({
@@ -95,37 +100,34 @@ function ProfileScreen(props) {
   };
 
   const handleSavePasswordButton = () => {
-    setIsPasswordMode(false)
+    setIsPasswordMode(false);
     dispatch(
       userUpdatePassword({
         passwordPrev,
         passwordNew,
       })
     );
-    setPasswordPrev('');
-    setPasswordNew('');
+    setPasswordPrev("");
+    setPasswordNew("");
   };
 
   useEffect(() => {
     dispatch(userUpdatePasswordCleanState());
-  }, [])
+  }, [dispatch]);
 
   const handleLogOutButton = () => {
     dispatch(signOut());
     props.history.push("/signin");
+  };
+
+  if (userInfo && userInfo.name && userInfo.secondName) {
+    document.title = `${userInfo.name} ${userInfo.secondName} - Profile`;
+  } else {
+    document.title = `${userInfo.name} - Profile`;
   }
 
   return (
     <section className="profile">
-      <Helmet>
-        <title>
-          {
-            userInfo && (userInfo.name && userInfo.secondName)
-            ? document.title = `${userInfo.name} ${userInfo.secondName} - Profile`
-            : document.title = `${userInfo.name} - Profile`
-          }
-        </title>
-      </Helmet>
       <div className="wrapper">
         <div className="profile__container">
           <div className="profile__top">
@@ -156,18 +158,20 @@ function ProfileScreen(props) {
             </div>
           )}
           {successUpdatePassword && (
-                    <div className="auth-warning-message profile__message-success profile__warning_bottom-borders-radius-none">
-                      {successUpdatePassword}
-                    </div>
-                  )}
-                  {errorUpdatePassword && (
-                    <div className="auth-warning-message profile__warning_bottom-borders-radius-none">
-                      {errorUpdatePassword}
-                    </div>
-                  )}
+            <div className="auth-warning-message profile__message-success profile__warning_bottom-borders-radius-none">
+              {successUpdatePassword}
+            </div>
+          )}
+          {errorUpdatePassword && (
+            <div className="auth-warning-message profile__warning_bottom-borders-radius-none">
+              {errorUpdatePassword}
+            </div>
+          )}
           <div
             className={`profile__info ${
-              uploadingAvatarError || errorUpdatePassword || successUpdatePassword
+              uploadingAvatarError ||
+              errorUpdatePassword ||
+              successUpdatePassword
                 ? `profile__info_top-borders-radius-none`
                 : ""
             }`}
@@ -184,6 +188,11 @@ function ProfileScreen(props) {
                   {userInfo.email || ""}
                 </span>
               </h3>
+              {!isNameFilled && (
+                <p className="auth-warning-message">
+                  Name field must be filled
+                </p>
+              )}
               <h3 className="profile__field">
                 Name:{" "}
                 {isEditMode ? (
@@ -196,7 +205,9 @@ function ProfileScreen(props) {
                     onChange={(e) => setName(e.target.value)}
                   />
                 ) : (
-                  <span className="profile__user-data">{name}</span>
+                  <>
+                    <span className="profile__user-data">{name}</span>
+                  </>
                 )}
               </h3>
               <h3 className="profile__field">
@@ -293,7 +304,10 @@ function ProfileScreen(props) {
                   ) : (
                     <button
                       className="button button_inverted button-change-password"
-                      onClick={() => setIsPasswordMode(true)}
+                      onClick={() => {
+                        setIsPasswordMode(true);
+                        setIsNameFilled(true);
+                      }}
                     >
                       Change password
                     </button>
@@ -329,11 +343,7 @@ function ProfileScreen(props) {
               <div className="profile__avatar">
                 <div className="profile__avatar-container">
                   <img
-                    src={`${
-                      !avatar
-                        ? DEFAULT_AVATAR
-                        : avatar
-                    }`}
+                    src={`${!avatar ? DEFAULT_AVATAR : avatar}`}
                     alt="avatar"
                     onError={handleAvatarError}
                     className="profile__avatar"
@@ -364,12 +374,26 @@ function ProfileScreen(props) {
             )}
           </div>
           <div className="profile__bottom">
-            <Link to="/cart">
-              <button className="button profile__go-to-cart-button">
-                Go to own cart
-              </button>
-            </Link>
-            <button className="profile__log-out__button" onClick={handleLogOutButton}>Log out</button>
+            {userInfo.isAdmin && (
+              <Link to="/product-admin">
+                <button className="button-admin-panel">
+                  <span>Admin Panel</span>
+                </button>
+              </Link>
+            )}
+            {!userInfo.isAdmin && (
+              <Link to="/cart">
+                <button className="button profile__go-to-cart-button">
+                  Go to own cart
+                </button>
+              </Link>
+            )}
+            <button
+              className="profile__log-out__button"
+              onClick={handleLogOutButton}
+            >
+              Log out
+            </button>
           </div>
         </div>
       </div>

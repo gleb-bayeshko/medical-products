@@ -26,10 +26,16 @@ import { PRODUCT_TO_CART } from "../constants/productConstants";
 import axios from "axios";
 import Cookie from "js-cookie";
 
-const listProducts = (category = "all", sort = PRODUCTS_SORT_DATE_DESC) => async (dispatch) => {
+const listProducts = (
+  category = "all",
+  sort = PRODUCTS_SORT_DATE_DESC
+) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
-    const { data } = await axios.post("/api/products", { category: category, sort: sort });
+    const { data } = await axios.post("/api/products", {
+      category: category,
+      sort: sort,
+    });
     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: PRODUCT_LIST_FAIL, payload: error.message });
@@ -38,34 +44,46 @@ const listProducts = (category = "all", sort = PRODUCTS_SORT_DATE_DESC) => async
 
 const sortProducts = (sortType) => (dispatch) => {
   dispatch({ type: sortType });
-}
+};
 
-const loadCartProducts = (loadCartProductsList, withoutReq = false) => async (dispatch, getState) => {
+const loadCartProducts = (loadCartProductsList, withoutReq = false) => async (
+  dispatch,
+  getState
+) => {
   try {
     if (!withoutReq) {
       dispatch({ type: PRODUCT_CART_PRODUCTS_LIST_REQUEST });
-      const { data } = await axios.post("/api/products/cart-products-list", { productsToLoad: loadCartProductsList });
+      const { data } = await axios.post("/api/products/cart-products-list", {
+        productsToLoad: loadCartProductsList,
+      });
       dispatch({ type: PRODUCT_CART_PRODUCTS_LIST_SUCCESS, payload: data });
     } else {
       const productsToCart = getState().productsToCart.products;
       const loadCartProducts = getState().loadCartProducts.cartProducts;
-      loadCartProducts.map(currentProduct => {
-        const newQty = productsToCart.find(elem => currentProduct.foundProduct._id === elem._id).qty;
+      loadCartProducts.map((currentProduct) => {
+        const newQty = productsToCart.find(
+          (elem) => currentProduct.foundProduct._id === elem._id
+        ).qty;
         currentProduct.qty = newQty;
         return currentProduct;
-      })
-      dispatch({ type: PRODUCT_CART_PRODUCTS_LIST_QTY_CHANGE, payload: loadCartProducts });
+      });
+      dispatch({
+        type: PRODUCT_CART_PRODUCTS_LIST_QTY_CHANGE,
+        payload: loadCartProducts,
+      });
     }
   } catch (error) {
     dispatch({ type: PRODUCT_CART_PRODUCTS_LIST_FAIL, payload: error.message });
   }
 };
 
-const detailsProduct = (productId = null, productCategory = null) => async (dispatch) => {
+const detailsProduct = (productId = null, productCategory = null) => async (
+  dispatch
+) => {
   try {
     if (!productId || !productCategory) {
-      dispatch({ type: PRODUCT_DETAILS_CLEAN});
-      return
+      dispatch({ type: PRODUCT_DETAILS_CLEAN });
+      return;
     }
     dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
     const { data } = await axios.get(
@@ -77,27 +95,37 @@ const detailsProduct = (productId = null, productCategory = null) => async (disp
   }
 };
 
-const productsToCart = (product, qty, color = null) => async (dispatch, getState) => {
+const productsToCart = (product, qty, color = null) => async (
+  dispatch,
+  getState
+) => {
   try {
     dispatch({
       type: PRODUCT_TO_CART,
       payload: { _id: product._id, qty: qty, colorActive: color },
     });
-  
-    const { userSignIn: { userInfo } } = getState();
+
+    const {
+      userSignIn: { userInfo },
+    } = getState();
     if (userInfo) {
       const { productsToCart } = getState();
-      const updatedUserCart = await axios.post('/api/users/update-user-cart', { currentCart: productsToCart.products, userCart: null }, { headers: {
-        'Authorization': `Bearer ${userInfo.token}`
-      } });
+      const updatedUserCart = await axios.post(
+        "/api/users/update-user-cart",
+        { currentCart: productsToCart.products, userCart: null },
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      if (!updatedUserCart) throw Error("Cannot update user cart");
     }
-  
     const { productsToCart: cartProducts } = getState();
     Cookie.set("cartProducts", JSON.stringify(cartProducts));
   } catch (error) {
-    console.log(error.response);
+    console.log(error);
   }
-  
 };
 
 const createProduct = (product) => async (dispatch, getState) => {
@@ -176,5 +204,5 @@ export {
   createProduct,
   cleanCreateProductError,
   deleteProduct,
-  sortProducts
+  sortProducts,
 };

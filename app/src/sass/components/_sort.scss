@@ -78,7 +78,7 @@
   @extend %cursor-pointer;
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     box-sizing: border-box;
     left: -16px;
@@ -89,7 +89,7 @@
     border: 6px solid $color-dark;
     border-top-color: transparent;
     border-left-color: transparent;
-    border-right-color:transparent;
+    border-right-color: transparent;
   }
 
   &:hover {
@@ -101,13 +101,13 @@
   border: 6px solid $color-dark;
   border-top-color: transparent;
   border-left-color: transparent;
-  border-right-color:transparent;
+  border-right-color: transparent;
 }
 
 .sort-by_desc:before {
   border: 6px solid $color-dark;
   border-bottom-color: transparent;
   border-left-color: transparent;
-  border-right-color:transparent;
+  border-right-color: transparent;
   top: 70%;
 }

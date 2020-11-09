@@ -7,11 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   cleanCreateProductError,
   createProduct,
-  deleteProduct,
 } from "../actions/productActions";
-import Preloader from "./preloaders/Preloader";
+import Preloader from "./Preloader";
 
 function CreateProduct(props) {
+  const userSignIn = useSelector((state) => state.userSignIn);
+  const { userInfo } = userSignIn;
   const [name, setName] = useState(props.fields.name || "");
   const [category, setCategory] = useState(props.fields.category || null);
   const [image, setImage] = useState(props.fields.image || "");
@@ -84,6 +85,7 @@ function CreateProduct(props) {
       .post("/api/uploads/product-image", bodyFormData, {
         headers: {
           "Content-type": "multipart/form-data",
+          "Authorization": `Bearer ${userInfo.token}`
         },
       })
       .then((response) => {
@@ -104,7 +106,7 @@ function CreateProduct(props) {
 
   useEffect(() => {
     dispatch(cleanCreateProductError());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     imagePathRef.current.value = image;
@@ -117,12 +119,21 @@ function CreateProduct(props) {
       </div>
     </section>
   ) : (
-    <section className="sign-in">
+    <section className="create-product">
       <div className="wrapper">
         <div className="sign-in__container">
-          <h2 className="sign-in__title">
-            {props.fields._id ? "Update product card" : "Create product card"}
-          </h2>
+          <div className="create-product__top">
+            <h2 className="create-product__title sign-in__title">
+              {props.fields._id ? "Update product card" : "Create product card"}
+            </h2>
+            <button
+              type="button"
+              className="button create-button-back"
+              onClick={() => props.setVisibility(false)}
+            >
+              Back
+            </button>
+          </div>
           <form
             className="sign-in__form create-product__form"
             onSubmit={submitHandler}
@@ -294,13 +305,6 @@ function CreateProduct(props) {
               className="sign-in__submit-button button button_highlighted"
             >
               {props.fields._id ? "Update" : "Create"}
-            </button>
-            <button
-              type="button"
-              className="button create-button-back"
-              onClick={() => props.setVisibility(false)}
-            >
-              Back
             </button>
           </form>
         </div>

@@ -1,5 +1,5 @@
 .layout-2-columns {
-  @include flex ($justify: space-between);
+  @include flex($justify: space-between);
 
   & > * {
     width: 45%;
@@ -7,7 +7,7 @@
 }
 
 .layout-3-columns {
-  @include flex ($justify: space-between);
+  @include flex($justify: space-between);
 
   & > * {
     width: 33.3%;
@@ -15,10 +15,10 @@
 }
 
 .layout-4-columns {
-  @include flex ($justify: space-between);
+  @include flex($justify: space-between);
   flex-wrap: wrap;
 
   & > * {
-    flex-basis: 25%
+    flex-basis: 25%;
   }
 }

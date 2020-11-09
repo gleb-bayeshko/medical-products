@@ -28,10 +28,10 @@
 
     color: $color-light;
 
-    span, p {
+    span,
+    p {
       color: $color-light;
     }
-
   }
 }
 
@@ -45,10 +45,10 @@
     color: $color-green;
     background-color: $color-green-light;
 
-    span, p {
+    span,
+    p {
       color: $color-light;
     }
-
   }
 }
 
@@ -63,7 +63,8 @@
     background-color: transparent;
   }
 
-  span, p {
+  span,
+  p {
     color: $color-gray-transparent-extra;
   }
 }

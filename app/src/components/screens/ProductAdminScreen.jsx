@@ -1,11 +1,10 @@
 import React from "react";
-import { Helmet } from "react-helmet";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteProduct, listProducts } from "../../actions/productActions";
 import CreateProduct from "../CreateProduct";
-import Preloader from "../preloaders/Preloader";
+import Preloader from "../Preloader";
 
 function ProductCreateScreen(props) {
   const productList = useSelector((state) => state.productList);
@@ -47,14 +46,14 @@ function ProductCreateScreen(props) {
     if (successCreation) {
       setCreateModalVisible(false);
     }
+
     dispatch(listProducts());
-  }, [successCreation, successDeletion]);
+  }, [successCreation, successDeletion, dispatch]);
+
+  document.title = `Admin panel`;
 
   return (
     <>
-      <Helmet>
-        <title>Admin panel</title>
-      </Helmet>
       {createModalVisible ? (
         <CreateProduct setVisibility={setCreateModalVisible} fields={fields} />
       ) : loading ? (
@@ -83,14 +82,16 @@ function ProductCreateScreen(props) {
       ) : (
         <section className="product-admin">
           <div className="wrapper">
-            <h2 className="product-admin__title">Products</h2>
-            <button
-              type="button"
-              className="button button_highlighted"
-              onClick={handleCreateButton}
-            >
-              Create new product
-            </button>
+            <div className="product-admin__top">
+              <h2 className="product-admin__title">Products</h2>
+              <button
+                type="button"
+                className="button button_highlighted"
+                onClick={handleCreateButton}
+              >
+                Create new product
+              </button>
+            </div>
             {errorDeletion && errorDeletion.errors ? (
               errorDeletion.errors.map((currentError) => {
                 return (

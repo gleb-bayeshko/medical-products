@@ -1,5 +1,4 @@
 import React from "react";
-import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -10,8 +9,7 @@ import { cleanCart } from "../../actions/cartActions";
 import { useEffect } from "react";
 import { loadCartProducts } from "../../actions/productActions";
 
-import Preloader from "../preloaders/Preloader";
-import { useRef } from "react";
+import Preloader from "../Preloader";
 
 function CartScreen(props) {
   const dispatch = useDispatch();
@@ -29,15 +27,16 @@ function CartScreen(props) {
   } = productsInCartListLoaded;
 
   useEffect(() => {
-    if(cartProducts && productsInCartList.length === cartProducts.length) {
-      dispatch(loadCartProducts(productsInCartList, true));
-    }
-    else {
-      dispatch(loadCartProducts(productsInCartList, false));
-    }
+    const handleLoadProductsToCart = () => {
+      if (cartProducts && productsInCartList.length === cartProducts.length) {
+        dispatch(loadCartProducts(productsInCartList, true));
+      } else {
+        dispatch(loadCartProducts(productsInCartList, false));
+      }
+    };
 
-  }, [productsInCartList]);
-
+    handleLoadProductsToCart();
+  }, [productsInCartList, dispatch, cartProducts]);
 
   const clean = () => {
     dispatch(cleanCart());
@@ -47,15 +46,14 @@ function CartScreen(props) {
     if (product) {
       return product.qty;
     } else {
-      return null
+      return null;
     }
-  }
+  };
+
+  document.title = `Cart`;
 
   return (
     <section className="cart-list">
-      <Helmet>
-        <title>Cart</title>
-      </Helmet>
       <div className="wrapper">
         {loadingCartProducts ? (
           <Preloader />
@@ -103,19 +101,32 @@ function CartScreen(props) {
               </div>
             </div>
             <div className="cart-list__form">
-              {cartProducts && cartProducts.map((product) => {
-                return <ProductInCartBlock product={product} qty={productQty(productsInCartList.find(productInCartList => productInCartList._id === product.foundProduct._id))} />;
-              })}
+              {cartProducts &&
+                cartProducts.map((product) => {
+                  return (
+                    <ProductInCartBlock
+                      product={product}
+                      qty={productQty(
+                        productsInCartList.find(
+                          (productInCartList) =>
+                            productInCartList._id === product.foundProduct._id
+                        )
+                      )}
+                      key={product.foundProduct._id}
+                    />
+                  );
+                })}
               <div className="cart-list__bottom">
                 <div className="layout-2-columns cart-list__total">
                   <div className="cart-list__total-qty">
                     <p>
                       Total quantity:{" "}
                       <span className="total-qty__number">
-                        {cartProducts && cartProducts.reduce(
-                          (acc, current) => (acc += current.qty),
-                          0
-                        )}{" "}
+                        {cartProducts &&
+                          cartProducts.reduce(
+                            (acc, current) => (acc += current.qty),
+                            0
+                          )}{" "}
                       </span>
                     </p>
                   </div>
@@ -123,13 +134,15 @@ function CartScreen(props) {
                     <p>
                       Order-price:{" "}
                       <span className="order-price__sum-number">
-                        {cartProducts && cartProducts
-                          .reduce(
-                            (acc, current) =>
-                              (acc += current.foundProduct.price * current.qty),
-                            0
-                          )
-                          .toFixed(2)}
+                        {cartProducts &&
+                          cartProducts
+                            .reduce(
+                              (acc, current) =>
+                                (acc +=
+                                  current.foundProduct.price * current.qty),
+                              0
+                            )
+                            .toFixed(2)}
                       </span>{" "}
                       <span className="currency-icon order-price__currency">
                         $

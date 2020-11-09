@@ -19,6 +19,10 @@
 
 .header__logo {
   display: flex;
+
+  @include media-mobile-medium {
+    width: fit-content;
+  }
 }
 
 .header__title {
@@ -92,8 +96,8 @@ h1 {
   display: flex;
   justify-content: flex-end;
 
-  @include media-mobile {
-    width: $header-links-mobile-width;
+  @include media-mobile-medium {
+    width: 100%;
   }
 }
 

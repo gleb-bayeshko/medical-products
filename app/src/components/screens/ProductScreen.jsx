@@ -1,5 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Helmet } from "react-helmet";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { detailsProduct, productsToCart } from "../../actions/productActions";
@@ -8,7 +7,7 @@ import CounterPanel from "../CounterPanel";
 import ClothesColor from "../ClothesColors";
 
 import { Link } from "react-router-dom";
-import Preloader from "../preloaders/Preloader";
+import Preloader from "../Preloader";
 import Rating from "../Rating";
 import { DEFAULT_AVATAR } from "../../constants/userConstants";
 
@@ -32,7 +31,6 @@ function ProductScreen(props) {
   const [reviewFieldsError, setReviewFieldsError] = useState("");
   const [isReviewSent, setIsReviewSent] = useState(false);
   const [reviews, setReviews] = useState([]);
-  const [isReviewsLoaded, setIsReviewsLoaded] = useState(false);
   const [productRating, setProductRating] = useState(null);
   const [productReviewsNumber, setProductReviewsNumber] = useState(null);
 
@@ -47,7 +45,7 @@ function ProductScreen(props) {
       setProductRating(0);
       setProductReviewsNumber(0);
     };
-  }, []);
+  }, [params.id, params.category, dispatch]);
 
   const dispatchToCart = () => {
     if (product.color.length !== 0 && !activeColorName) {
@@ -129,6 +127,7 @@ function ProductScreen(props) {
           },
         }
       );
+      if (!comments) throw Error("Cannot load reviews");
       setIsReviewSent(true);
     } catch (error) {
       console.log(error);
@@ -165,24 +164,18 @@ function ProductScreen(props) {
     );
     setProductRating(productRatingAndReviewsNum.data.rating || 0);
     setProductReviewsNumber(productRatingAndReviewsNum.data.reviewsNumber || 0);
-    setIsReviewsLoaded(true);
   };
 
   useEffect(() => {
-    if (loading || !product._id) return;
+    if (loading || !product || !product._id) return;
     loadReviews(product._id);
     loadProductRatingAndReviewsNum(product._id);
-  }, [isReviewSent, loading]);
+  }, [isReviewSent, loading, product]);
 
   if (product && product.name) document.title = product.name;
 
   return loading ? (
     <section className="content">
-      {product && product.name && (
-        <Helmet>
-          <title>{product.name}</title>
-        </Helmet>
-      )}
       <div className="wrapper">
         <Preloader />
       </div>
@@ -193,9 +186,6 @@ function ProductScreen(props) {
     </>
   ) : (
     <section className="product-content">
-      <Helmet>
-        <title>{product.name}</title>
-      </Helmet>
       <div className="wrapper">
         <div className="layout-2-columns product-content__product-layout">
           <div className="product-content__image">
@@ -207,13 +197,26 @@ function ProductScreen(props) {
           </div>
           <div className="product-content__details">
             <div className="product-content__title">
-              <a href="#" className="link_not-underlined">
+              <Link
+                to={props.history.location.pathname}
+                className="link_not-underlined"
+              >
                 <h4 className="product-content__header">{product.name}</h4>
-              </a>
+              </Link>
               <div className="product-content__rating-and-reviews-num">
-                <Rating rating={productRating === null ? product.rating : productRating} />
+                <Rating
+                  rating={
+                    productRating === null ? product.rating : productRating
+                  }
+                  keyWord={`PRODUCT_SCREEN_TOP_RATING`}
+                />
                 <span className="rating__reviews-num">
-                  <a href="#reviews">{productReviewsNumber === null ? product.reviewsNumber : productReviewsNumber} reviews</a>
+                  <a href="#reviews">
+                    {productReviewsNumber === null
+                      ? product.reviewsNumber
+                      : productReviewsNumber}{" "}
+                    reviews
+                  </a>
                 </span>
               </div>
               <div className="layout-2-columns product-content__price-and-counter-layout">
@@ -249,7 +252,15 @@ function ProductScreen(props) {
                 </>
               )}
               <div className="product-content__description">
-                {product.description && product.description.split('\n').map(paragraph => <p className="product-content__description-text">{paragraph}</p>)}
+                {product.description &&
+                  product.description.split("\n").map((paragraph, i) => (
+                    <p
+                      className="product-content__description-text"
+                      key={`${product._id}__${i}`}
+                    >
+                      {paragraph}
+                    </p>
+                  ))}
               </div>
               {isAddedToCart ? (
                 <Link to="/cart">
@@ -280,7 +291,7 @@ function ProductScreen(props) {
               ) : (
                 reviews.map((review) => {
                   return (
-                    <div className="review">
+                    <div className="review" key={`${review.userId}__REVIEW`}>
                       <div className="review__layout">
                         <div className="review__avatar-container">
                           <img
@@ -338,6 +349,7 @@ function ProductScreen(props) {
                             className="far fa-star review-form__star"
                             data-rating={`${value}`}
                             ref={(el) => (ratingStars.current[i] = el)}
+                            key={`REVIEW_FORM_RATE_${value}`}
                           ></i>
                         );
                       })}
