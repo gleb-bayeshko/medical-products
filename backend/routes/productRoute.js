@@ -46,7 +46,6 @@ router.post("/", async (req, res) => {
 router.post("/cart-products-list", async (req, res) => {
   try {
     const { productsToLoad } = req.body;
-    console.log(productsToLoad);
     const productsList = await Promise.all(
       productsToLoad.map(async (product) => {
         const foundProduct = await Product.findById(product._id);
@@ -96,19 +95,15 @@ router.post("/save-card", isAuth, isAdmin, async (req, res) => {
 
     const newProduct = await product.save();
     if (newProduct)
-      return res
-        .status(200)
-        .json({
-          message: "Product card created successfully",
-          data: newProduct,
-        });
-  } catch (error) {
-    res
-      .status(400)
-      .json({
-        message:
-          "An error occurred while creating a product card. Fill the fields correctly",
+      return res.status(200).json({
+        message: "Product card created successfully",
+        data: newProduct,
       });
+  } catch (error) {
+    res.status(400).json({
+      message:
+        "An error occurred while creating a product card. Fill the fields correctly",
+    });
   }
 });
 
@@ -120,12 +115,10 @@ router.delete("/delete-card/:id", isAuth, isAdmin, async (req, res) => {
 
     if (deletedProduct) {
       await deletedProduct.remove();
-      return res
-        .status(200)
-        .json({
-          message: "Product card deleted successfully",
-          data: deletedProduct,
-        });
+      return res.status(200).json({
+        message: "Product card deleted successfully",
+        data: deletedProduct,
+      });
     }
   } catch (error) {
     res
@@ -162,19 +155,15 @@ router.put("/save-card/:id", isAuth, isAdmin, async (req, res) => {
     const updatedProduct = await productExisting.save();
 
     if (updatedProduct)
-      return res
-        .status(200)
-        .json({
-          message: "Product card updated successfully",
-          data: updatedProduct,
-        });
-  } catch (error) {
-    res
-      .status(400)
-      .json({
-        message:
-          "An error occurred while updating a product card. Fill the fields correctly",
+      return res.status(200).json({
+        message: "Product card updated successfully",
+        data: updatedProduct,
       });
+  } catch (error) {
+    res.status(400).json({
+      message:
+        "An error occurred while updating a product card. Fill the fields correctly",
+    });
   }
 });
 

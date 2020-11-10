@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import emptyCartImg from "../assets/img/empty-img/empty-cart.png"
 
 function EmptyCart(props) {
   return (
@@ -15,7 +16,7 @@ function EmptyCart(props) {
       </div>
       <div className="cart-list-empty__img">
         <img
-          src="/assets/img/empty-img/empty-cart.png"
+          src={emptyCartImg}
           alt="empty-cart"
           className="empty-cart-img"
         />

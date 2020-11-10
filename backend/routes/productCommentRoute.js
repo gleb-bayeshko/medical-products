@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router } from "express";
 import Product from "../models/productModel";
 import ProductComment from "../models/productCommentModel";
 import User from "../models/userModel";
@@ -26,8 +26,10 @@ router.post("/create-review", isAuth, async (req, res) => {
       });
     }
 
-    if (productComment.comments.some(comment => comment.userId === userId)) {
-      return res.status(403).send('You can leave only one review for each product')
+    if (productComment.comments.some((comment) => comment.userId === userId)) {
+      return res
+        .status(403)
+        .send("You can leave only one review for each product");
     }
 
     const comments = productComment.comments.slice(0);
@@ -36,7 +38,7 @@ router.post("/create-review", isAuth, async (req, res) => {
       userRating,
       userComment,
       userReviewDate,
-    })
+    });
     productComment.comments = comments;
     const updatedProductComment = await productComment.save();
 
@@ -70,18 +72,21 @@ router.post("/reviews", async (req, res) => {
       });
     }
 
-    const reviews = await Promise.all(productComment.comments.map( async comment => {
-      const user = await User.findById(comment.userId);
+    const reviews = await Promise.all(
+      productComment.comments.map(async (comment) => {
+        const user = await User.findById(comment.userId);
 
-      return {
-        userRating: comment.userRating,
-        userComment: comment.userComment,
-        userReviewDate: comment.userReviewDate.getTime(),
-        userAvatar: user.avatar,
-        userName: user.name,
-        userSecondName: user.secondName || ''
-      }
-    }))
+        return {
+          userRating: comment.userRating,
+          userComment: comment.userComment,
+          userReviewDate: comment.userReviewDate.getTime(),
+          userAvatar: user.avatar,
+          userName: user.name,
+          userSecondName: user.secondName || "",
+          userId: user._id,
+        };
+      })
+    );
 
     res.status(200).send(reviews);
   } catch (error) {
@@ -90,17 +95,17 @@ router.post("/reviews", async (req, res) => {
   }
 });
 
-router.post('/product-rating', async (req, res) => {
+router.post("/product-rating", async (req, res) => {
   try {
     const { productId } = req.body;
     const product = await Product.findById(productId);
     res.status(200).send({
       rating: product.rating,
-      reviewsNumber: product.reviewsNumber
+      reviewsNumber: product.reviewsNumber,
     });
   } catch (error) {
-    res.status(404).send('Product not found')
+    res.status(404).send("Product not found");
   }
-})
+});
 
 export default router;

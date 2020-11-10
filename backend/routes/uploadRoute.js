@@ -44,7 +44,6 @@ const storage = multer.diskStorage({
             break;
         }
       } catch (error) {
-        console.log('9999999999');
         return new Error(
           `Server error: unable to create folder for uploaded file`
         );
@@ -96,7 +95,6 @@ router.post("/:fieldname", isAuth, (req, res) => {
       case FIELDNAME_PRODUCT_IMAGE:
         uploadProductImage(req, res, (error) => {
           if (error) {
-            console.log('33333333333');
             return res.status(400).json({ message: multerErrors[error.code] });
           } else {
             try {
@@ -112,9 +110,16 @@ router.post("/:fieldname", isAuth, (req, res) => {
       case FIELDNAME_AVATAR_IMAGE:
         uploadAvatarImage(req, res, async (error) => {
           if (error) {
-            return res.status(400).json({ message: multerErrors[error.code] || error.message || error});
+            return res
+              .status(400)
+              .json({
+                message: multerErrors[error.code] || error.message || error,
+              });
           } else {
-            const outputPath = `${req.file.destination.replace('/temp', '/resized')}/${req.file.filename}`;
+            const outputPath = `${req.file.destination.replace(
+              "/temp",
+              "/resized"
+            )}/${req.file.filename}`;
             try {
               await sharp(req.file.path)
                 .resize(200, 200, {
