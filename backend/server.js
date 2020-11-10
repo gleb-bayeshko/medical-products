@@ -8,6 +8,7 @@ import productRoute from "./routes/productRoute";
 import uploadRoute from "./routes/uploadRoute";
 import productCommentRoute from "./routes/productCommentRoute";
 import path from "path";
+const app = express();
 
 dotenv.config();
 
@@ -20,7 +21,6 @@ mongoose
   })
   .catch((error) => console.log(error.reason));
 
-const app = express();
 
 app.use("/uploads", express.static(path.join(__dirname, "/../uploads")));
 
@@ -31,4 +31,11 @@ app.use("/api/products", productRoute);
 app.use("/api/product-comments", productCommentRoute);
 app.use("/api/uploads", uploadRoute);
 
-app.listen(5000);
+app.use(express.static(path.join(__dirname, '/../app/build')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(`${__dirname}/../app/build/index.html`));
+});
+
+app.listen(config.PORT, () => {
+  console.log(`Server is up on ${config.PORT} port` );
+});
