@@ -36,6 +36,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(`${__dirname}/../app/build/index.html`));
 });
 
-app.listen(config.PORT, () => {
+app.listen(process.env.PORT, '0.0.0.0', () => {
   console.log(`Server is up on ${config.PORT} port` );
 });

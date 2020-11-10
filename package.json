@@ -22,7 +22,7 @@
     "nodemon": "^2.0.6"
   },
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "nodemon --watch backend --exec babel-node backend/server.js",
     "build": "rm -rf dist && babel backend -d dist  && cd app && npm install && npm run build"
   },
   "repository": {
