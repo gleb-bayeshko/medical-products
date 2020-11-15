@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import config from "./config";
+import regeneratorRuntime from "regenerator-runtime";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import userRoute from "./routes/userRoute";
@@ -36,6 +37,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(`${__dirname}/../app/build/index.html`));
 });
 
-app.listen(process.env.PORT, '0.0.0.0', () => {
+app.listen(config.PORT, () => {
   console.log(`Server is up on ${config.PORT} port` );
 });
