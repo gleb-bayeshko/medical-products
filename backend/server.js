@@ -20,7 +20,7 @@ mongoose
     useUnifiedTopology: true,
     useCreateIndex: true,
   })
-  .catch((error) => console.log(error.reason));
+  .catch((error) => console.log(error));
 
 
 app.use("/uploads", express.static(path.join(__dirname, "/../uploads")));
