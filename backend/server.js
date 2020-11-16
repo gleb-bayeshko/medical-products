@@ -12,8 +12,11 @@ import path from "path";
 const app = express();
 
 dotenv.config();
-
+console.log('PROCESS ENV:');
+console.log(process.env.MONGODB_URI);
+console.log('CONFIG:');
 const mongodbURI = config.MONGODB_URI;
+console.log(config.MONGODB_URI);
 mongoose
   .connect(mongodbURI, {
     useNewUrlParser: true,
