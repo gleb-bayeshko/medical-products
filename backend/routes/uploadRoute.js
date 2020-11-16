@@ -15,19 +15,19 @@ const storage = multer.diskStorage({
     console.log('START DESTINATION');
     if (!fs.existsSync(`uploads`)) {
       fs.mkdirSync(`uploads`);
-      console.log('CREATE UPLOADS IF IT DOESNT EXISTS:');
-      console.log(fs.existsSync(`uploads`));
     }
-
-    console.log('IS UPLOADS EXISTS');
-    console.log(fs.existsSync(`uploads`));
 
     if (fs.existsSync(`uploads/${file.fieldname}`)) {
       try {
         switch (file.fieldname) {
           case FIELDNAME_AVATAR_IMAGE:
-            console.log('AVATAR IMAGE FOLDER EXISTS');
-            console.log(fs.existsSync(`uploads/${file.fieldname}`));
+            if (!fs.existsSync(`uploads/${file.fieldname}/temp`)) {
+              fs.mkdirSync(`uploads/${file.fieldname}/temp`);
+            }
+
+            if (!fs.existsSync(`uploads/${file.fieldname}/resized`)) {
+              fs.mkdirSync(`uploads/${file.fieldname}/resized`);
+            }
             callback(null, `uploads/${file.fieldname}/temp`);
             break;
           case FIELDNAME_PRODUCT_IMAGE:
@@ -43,16 +43,9 @@ const storage = multer.diskStorage({
       try {
         switch (file.fieldname) {
           case FIELDNAME_AVATAR_IMAGE:
-            console.log('AVATAR IMAGE FOLDER DOESNT EXIST');
-            console.log(fs.existsSync(`uploads/${file.fieldname}`));
             fs.mkdirSync(`uploads/${file.fieldname}`);
             fs.mkdirSync(`uploads/${file.fieldname}/temp`);
             fs.mkdirSync(`uploads/${file.fieldname}/resized`);
-
-            console.log('CHECKING OF CREATION ALL FOLDERS');
-            console.log(fs.existsSync(`uploads/${file.fieldname}`));
-            console.log(fs.existsSync(`uploads/${file.fieldname}/temp`));
-            console.log(fs.existsSync(`uploads/${file.fieldname}/resized`));
 
             callback(null, `uploads/${file.fieldname}/temp`);
             break;
