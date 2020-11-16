@@ -12,6 +12,10 @@ import { isAuth } from "../util";
 
 const storage = multer.diskStorage({
   destination(req, file, callback) {
+    if (!fs.existsSync(`uploads`)) {
+      fs.mkdirSync(`uploads`);
+    }
+
     if (fs.existsSync(`uploads/${file.fieldname}`)) {
       try {
         switch (file.fieldname) {
