@@ -13,9 +13,9 @@ const app = express();
 
 dotenv.config();
 
-const mongodbURL = config.MONGODB_URL;
+const mongodbURI = config.MONGODB_URI;
 mongoose
-  .connect(mongodbURL, {
+  .connect(mongodbURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
