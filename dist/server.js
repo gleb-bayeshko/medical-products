@@ -6,6 +6,8 @@ var _dotenv = _interopRequireDefault(require("dotenv"));
 
 var _config = _interopRequireDefault(require("./config"));
 
+var _regeneratorRuntime = _interopRequireDefault(require("regenerator-runtime"));
+
 var _mongoose = _interopRequireDefault(require("mongoose"));
 
 var _bodyParser = _interopRequireDefault(require("body-parser"));
