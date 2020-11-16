@@ -8,6 +8,7 @@ import { getToken, isAdmin, isAuth } from "../util";
 const router = Router();
 
 router.post("/", async (req, res) => {
+  console.log('STARTED API');
   const categoryReq = req.body.category;
   const sort = req.body.sort;
   const category = `${categoryReq[0].toUpperCase()}${categoryReq.slice(1)}`;
@@ -36,6 +37,7 @@ router.post("/", async (req, res) => {
 
     res.send(products);
   } catch (error) {
+    console.log('ERROR');
     console.log(error);
     res
       .status(400)
