@@ -12,14 +12,22 @@ import { isAuth } from "../util";
 
 const storage = multer.diskStorage({
   destination(req, file, callback) {
+    console.log('START DESTINATION');
     if (!fs.existsSync(`uploads`)) {
       fs.mkdirSync(`uploads`);
+      console.log('CREATE UPLOADS IF IT DOESNT EXISTS:');
+      console.log(fs.existsSync(`uploads`));
     }
+
+    console.log('IS UPLOADS EXISTS');
+    console.log(fs.existsSync(`uploads`));
 
     if (fs.existsSync(`uploads/${file.fieldname}`)) {
       try {
         switch (file.fieldname) {
           case FIELDNAME_AVATAR_IMAGE:
+            console.log('AVATAR IMAGE FOLDER EXISTS');
+            console.log(fs.existsSync(`uploads/${file.fieldname}`));
             callback(null, `uploads/${file.fieldname}/temp`);
             break;
           case FIELDNAME_PRODUCT_IMAGE:
@@ -35,9 +43,16 @@ const storage = multer.diskStorage({
       try {
         switch (file.fieldname) {
           case FIELDNAME_AVATAR_IMAGE:
+            console.log('AVATAR IMAGE FOLDER DOESNT EXIST');
+            console.log(fs.existsSync(`uploads/${file.fieldname}`));
             fs.mkdirSync(`uploads/${file.fieldname}`);
             fs.mkdirSync(`uploads/${file.fieldname}/temp`);
             fs.mkdirSync(`uploads/${file.fieldname}/resized`);
+
+            console.log('CHECKING OF CREATION ALL FOLDERS');
+            console.log(fs.existsSync(`uploads/${file.fieldname}`));
+            console.log(fs.existsSync(`uploads/${file.fieldname}/temp`));
+            console.log(fs.existsSync(`uploads/${file.fieldname}/resized`));
 
             callback(null, `uploads/${file.fieldname}/temp`);
             break;
@@ -99,7 +114,7 @@ router.post("/:fieldname", isAuth, (req, res) => {
       case FIELDNAME_PRODUCT_IMAGE:
         uploadProductImage(req, res, (error) => {
           if (error) {
-            return res.status(400).json({ message: multerErrors[error.code] });
+            return res.status(400).send(`${multerErrors[error.code]}`);
           } else {
             try {
               res.send(`/${req.file.path.replace(/\\/g, "/")}`);
