@@ -15,7 +15,7 @@ const getToken = (user) => {
       isAdmin: user.isAdmin,
       cart: user.cart || [],
     },
-    config.JWT_SECRET,
+    process.env.JWT_SECRET,
     {
       expiresIn: "24h",
     }
@@ -26,7 +26,7 @@ const isAuth = (req, res, next) => {
   const token = req.headers.authorization;
   if (token) {
     const onlyToken = token.slice(7, token.length);
-    jwt.verify(onlyToken, config.JWT_SECRET, (error, decode) => {
+    jwt.verify(onlyToken, process.env.JWT_SECRET, (error, decode) => {
       if (error) return res.status(401).json({ message: "Invalid token" });
 
       req.user = decode;

@@ -14,8 +14,7 @@ const app = express();
 dotenv.config();
 
 const mongodbURI = process.env.MONGODB_URI;
-console.log('CONFIG:');
-console.log(config.MONGODB_URI);
+
 mongoose
   .connect(mongodbURI, {
     useNewUrlParser: true,
