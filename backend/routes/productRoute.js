@@ -25,8 +25,6 @@ router.post("/", async (req, res) => {
     console.log(products);
     console.log('-----------------------------');
 
-    if (products.length === 0) return res.send(products);
-
     switch (sort) {
       case "PRODUCTS_SORT_DATE_DESC":
         products = products.sort((a, b) => b.date.getTime() - a.date.getTime());
