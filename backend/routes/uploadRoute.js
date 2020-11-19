@@ -163,14 +163,14 @@ const uploadAvatarImageS3TEST = multer({
   fileFilter: function (req, file, callback) {
     checkFileType(file, callback);
   },
-}).single(FIELDNAME_AVATAR_IMAGE);
+});
 
 const router = express.Router();
 
 router.post(
   `/s3/${FIELDNAME_AVATAR_IMAGE}`,
   isAuth,
-  uploadAvatarImageS3TEST(FIELDNAME_AVATAR_IMAGE),
+  uploadAvatarImageS3TEST.single(FIELDNAME_AVATAR_IMAGE),
   async (req, res) => {
     console.log("-------------------------------------------");
     console.log("HERE!");
@@ -181,6 +181,7 @@ router.post(
         throw new Error("File or file buffer not found");
       }
       console.log(req.file.buffer);
+      console.log(req.file.buffer.location);
       // uploadAvatarImageS3TEST(req, res, async (error) => {
       //   if (error) {
       //     return res.status(400).json({
