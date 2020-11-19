@@ -161,6 +161,15 @@ router.post(
             ACL: "public-read",
             Key: `${Date.now()}-avatar-${req.file.filename}`,
             Body: buffer
+          }, (error, data) => {
+            if (error) {
+              console.log('ERROR UPLOAD----------------------------------');
+              console.log(error);
+              console.log('ERROR UPLOAD----------------------------------');
+            }
+            console.log('DATA LOCATION----------------------------------');
+            console.log(data.location);
+            console.log('DATA LOCATION----------------------------------');
           })
 
           return uploadResult;
