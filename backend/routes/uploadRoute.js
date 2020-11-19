@@ -168,11 +168,17 @@ router.post("/:fieldname/s3", isAuth, (req, res) => {
             return res.status(400).send(`Error while uploading product image. Please, try again`);
           } else {
             try {
-              res.send(req.file.location);
+              console.log('-------------------------------------------');
+              console.log('FILE LOCATION');
+              console.log(req.file.location);
+              console.log('FILE PATH');
+              console.log(req.file.path);
+              console.log('-------------------------------------------');
+              return res.send(req.file.location);
             } catch (error) {
               return res
                 .status(400)
-                .json({ message: `Error while sending product image path` });
+                .send(`Error while sending product image path`);
             }
           }
         });
@@ -185,6 +191,12 @@ router.post("/:fieldname/s3", isAuth, (req, res) => {
               .send(`Error while uploading avatar. Please, try again`);
           } else {
             try {
+              console.log('-------------------------------------------');
+              console.log('FILE LOCATION');
+              console.log(req.file.location);
+              console.log('FILE PATH');
+              console.log(req.file.path);
+              console.log('-------------------------------------------');
               res.send(req.file.location);
             } catch (error) {
               return res
@@ -196,13 +208,17 @@ router.post("/:fieldname/s3", isAuth, (req, res) => {
         break;
     }
   } catch (error) {
-    res
+    return res
       .status(400)
       .send("Error while uploading image. Please, try again.");
   }
 });
 
 router.post("/:fieldname", isAuth, (req, res) => {
+  console.log('-------------------------------------------');
+  console.log('OH NO!');
+  console.log('OH NO!');
+  console.log('-------------------------------------------');
   const multerErrors = multerErrorMessages;
 
   try {
@@ -213,7 +229,7 @@ router.post("/:fieldname", isAuth, (req, res) => {
             return res.status(400).send(`${multerErrors[error.code]}`);
           } else {
             try {
-              res.send(`/${req.file.path.replace(/\\/g, "/")}`);
+              return res.send(`/${req.file.path.replace(/\\/g, "/")}`);
             } catch (error) {
               return res
                 .status(400)
@@ -254,7 +270,7 @@ router.post("/:fieldname", isAuth, (req, res) => {
         break;
     }
   } catch (error) {
-    res
+    return res
       .status(400)
       .json({ message: "Error while uploading image. Try again." });
   }
