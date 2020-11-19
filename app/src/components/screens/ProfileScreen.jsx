@@ -12,7 +12,7 @@ import {
   userUpdatePassword,
   userUpdatePasswordCleanState,
 } from "../../actions/userActions";
-import { DEFAULT_AVATAR } from "../../constants/userConstants";
+import defaultAvatar from "../../assets/img/empty-avatar/profile-img-empty.png";
 import Preloader from "../Preloader";
 
 function ProfileScreen(props) {
@@ -52,7 +52,7 @@ function ProfileScreen(props) {
 
     setUploadingAvatar(true);
     axios
-      .post("/api/uploads/avatar-image", bodyFormData, {
+      .post("/api/uploads/avatar-image/s3", bodyFormData, {
         headers: {
           "Content-type": "multipart/form-data",
           Authorization: `Bearer ${userInfo.token}`,
@@ -343,7 +343,7 @@ function ProfileScreen(props) {
               <div className="profile__avatar">
                 <div className="profile__avatar-container">
                   <img
-                    src={`${!avatar ? DEFAULT_AVATAR : avatar}`}
+                    src={`${!avatar ? defaultAvatar : avatar}`}
                     alt="avatar"
                     onError={handleAvatarError}
                     className="profile__avatar"

@@ -1,5 +1,7 @@
 import express from "express";
 import multer from "multer";
+import multerS3 from "multer-s3-transform";
+import aws from 'aws-sdk'
 import sharp from "sharp";
 import path from "path";
 import fs from "fs";
@@ -12,7 +14,6 @@ import { isAuth } from "../util";
 
 const storage = multer.diskStorage({
   destination(req, file, callback) {
-    console.log('START DESTINATION');
     if (!fs.existsSync(`uploads`)) {
       fs.mkdirSync(`uploads`);
     }
@@ -97,7 +98,99 @@ const uploadAvatarImage = multer({
   },
 }).single(FIELDNAME_AVATAR_IMAGE);
 
+// S3 UPLOAD
+aws.config.update({
+  accessKeyId: process.env.accessKeyId,
+  secretAccessKey: process.env.secretAccessKey,
+});
+
+const s3 = new aws.S3();
+
+const uploadAvatarImageS3 = multer({
+  storageS3 = multerS3({
+    s3,
+    bucket: 'medical-products-bayeshko',
+    acl: 'public-read',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    shouldTransform: function (req, file, callback) {
+      callback(null, true)
+    },
+    transforms: [{
+      id: 'avatar',
+      key: function (req, file, callback) {
+        callback(null, `${Date.now()}-${file.originalname}`)
+      },
+      transform: function (req, file, callback) {
+        callback(null, sharp().resize(200, 200, {
+          fit: "cover",
+        }))
+      }
+    }],
+  }),
+}).single(FIELDNAME_AVATAR_IMAGE);
+
+const uploadProductImageS3 = multer({
+  storageS3 = multerS3({
+    s3,
+    bucket: 'medical-products-bayeshko',
+    acl: 'public-read',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    shouldTransform: function (req, file, callback) {
+      callback(null, true)
+    },
+    key: function (req, file, callback) {
+      callback(null, `${Date.now()}-${file.originalname}`)
+    },
+  }),
+}).single(FIELDNAME_PRODUCT_IMAGE);
+
+
+
+
 const router = express.Router();
+
+router.post("/:fieldname/s3", isAuth, (req, res) => {
+  try {
+    switch (req.params.fieldname) {
+      case FIELDNAME_PRODUCT_IMAGE:
+        uploadProductImageS3(req, res, (error) => {
+          if (error) {
+            return res.status(400).send(`Error while uploading product image. Please, try again`);
+          } else {
+            try {
+              res.send(req.file.location);
+            } catch (error) {
+              return res
+                .status(400)
+                .json({ message: `Error while sending product image path` });
+            }
+          }
+        });
+        break;
+      case FIELDNAME_AVATAR_IMAGE:
+        uploadAvatarImageS3(req, res, async (error) => {
+          if (error) {
+            return res
+              .status(400)
+              .send(`Error while uploading avatar. Please, try again`);
+          } else {
+            try {
+              res.send(req.file.location);
+            } catch (error) {
+              return res
+                .status(400)
+                .send(`Error while sending avatar image path`);
+            }
+          }
+        });
+        break;
+    }
+  } catch (error) {
+    res
+      .status(400)
+      .send("Error while uploading image. Please, try again.");
+  }
+});
 
 router.post("/:fieldname", isAuth, (req, res) => {
   const multerErrors = multerErrorMessages;

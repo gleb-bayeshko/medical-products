@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import logo from "../assets/img/logo/logo.png";
-import { DEFAULT_AVATAR } from "../constants/userConstants";
+import defaultAvatar from "../assets/img/empty-avatar/profile-img-empty.png";
 
 function Header(props) {
   const productsInCartList = useSelector(
@@ -49,7 +49,7 @@ function Header(props) {
                 )}
                 {!userInfo.isAdmin && (
                   <img
-                    src={userInfo.avatar || DEFAULT_AVATAR}
+                    src={userInfo.avatar || defaultAvatar}
                     className="avatar-mini header__avatar"
                     alt="avatar"
                     onError={handleAvatarError}

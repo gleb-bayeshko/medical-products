@@ -9,7 +9,7 @@ import ClothesColor from "../ClothesColors";
 import { Link } from "react-router-dom";
 import Preloader from "../Preloader";
 import Rating from "../Rating";
-import { DEFAULT_AVATAR } from "../../constants/userConstants";
+import defaultAvatar from "../../assets/img/empty-avatar/profile-img-empty.png";
 
 function ProductScreen(props) {
   const productDetails = useSelector((state) => state.productDetails);
@@ -295,7 +295,7 @@ function ProductScreen(props) {
                       <div className="review__layout">
                         <div className="review__avatar-container">
                           <img
-                            src={review.userAvatar || DEFAULT_AVATAR}
+                            src={review.userAvatar || defaultAvatar}
                             alt="avatar"
                             className="review__avatar"
                           />
