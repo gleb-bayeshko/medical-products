@@ -135,7 +135,7 @@ const uploadAvatarImageS3 = multer({
   fileFilter: function (req, file, callback) {
     checkFileType(file, callback);
   },
-}).single(FIELDNAME_AVATAR_IMAGE);
+})
 
 const uploadProductImageS3 = multer({
   storageS3: multerS3({
@@ -156,22 +156,22 @@ const uploadProductImageS3 = multer({
 }).single(FIELDNAME_PRODUCT_IMAGE);
 
 // TEST
-const multerMemoryStorage = multer.memoryStorage();
+// const multerMemoryStorage = multer.memoryStorage();
 
-const uploadAvatarImageS3TEST = multer({
-  storage: multerMemoryStorage,
-  fileFilter: function (req, file, callback) {
-    checkFileType(file, callback);
-  },
-});
+// const uploadAvatarImageS3TEST = multer({
+//   storage: multerMemoryStorage,
+//   fileFilter: function (req, file, callback) {
+//     checkFileType(file, callback);
+//   },
+// });
 
 const router = express.Router();
 
 router.post(
   `/s3/${FIELDNAME_AVATAR_IMAGE}`,
   isAuth,
-  uploadAvatarImageS3TEST.single(FIELDNAME_AVATAR_IMAGE),
-  async (req, res) => {
+  uploadAvatarImageS3.single(FIELDNAME_AVATAR_IMAGE),
+  (req, res) => {
     console.log("-------------------------------------------");
     console.log("HERE!");
     console.log("HERE!");
@@ -180,8 +180,12 @@ router.post(
       if (!req.file || !req.file.buffer) {
         throw new Error("File or file buffer not found");
       }
-      console.log(req.file.buffer);
-      console.log(req.file.buffer.location);
+      console.log('HERE LOGS---------------------------------------');
+      console.log(req.file.location);
+      console.log(req.file.transforms);
+      console.log(req.file.transforms[0]);
+      console.log(req.file.transforms & req.file.transforms[0] && req.file.transforms[0].location);
+      console.log('HERE LOGS---------------------------------------');
       // uploadAvatarImageS3TEST(req, res, async (error) => {
       //   if (error) {
       //     return res.status(400).json({
@@ -214,64 +218,64 @@ router.post(
   }
 );
 
-router.post("/:fieldname", isAuth, (req, res) => {
-  console.log("-------------------------------------------");
-  console.log("OH NO!");
-  console.log("OH NO!");
-  console.log("-------------------------------------------");
-  const multerErrors = multerErrorMessages;
+// router.post("/:fieldname", isAuth, (req, res) => {
+//   console.log("-------------------------------------------");
+//   console.log("OH NO!");
+//   console.log("OH NO!");
+//   console.log("-------------------------------------------");
+//   const multerErrors = multerErrorMessages;
 
-  try {
-    switch (req.params.fieldname) {
-      case FIELDNAME_PRODUCT_IMAGE:
-        uploadProductImage(req, res, (error) => {
-          if (error) {
-            return res.status(400).send(`${multerErrors[error.code]}`);
-          } else {
-            try {
-              return res.send(`/${req.file.path.replace(/\\/g, "/")}`);
-            } catch (error) {
-              return res
-                .status(400)
-                .json({ message: `Error while sending image path` });
-            }
-          }
-        });
-        break;
-      case FIELDNAME_AVATAR_IMAGE:
-        uploadAvatarImage(req, res, async (error) => {
-          if (error) {
-            return res.status(400).json({
-              message: multerErrors[error.code] || error.message || error,
-            });
-          } else {
-            const outputPath = `${req.file.destination.replace(
-              "/temp",
-              "/resized"
-            )}/${req.file.filename}`;
-            try {
-              await sharp(req.file.path)
-                .resize(200, 200, {
-                  fit: "cover",
-                })
-                .toFile(outputPath);
+//   try {
+//     switch (req.params.fieldname) {
+//       case FIELDNAME_PRODUCT_IMAGE:
+//         uploadProductImage(req, res, (error) => {
+//           if (error) {
+//             return res.status(400).send(`${multerErrors[error.code]}`);
+//           } else {
+//             try {
+//               return res.send(`/${req.file.path.replace(/\\/g, "/")}`);
+//             } catch (error) {
+//               return res
+//                 .status(400)
+//                 .json({ message: `Error while sending image path` });
+//             }
+//           }
+//         });
+//         break;
+//       case FIELDNAME_AVATAR_IMAGE:
+//         uploadAvatarImage(req, res, async (error) => {
+//           if (error) {
+//             return res.status(400).json({
+//               message: multerErrors[error.code] || error.message || error,
+//             });
+//           } else {
+//             const outputPath = `${req.file.destination.replace(
+//               "/temp",
+//               "/resized"
+//             )}/${req.file.filename}`;
+//             try {
+//               await sharp(req.file.path)
+//                 .resize(200, 200, {
+//                   fit: "cover",
+//                 })
+//                 .toFile(outputPath);
 
-              fs.unlinkSync(req.file.path);
-              res.send(`/${outputPath.replace(/\\/g, "/")}`);
-            } catch (error) {
-              return res
-                .status(400)
-                .json({ message: `Error while sending image path` });
-            }
-          }
-        });
-        break;
-    }
-  } catch (error) {
-    return res
-      .status(400)
-      .json({ message: "Error while uploading image. Try again." });
-  }
-});
+//               fs.unlinkSync(req.file.path);
+//               res.send(`/${outputPath.replace(/\\/g, "/")}`);
+//             } catch (error) {
+//               return res
+//                 .status(400)
+//                 .json({ message: `Error while sending image path` });
+//             }
+//           }
+//         });
+//         break;
+//     }
+//   } catch (error) {
+//     return res
+//       .status(400)
+//       .json({ message: "Error while uploading image. Try again." });
+//   }
+// });
 
 export default router;
