@@ -99,12 +99,10 @@ const uploadAvatarImage = multer({
 }).single(FIELDNAME_AVATAR_IMAGE);
 
 // S3 UPLOAD
-aws.config.update({
+const s3 = new aws.S3({
   accessKeyId: process.env.accessKeyId,
   secretAccessKey: process.env.secretAccessKey,
 });
-
-const s3 = new aws.S3({});
 
 const uploadAvatarImageS3 = multer({
   storageS3: multerS3({
@@ -166,6 +164,9 @@ const storageS3test = multer.diskStorage({
     }
 
     callback(null, `uploads`);
+  },
+  filename(req, file, callback) {
+    callback(null, `${Date.now()}-${file.originalname}`);
   }
 })
 
@@ -207,6 +208,7 @@ router.post(
           uploadResult = await s3.upload({
             Bucket: "medical-products-bayeshko",
             ACL: "public-read",
+            Key: `${Date.now()}-avatar-${req.file.filename}`,
             Body: buffer
           }).promise();
 
