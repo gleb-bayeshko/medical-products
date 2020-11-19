@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
 import multerS3 from "multer-s3-transform";
-import aws from 'aws-sdk'
+import aws from "aws-sdk";
 import sharp from "sharp";
 import path from "path";
 import fs from "fs";
@@ -109,23 +109,28 @@ const s3 = new aws.S3();
 const uploadAvatarImageS3 = multer({
   storageS3: multerS3({
     s3,
-    bucket: 'medical-products-bayeshko',
-    acl: 'public-read',
+    bucket: "medical-products-bayeshko",
+    acl: "public-read",
     contentType: multerS3.AUTO_CONTENT_TYPE,
     shouldTransform: function (req, file, callback) {
-      callback(null, true)
+      callback(null, true);
     },
-    transforms: [{
-      id: 'avatar',
-      key: function (req, file, callback) {
-        callback(null, `${Date.now()}-${file.originalname}`)
+    transforms: [
+      {
+        id: "avatar",
+        key: function (req, file, callback) {
+          callback(null, `${Date.now()}-${file.originalname}`);
+        },
+        transform: function (req, file, callback) {
+          callback(
+            null,
+            sharp().resize(200, 200, {
+              fit: "cover",
+            })
+          );
+        },
       },
-      transform: function (req, file, callback) {
-        callback(null, sharp().resize(200, 200, {
-          fit: "cover",
-        }))
-      }
-    }],
+    ],
   }),
   fileFilter: function (req, file, callback) {
     checkFileType(file, callback);
@@ -135,14 +140,14 @@ const uploadAvatarImageS3 = multer({
 const uploadProductImageS3 = multer({
   storageS3: multerS3({
     s3,
-    bucket: 'medical-products-bayeshko',
-    acl: 'public-read',
+    bucket: "medical-products-bayeshko",
+    acl: "public-read",
     contentType: multerS3.AUTO_CONTENT_TYPE,
     shouldTransform: function (req, file, callback) {
-      callback(null, true)
+      callback(null, true);
     },
     key: function (req, file, callback) {
-      callback(null, `${Date.now()}-${file.originalname}`)
+      callback(null, `${Date.now()}-${file.originalname}`);
     },
   }),
   fileFilter: function (req, file, callback) {
@@ -150,87 +155,69 @@ const uploadProductImageS3 = multer({
   },
 }).single(FIELDNAME_PRODUCT_IMAGE);
 
+// TEST
+const multerMemoryStorage = multer.memoryStorage();
 
-
+const uploadAvatarImageS3TEST = multer({
+  storage: multerMemoryStorage,
+  fileFilter: function (req, file, callback) {
+    checkFileType(file, callback);
+  },
+}).single(FIELDNAME_AVATAR_IMAGE);
 
 const router = express.Router();
 
-router.post("/s3/:fieldname", isAuth, (req, res) => {
-  console.log('-------------------------------------------');
-  console.log('HERE!');
-  console.log('HERE!');
-  console.log('-------------------------------------------');
-  try {
-    switch (req.params.fieldname) {
-      case FIELDNAME_PRODUCT_IMAGE:
-        uploadProductImageS3(req, res, (error, filePath) => {
-          if (error) {
-            return res.status(400).json({message:`Error while uploading product image. Please, try again`});
-          } else {
-            try {
-              console.log('-------------------------------------------');
-              console.log('FILEPATH VAR');
-              console.log(filePath);
-              console.log('req.file.transforms.location');
-              console.log(req.file && req.file.transforms && req.file.transforms.location);
-              console.log('req.transforms.location');
-              console.log(req.transforms && req.transforms.location);
-              console.log('FILE LOCATION');
-              console.log(req.file.location);
-              console.log('FILE PATH');
-              console.log(req.file.path);
-              console.log('-------------------------------------------');
-              return res.send(req.file.location);
-            } catch (error) {
-              return res
-                .status(400)
-                .json({message: `Error while sending product image path`});
-            }
-          }
-        });
-        break;
-      case FIELDNAME_AVATAR_IMAGE:
-        uploadAvatarImageS3(req, res, async (error, filePath) => {
-          if (error) {
-            return res
-              .status(400)
-              .json({message :`Error while uploading avatar. Please, try again`});
-          } else {
-            try {
-              console.log('-------------------------------------------');
-              console.log('FILEPATH VAR');
-              console.log(filePath);
-              console.log('req.file.transforms.location');
-              console.log(req.file && req.file.transforms && req.file.transforms.location);
-              console.log('req.transforms.location');
-              console.log(req.transforms && req.transforms.location);
-              console.log('FILE LOCATION');
-              console.log(req.file.location);
-              console.log('FILE PATH');
-              console.log(req.file.path);
-              console.log('-------------------------------------------');
-              res.send(req.file.location);
-            } catch (error) {
-              return res
-                .status(400)
-                .json({message: `Error while sending avatar image path`});
-            }
-          }
-        });
-        break;
+router.post(
+  `/s3/${FIELDNAME_AVATAR_IMAGE}`,
+  isAuth,
+  uploadAvatarImageS3TEST(FIELDNAME_AVATAR_IMAGE),
+  async (req, res) => {
+    console.log("-------------------------------------------");
+    console.log("HERE!");
+    console.log("HERE!");
+    console.log("-------------------------------------------");
+    try {
+      if (!req.file || !req.file.buffer) {
+        throw new Error("File or file buffer not found");
+      }
+      console.log(req.file.buffer);
+      // uploadAvatarImageS3TEST(req, res, async (error) => {
+      //   if (error) {
+      //     return res.status(400).json({
+      //       message: multerErrors[error.code] || error.message || error,
+      //     });
+      //   } else {
+      //     const outputPath = `${req.file.destination.replace(
+      //       "/temp",
+      //       "/resized"
+      //     )}/${req.file.filename}`;
+      //     try {
+      //       await sharp(req.file.path)
+      //         .resize(200, 200, {
+      //           fit: "cover",
+      //         })
+      //         .toFile(outputPath);
+
+      //       fs.unlinkSync(req.file.path);
+      //       res.send(`/${outputPath.replace(/\\/g, "/")}`);
+      //     } catch (error) {
+      //       return res
+      //         .status(400)
+      //         .json({ message: `Error while sending image path` });
+      //     }
+      //   }
+      // });
+    } catch (error) {
+      return res.status(500).json({ message: `${error.message}` });
     }
-  } catch (error) {
-    return res
-      .status(400)
-      .json({ message: "Error while uploading image. Please, try again."});
   }
-});
+);
 
 router.post("/:fieldname", isAuth, (req, res) => {
-  console.log('-------------------------------------------');
-  console.log('OH NO!');
-  console.log('OH NO!');
-  console.log('-------------------------------------------');
+  console.log("-------------------------------------------");
+  console.log("OH NO!");
+  console.log("OH NO!");
+  console.log("-------------------------------------------");
   const multerErrors = multerErrorMessages;
 
   try {
@@ -253,11 +240,9 @@ router.post("/:fieldname", isAuth, (req, res) => {
       case FIELDNAME_AVATAR_IMAGE:
         uploadAvatarImage(req, res, async (error) => {
           if (error) {
-            return res
-              .status(400)
-              .json({
-                message: multerErrors[error.code] || error.message || error,
-              });
+            return res.status(400).json({
+              message: multerErrors[error.code] || error.message || error,
+            });
           } else {
             const outputPath = `${req.file.destination.replace(
               "/temp",
