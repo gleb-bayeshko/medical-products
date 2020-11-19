@@ -99,64 +99,13 @@ const uploadAvatarImage = multer({
 }).single(FIELDNAME_AVATAR_IMAGE);
 
 // S3 UPLOAD
-const s3 = new aws.S3({
+aws.config.update({
   accessKeyId: process.env.accessKeyId,
   secretAccessKey: process.env.secretAccessKey,
-});
-
-const uploadAvatarImageS3 = multer({
-  storageS3: multerS3({
-    s3,
-    bucket: "medical-products-bayeshko",
-    acl: "public-read",
-    contentType: multerS3.AUTO_CONTENT_TYPE,
-    shouldTransform: function (req, file, callback) {
-      callback(null, true);
-    },
-    transforms: [
-      {
-        id: "original",
-        key: function (req, file, callback) {
-          console.log('KEY-----------------');
-          console.log(file.originalname);
-          callback(null, `${Date.now()}-${file.originalname}`);
-        },
-        transform: function (req, file, callback) {
-          console.log('TRANSFORM-----------------');
-          callback(
-            null,
-            sharp().resize(200, 200, {
-              fit: "cover",
-            }).png()
-          );
-        },
-      },
-    ],
-  }),
-  fileFilter: function (req, file, callback) {
-    checkFileType(file, callback);
-  },
 })
 
-const uploadProductImageS3 = multer({
-  storageS3: multerS3({
-    s3,
-    bucket: "medical-products-bayeshko",
-    acl: "public-read",
-    contentType: multerS3.AUTO_CONTENT_TYPE,
-    shouldTransform: function (req, file, callback) {
-      callback(null, true);
-    },
-    key: function (req, file, callback) {
-      callback(null, `${Date.now()}-${file.originalname}`);
-    },
-  }),
-  fileFilter: function (req, file, callback) {
-    checkFileType(file, callback);
-  },
-}).single(FIELDNAME_PRODUCT_IMAGE);
+const s3 = new aws.S3();
 
-//TEST
 const storageS3test = multer.diskStorage({
   destination(req, file, callback) {
     if (!fs.existsSync(`uploads`)) {
@@ -198,19 +147,21 @@ router.post(
       console.log('PATH---------------------------------------');
       console.log(req.file.path);
       console.log('PATH---------------------------------------');
+
       let uploadResult;
+
       await sharp(req.file.path)
         .resize(200, 200, {
           fit: "cover",
         })
         .toBuffer()
-        .then(async buffer => {
-          uploadResult = await s3.upload({
+        .then(buffer => {
+          uploadResult = s3.upload({
             Bucket: "medical-products-bayeshko",
             ACL: "public-read",
             Key: `${Date.now()}-avatar-${req.file.filename}`,
             Body: buffer
-          }).promise();
+          })
 
           return uploadResult;
         })
