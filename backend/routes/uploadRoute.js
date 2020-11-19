@@ -207,7 +207,7 @@ router.post(
           uploadResult = await s3.upload({
             Bucket: "medical-products-bayeshko",
             ACL: "public-read",
-            body: buffer
+            Body: buffer
           }).promise();
 
           return uploadResult;
@@ -222,6 +222,7 @@ router.post(
           console.log('RESULT_--------------------------');
           res.send(``);
         })
+        .catch(error => res.send(error))
 
       // res.send(`/${req.file.path.replace(/\\/g, "/")}`);
       // uploadAvatarImageS3TEST(req, res, async (error) => {
