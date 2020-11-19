@@ -167,6 +167,9 @@ router.post(
               console.log(error);
               console.log('ERROR UPLOAD----------------------------------');
             }
+            console.log('DATA----------------------------------');
+            console.log(data);
+            console.log('DATA----------------------------------');
             console.log('DATA LOCATION----------------------------------');
             console.log(data.location);
             console.log('DATA LOCATION----------------------------------');
