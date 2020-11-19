@@ -14,7 +14,7 @@ function Header(props) {
 
   const handleAvatarError = (e) => {
     e.preventDefault();
-    e.target.src = DEFAULT_AVATAR;
+    e.target.src = defaultAvatar;
   };
 
   return (

@@ -68,7 +68,7 @@ function ProfileScreen(props) {
       });
   };
 
-  const handleAvatarError = (e) => (e.target.src = DEFAULT_AVATAR);
+  const handleAvatarError = (e) => (e.target.src = defaultAvatar);
 
   useEffect(() => {
     if (avatar !== userInfo.avatar) {
