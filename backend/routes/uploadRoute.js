@@ -155,7 +155,7 @@ const uploadProductImageS3 = multer({
 
 const router = express.Router();
 
-router.post("/:fieldname/s3", isAuth, (req, res) => {
+router.post("/s3/:fieldname", isAuth, (req, res) => {
   console.log('-------------------------------------------');
   console.log('HERE!');
   console.log('HERE!');
