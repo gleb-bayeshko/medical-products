@@ -117,16 +117,19 @@ const uploadAvatarImageS3 = multer({
     },
     transforms: [
       {
-        id: "avatar",
+        id: "original",
         key: function (req, file, callback) {
+          console.log('KEY-----------------');
+          console.log(file.originalname);
           callback(null, `${Date.now()}-${file.originalname}`);
         },
         transform: function (req, file, callback) {
+          console.log('TRANSFORM-----------------');
           callback(
             null,
             sharp().resize(200, 200, {
               fit: "cover",
-            })
+            }).png()
           );
         },
       },
@@ -183,8 +186,7 @@ router.post(
       console.log('HERE LOGS---------------------------------------');
       console.log(req.file.location);
       console.log(req.file.transforms);
-      console.log(req.file.transforms[0]);
-      console.log(req.file.transforms & req.file.transforms[0] && req.file.transforms[0].location);
+      console.log(req.file.transforms && req.file.transforms[0] && req.file.transforms[0].location);
       console.log('HERE LOGS---------------------------------------');
       // uploadAvatarImageS3TEST(req, res, async (error) => {
       //   if (error) {
