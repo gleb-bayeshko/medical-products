@@ -156,6 +156,10 @@ const uploadProductImageS3 = multer({
 const router = express.Router();
 
 router.post("/:fieldname/s3", isAuth, (req, res) => {
+  console.log('-------------------------------------------');
+  console.log('HERE!');
+  console.log('HERE!');
+  console.log('-------------------------------------------');
   try {
     switch (req.params.fieldname) {
       case FIELDNAME_PRODUCT_IMAGE:
