@@ -163,12 +163,18 @@ router.post("/s3/:fieldname", isAuth, (req, res) => {
   try {
     switch (req.params.fieldname) {
       case FIELDNAME_PRODUCT_IMAGE:
-        uploadProductImageS3(req, res, (error) => {
+        uploadProductImageS3(req, res, (error, filePath) => {
           if (error) {
             return res.status(400).send(`Error while uploading product image. Please, try again`);
           } else {
             try {
               console.log('-------------------------------------------');
+              console.log('FILEPATH VAR');
+              console.log(filePath);
+              console.log('req.file.transforms.location');
+              console.log(req.file.transforms.location);
+              console.log('req.transforms.location');
+              console.log(req.transforms && req.transforms.location);
               console.log('FILE LOCATION');
               console.log(req.file.location);
               console.log('FILE PATH');
@@ -184,7 +190,7 @@ router.post("/s3/:fieldname", isAuth, (req, res) => {
         });
         break;
       case FIELDNAME_AVATAR_IMAGE:
-        uploadAvatarImageS3(req, res, async (error) => {
+        uploadAvatarImageS3(req, res, async (error, filePath) => {
           if (error) {
             return res
               .status(400)
@@ -192,6 +198,8 @@ router.post("/s3/:fieldname", isAuth, (req, res) => {
           } else {
             try {
               console.log('-------------------------------------------');
+              console.log('FILEPATH VAR');
+              console.log(filePath);
               console.log('FILE LOCATION');
               console.log(req.file.location);
               console.log('FILE PATH');
