@@ -104,7 +104,7 @@ aws.config.update({
   secretAccessKey: process.env.secretAccessKey,
 });
 
-const s3 = new aws.S3();
+const s3 = new aws.S3({});
 
 const uploadAvatarImageS3 = multer({
   storageS3: multerS3({
@@ -158,36 +158,72 @@ const uploadProductImageS3 = multer({
   },
 }).single(FIELDNAME_PRODUCT_IMAGE);
 
-// TEST
-// const multerMemoryStorage = multer.memoryStorage();
+//TEST
+const storageS3test = multer.diskStorage({
+  destination(req, file, callback) {
+    if (!fs.existsSync(`uploads`)) {
+      fs.mkdirSync(`uploads`);
+    }
 
-// const uploadAvatarImageS3TEST = multer({
-//   storage: multerMemoryStorage,
-//   fileFilter: function (req, file, callback) {
-//     checkFileType(file, callback);
-//   },
-// });
+    callback(null, `uploads`);
+  }
+})
+
+const uploadAvatarImageS3TEST = multer({
+  storage: storageS3test,
+  fileFilter: function (req, file, callback) {
+    checkFileType(file, callback);
+  },
+});
 
 const router = express.Router();
 
 router.post(
   `/s3/${FIELDNAME_AVATAR_IMAGE}`,
   isAuth,
-  uploadAvatarImageS3.single(FIELDNAME_AVATAR_IMAGE),
-  (req, res) => {
+  uploadAvatarImageS3TEST.single(FIELDNAME_AVATAR_IMAGE),
+  async (req, res) => {
     console.log("-------------------------------------------");
     console.log("HERE!");
     console.log("HERE!");
     console.log("-------------------------------------------");
     try {
-      if (!req.file || !req.file.buffer) {
-        throw new Error("File or file buffer not found");
+      if (!req.file) {
+        throw new Error("File not found");
       }
-      console.log('HERE LOGS---------------------------------------');
+      console.log('LOCATION---------------------------------------');
       console.log(req.file.location);
-      console.log(req.file.transforms);
-      console.log(req.file.transforms && req.file.transforms[0] && req.file.transforms[0].location);
-      console.log('HERE LOGS---------------------------------------');
+      console.log('LOCATION---------------------------------------');
+      console.log('PATH---------------------------------------');
+      console.log(req.file.path);
+      console.log('PATH---------------------------------------');
+      let uploadResult;
+      await sharp(req.file.path)
+        .resize(200, 200, {
+          fit: "cover",
+        })
+        .toBuffer()
+        .then(async buffer => {
+          uploadResult = await s3.upload({
+            Bucket: "medical-products-bayeshko",
+            ACL: "public-read",
+            body: buffer
+          }).promise();
+
+          return uploadResult;
+        })
+        .then((uploadResult) => {
+          fs.unlinkSync(req.file.path);
+          return uploadResult;
+        })
+        .then((uploadResult) => {
+          console.log('RESULT_--------------------------');
+          console.log(uploadResult);
+          console.log('RESULT_--------------------------');
+          res.send(``);
+        })
+
+      // res.send(`/${req.file.path.replace(/\\/g, "/")}`);
       // uploadAvatarImageS3TEST(req, res, async (error) => {
       //   if (error) {
       //     return res.status(400).json({
