@@ -165,14 +165,14 @@ router.post("/s3/:fieldname", isAuth, (req, res) => {
       case FIELDNAME_PRODUCT_IMAGE:
         uploadProductImageS3(req, res, (error, filePath) => {
           if (error) {
-            return res.status(400).send(`Error while uploading product image. Please, try again`);
+            return res.status(400).json({message:`Error while uploading product image. Please, try again`});
           } else {
             try {
               console.log('-------------------------------------------');
               console.log('FILEPATH VAR');
               console.log(filePath);
               console.log('req.file.transforms.location');
-              console.log(req.file.transforms.location);
+              console.log(req.file && req.file.transforms && req.file.transforms.location);
               console.log('req.transforms.location');
               console.log(req.transforms && req.transforms.location);
               console.log('FILE LOCATION');
@@ -184,7 +184,7 @@ router.post("/s3/:fieldname", isAuth, (req, res) => {
             } catch (error) {
               return res
                 .status(400)
-                .send(`Error while sending product image path`);
+                .json({message: `Error while sending product image path`});
             }
           }
         });
@@ -194,12 +194,16 @@ router.post("/s3/:fieldname", isAuth, (req, res) => {
           if (error) {
             return res
               .status(400)
-              .send(`Error while uploading avatar. Please, try again`);
+              .json({message :`Error while uploading avatar. Please, try again`});
           } else {
             try {
               console.log('-------------------------------------------');
               console.log('FILEPATH VAR');
               console.log(filePath);
+              console.log('req.file.transforms.location');
+              console.log(req.file && req.file.transforms && req.file.transforms.location);
+              console.log('req.transforms.location');
+              console.log(req.transforms && req.transforms.location);
               console.log('FILE LOCATION');
               console.log(req.file.location);
               console.log('FILE PATH');
@@ -209,7 +213,7 @@ router.post("/s3/:fieldname", isAuth, (req, res) => {
             } catch (error) {
               return res
                 .status(400)
-                .send(`Error while sending avatar image path`);
+                .json({message: `Error while sending avatar image path`});
             }
           }
         });
@@ -218,7 +222,7 @@ router.post("/s3/:fieldname", isAuth, (req, res) => {
   } catch (error) {
     return res
       .status(400)
-      .send("Error while uploading image. Please, try again.");
+      .json({ message: "Error while uploading image. Please, try again."});
   }
 });
 
