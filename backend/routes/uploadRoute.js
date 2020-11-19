@@ -99,11 +99,6 @@ const uploadAvatarImage = multer({
 }).single(FIELDNAME_AVATAR_IMAGE);
 
 // S3 UPLOAD
-aws.config.update({
-  accessKeyId: process.env.accessKeyId,
-  secretAccessKey: process.env.secretAccessKey,
-})
-
 const s3 = new aws.S3();
 
 const storageS3test = multer.diskStorage({
