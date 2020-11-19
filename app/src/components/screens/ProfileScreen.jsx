@@ -52,7 +52,7 @@ function ProfileScreen(props) {
 
     setUploadingAvatar(true);
     axios
-      .post("/api/uploads/avatar-image/s3", bodyFormData, {
+      .post("/api/uploads/s3/avatar-image", bodyFormData, {
         headers: {
           "Content-type": "multipart/form-data",
           Authorization: `Bearer ${userInfo.token}`,

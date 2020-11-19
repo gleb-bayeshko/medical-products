@@ -82,7 +82,7 @@ function CreateProduct(props) {
     setUploadingImageError(false);
     setUploadingImage(true);
     axios
-      .post("/api/uploads/product-image/s3", bodyFormData, {
+      .post("/api/uploads/s3/product-image", bodyFormData, {
         headers: {
           "Content-type": "multipart/form-data",
           "Authorization": `Bearer ${userInfo.token}`
