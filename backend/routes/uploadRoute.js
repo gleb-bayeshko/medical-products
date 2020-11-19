@@ -107,7 +107,7 @@ aws.config.update({
 const s3 = new aws.S3();
 
 const uploadAvatarImageS3 = multer({
-  storageS3 = multerS3({
+  storageS3: multerS3({
     s3,
     bucket: 'medical-products-bayeshko',
     acl: 'public-read',
@@ -127,10 +127,13 @@ const uploadAvatarImageS3 = multer({
       }
     }],
   }),
+  fileFilter: function (req, file, callback) {
+    checkFileType(file, callback);
+  },
 }).single(FIELDNAME_AVATAR_IMAGE);
 
 const uploadProductImageS3 = multer({
-  storageS3 = multerS3({
+  storageS3: multerS3({
     s3,
     bucket: 'medical-products-bayeshko',
     acl: 'public-read',
@@ -142,6 +145,9 @@ const uploadProductImageS3 = multer({
       callback(null, `${Date.now()}-${file.originalname}`)
     },
   }),
+  fileFilter: function (req, file, callback) {
+    checkFileType(file, callback);
+  },
 }).single(FIELDNAME_PRODUCT_IMAGE);
 
 
