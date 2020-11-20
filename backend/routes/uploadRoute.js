@@ -151,13 +151,12 @@ router.post(
             }
             return data.Location;
           }).promise();
-          console.log(result);
           return result;
         })
         .then((result) => {
           console.log(result);
           fs.unlinkSync(req.file.path);
-          return res.send(result);
+          return res.send(result.Location);
         })
       // res.send(`/${req.file.path.replace(/\\/g, "/")}`);
       // uploadAvatarImageS3TEST(req, res, async (error) => {
