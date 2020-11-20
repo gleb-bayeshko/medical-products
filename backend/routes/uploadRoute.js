@@ -162,25 +162,18 @@ router.post(
               console.log(error);
               console.log('ERROR UPLOAD----------------------------------');
             }
-            console.log('DATA----------------------------------');
-            console.log(data);
-            console.log('DATA----------------------------------');
-            console.log('DATA LOCATION----------------------------------');
-            console.log(data.location);
-            console.log('DATA LOCATION----------------------------------');
+            return data.Location;
           })
-
-          return uploadResult;
         })
-        .then((uploadResult) => {
+        .then((location) => {
           fs.unlinkSync(req.file.path);
-          return uploadResult;
+          return location;
         })
-        .then((uploadResult) => {
+        .then((location) => {
           console.log('RESULT_--------------------------');
-          console.log(uploadResult);
+          console.log(location);
           console.log('RESULT_--------------------------');
-          res.send(``);
+          res.send(location);
         })
         .catch(error => res.send(error))
 
