@@ -139,7 +139,7 @@ router.post(
         })
         .toBuffer()
         .then(async buffer => {
-          await s3.upload({
+          const result = await s3.upload({
             Bucket: "medical-products-bayeshko",
             ACL: "public-read",
             Key: `${Date.now()}-avatar-${req.file.filename}`,
@@ -150,13 +150,15 @@ router.post(
               throw new Error(error);
             }
             return data.Location;
-          })
+          }).promise();
+          console.log(result);
+          return result;
         })
-        console.log('LOCATION------------------------');
-        console.log(location);
-        console.log('LOCATION------------------------');
-        fs.unlinkSync(req.file.path);
-        res.send(location);
+        .then((result) => {
+          console.log(result);
+          fs.unlinkSync(req.file.path);
+          return res.send(result);
+        })
       // res.send(`/${req.file.path.replace(/\\/g, "/")}`);
       // uploadAvatarImageS3TEST(req, res, async (error) => {
       //   if (error) {
