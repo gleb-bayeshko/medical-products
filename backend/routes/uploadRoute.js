@@ -111,11 +111,20 @@ const storageS3 = multer.diskStorage({
   },
   filename(req, file, callback) {
     callback(null, `${Date.now()}-${file.originalname}`);
-  }
-})
+  },
+});
 
-const uploadImageS3 = multer({
+const memoryMulterStorageS3 = multer.memoryStorage();
+
+const uploadAvatarImageS3 = multer({
   storage: storageS3,
+  fileFilter: function (req, file, callback) {
+    checkFileType(file, callback);
+  },
+});
+
+const uploadProductImageS3 = multer({
+  storage: memoryMulterStorageS3,
   fileFilter: function (req, file, callback) {
     checkFileType(file, callback);
   },
@@ -126,7 +135,7 @@ const router = express.Router();
 router.post(
   `/s3/${FIELDNAME_AVATAR_IMAGE}`,
   isAuth,
-  uploadImageS3.single(FIELDNAME_AVATAR_IMAGE),
+  uploadAvatarImageS3.single(FIELDNAME_AVATAR_IMAGE),
   async (req, res) => {
     try {
       if (!req.file) {
@@ -138,25 +147,30 @@ router.post(
           fit: "cover",
         })
         .toBuffer()
-        .then(async buffer => {
-          const result = await s3.upload({
-            Bucket: "medical-products-bayeshko",
-            ACL: "public-read",
-            Key: `${Date.now()}-avatar-${req.file.filename}`,
-            Body: buffer
-          }, (error, data) => {
-            if (error) {
-              console.log(error);
-              throw new Error(error);
-            }
-            return data.Location;
-          }).promise();
+        .then(async (buffer) => {
+          const result = await s3
+            .upload(
+              {
+                Bucket: "medical-products-bayeshko",
+                ACL: "public-read",
+                Key: `${Date.now()}-avatar-${req.file.filename}`,
+                Body: buffer,
+              },
+              (error, data) => {
+                if (error) {
+                  console.log(error);
+                  throw new Error(error);
+                }
+                return data.Location;
+              }
+            )
+            .promise();
           return result;
         })
         .then((result) => {
           fs.unlinkSync(req.file.path);
           return res.send(result.Location);
-        })
+        });
     } catch (error) {
       return res.status(500).json({ message: `${error.message}` });
     }
@@ -166,38 +180,34 @@ router.post(
 router.post(
   `/s3/${FIELDNAME_PRODUCT_IMAGE}`,
   isAuth,
-  uploadImageS3.single(FIELDNAME_PRODUCT_IMAGE),
+  uploadProductImageS3.single(FIELDNAME_PRODUCT_IMAGE),
   async (req, res) => {
     try {
-      if (!req.file) {
-        throw new Error("File not found");
+      if (!req.file || !req.file.buffer) {
+        throw new Error("File or file buffer not found");
       }
 
-      const location = await sharp(req.file.path)
-        .resize({
-          height: 280,
-          fit: "cover",
-        })
-        .toBuffer()
-        .then(async buffer => {
-          const result = await s3.upload({
+      const result = await s3
+        .upload(
+          {
             Bucket: "medical-products-bayeshko",
             ACL: "public-read",
             Key: `${Date.now()}-avatar-${req.file.filename}`,
-            Body: buffer
-          }, (error, data) => {
+            Body: req.file.buffer,
+          },
+          (error, data) => {
             if (error) {
               console.log(error);
               throw new Error(error);
             }
             return data.Location;
-          }).promise();
-          return result;
-        })
+          }
+        )
+        .promise()
         .then((result) => {
           fs.unlinkSync(req.file.path);
           return res.send(result.Location);
-        })
+        });
     } catch (error) {
       return res.status(500).json({ message: `${error.message}` });
     }
