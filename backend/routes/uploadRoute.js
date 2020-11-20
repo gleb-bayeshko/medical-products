@@ -149,7 +149,7 @@ router.post(
         })
         .toBuffer()
         .then(buffer => {
-          uploadResult = s3.upload({
+          s3.upload({
             Bucket: "medical-products-bayeshko",
             ACL: "public-read",
             Key: `${Date.now()}-avatar-${req.file.filename}`,
