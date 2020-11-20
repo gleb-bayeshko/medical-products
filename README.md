@@ -81,7 +81,7 @@
     - the admin-panel button is displayed - when it's clicked, user is redirected to the admin panel page;
   - Admin panel page:
     - the page displays the product list and create-new-product button;
-    - each product is represented ad a line with id, name, price, category, brand and action columns;
+    - each product is represented as a row with id, name, price, category, brand and action columns;
     - there are two types of actions for each product - delete and edit;
     - if create-new-product or edit button is clicked, a modal window appears (in case of edit button all fields of the modal window will be filled with current product information, in case of create-new-product button all fields will be empty);
     - the modal window has name, category, image, color, price, brand and description fields and create/update button at the bottom;
