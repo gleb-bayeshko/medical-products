@@ -101,7 +101,7 @@ const uploadAvatarImage = multer({
 // S3 UPLOAD
 const s3 = new aws.S3();
 
-const storageS3test = multer.diskStorage({
+const storageS3 = multer.diskStorage({
   destination(req, file, callback) {
     if (!fs.existsSync(`uploads`)) {
       fs.mkdirSync(`uploads`);
@@ -114,8 +114,8 @@ const storageS3test = multer.diskStorage({
   }
 })
 
-const uploadAvatarImageS3TEST = multer({
-  storage: storageS3test,
+const uploadImageS3 = multer({
+  storage: storageS3,
   fileFilter: function (req, file, callback) {
     checkFileType(file, callback);
   },
@@ -126,7 +126,7 @@ const router = express.Router();
 router.post(
   `/s3/${FIELDNAME_AVATAR_IMAGE}`,
   isAuth,
-  uploadAvatarImageS3TEST.single(FIELDNAME_AVATAR_IMAGE),
+  uploadImageS3.single(FIELDNAME_AVATAR_IMAGE),
   async (req, res) => {
     try {
       if (!req.file) {
@@ -154,37 +154,50 @@ router.post(
           return result;
         })
         .then((result) => {
-          console.log(result);
           fs.unlinkSync(req.file.path);
           return res.send(result.Location);
         })
-      // res.send(`/${req.file.path.replace(/\\/g, "/")}`);
-      // uploadAvatarImageS3TEST(req, res, async (error) => {
-      //   if (error) {
-      //     return res.status(400).json({
-      //       message: multerErrors[error.code] || error.message || error,
-      //     });
-      //   } else {
-      //     const outputPath = `${req.file.destination.replace(
-      //       "/temp",
-      //       "/resized"
-      //     )}/${req.file.filename}`;
-      //     try {
-      //       await sharp(req.file.path)
-      //         .resize(200, 200, {
-      //           fit: "cover",
-      //         })
-      //         .toFile(outputPath);
+    } catch (error) {
+      return res.status(500).json({ message: `${error.message}` });
+    }
+  }
+);
 
-      //       fs.unlinkSync(req.file.path);
-      //       res.send(`/${outputPath.replace(/\\/g, "/")}`);
-      //     } catch (error) {
-      //       return res
-      //         .status(400)
-      //         .json({ message: `Error while sending image path` });
-      //     }
-      //   }
-      // });
+router.post(
+  `/s3/${FIELDNAME_PRODUCT_IMAGE}`,
+  isAuth,
+  uploadImageS3.single(FIELDNAME_PRODUCT_IMAGE),
+  async (req, res) => {
+    try {
+      if (!req.file) {
+        throw new Error("File not found");
+      }
+
+      const location = await sharp(req.file.path)
+        .resize({
+          height: 280,
+          fit: "cover",
+        })
+        .toBuffer()
+        .then(async buffer => {
+          const result = await s3.upload({
+            Bucket: "medical-products-bayeshko",
+            ACL: "public-read",
+            Key: `${Date.now()}-avatar-${req.file.filename}`,
+            Body: buffer
+          }, (error, data) => {
+            if (error) {
+              console.log(error);
+              throw new Error(error);
+            }
+            return data.Location;
+          }).promise();
+          return result;
+        })
+        .then((result) => {
+          fs.unlinkSync(req.file.path);
+          return res.send(result.Location);
+        })
     } catch (error) {
       return res.status(500).json({ message: `${error.message}` });
     }
