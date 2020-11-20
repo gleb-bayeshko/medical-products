@@ -138,8 +138,8 @@ router.post(
           fit: "cover",
         })
         .toBuffer()
-        .then(buffer => {
-          s3.upload({
+        .then(async buffer => {
+          await s3.upload({
             Bucket: "medical-products-bayeshko",
             ACL: "public-read",
             Key: `${Date.now()}-avatar-${req.file.filename}`,
