@@ -1,9 +1,8 @@
 # Medical products #
+## E-commerce MERN-application
 ![Medical products](title.png)
 
 [![Demo-button](demo-button.png)](https://medical-products-bayeshko.herokuapp.com/)
-
-> ### E-commerce MERN-application
 
 > **NOTE:** *To enable admin mode sign in with the following details:*
 >   - **email**: bayeshko_gleb@mail.ru;
