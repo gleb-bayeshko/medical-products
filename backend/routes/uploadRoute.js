@@ -133,7 +133,7 @@ router.post(
         throw new Error("File not found");
       }
 
-      await sharp(req.file.path)
+      const location = await sharp(req.file.path)
         .resize(200, 200, {
           fit: "cover",
         })
@@ -149,13 +149,14 @@ router.post(
               console.log(error);
               throw new Error(error);
             }
-            fs.unlinkSync(req.file.path);
-            console.log('DATA LOCATION-----------------');
-            console.log(data.Location);
-            console.log('DATA LOCATION-----------------');
-            return res.send(data.Location);
+            return data.Location;
           })
         })
+        console.log('LOCATION------------------------');
+        console.log(location);
+        console.log('LOCATION------------------------');
+        fs.unlinkSync(req.file.path);
+        res.send(location);
       // res.send(`/${req.file.path.replace(/\\/g, "/")}`);
       // uploadAvatarImageS3TEST(req, res, async (error) => {
       //   if (error) {
