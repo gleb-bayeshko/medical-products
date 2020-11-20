@@ -1,5 +1,5 @@
 # Medical products #
-## E-commerce MERN-application
+**E-commerce MERN-application**
 ![Medical products](title.png)
 
 [![Demo-button](demo-button.png)](https://medical-products-bayeshko.herokuapp.com/)
@@ -11,7 +11,6 @@
 ## Technology stack ##
 * **HTML**;
 * **CSS/SASS** *(SCSS)*;
-* **BEM**;
 * **MERN stack**:
   * React/Redux,
   * NodeJS,
