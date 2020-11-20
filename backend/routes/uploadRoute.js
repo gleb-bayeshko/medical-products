@@ -205,7 +205,6 @@ router.post(
         )
         .promise()
         .then((result) => {
-          fs.unlinkSync(req.file.path);
           return res.send(result.Location);
         });
     } catch (error) {
