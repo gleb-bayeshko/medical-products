@@ -143,8 +143,6 @@ router.post(
       console.log(req.file.path);
       console.log('PATH---------------------------------------');
 
-      let uploadResult;
-
       await sharp(req.file.path)
         .resize(200, 200, {
           fit: "cover",
@@ -161,21 +159,21 @@ router.post(
               console.log('ERROR UPLOAD----------------------------------');
               console.log(error);
               console.log('ERROR UPLOAD----------------------------------');
+              throw new Error(error);
             }
+            console.log('DATA LOCATION---------------');
+            console.log(data.Location);
+            console.log('DATA LOCATION---------------');
             return data.Location;
           })
         })
         .then((location) => {
           fs.unlinkSync(req.file.path);
-          return location;
-        })
-        .then((location) => {
           console.log('RESULT_--------------------------');
           console.log(location);
           console.log('RESULT_--------------------------');
-          res.send(location);
+          return res.send(location);
         })
-        .catch(error => res.send(error))
 
       // res.send(`/${req.file.path.replace(/\\/g, "/")}`);
       // uploadAvatarImageS3TEST(req, res, async (error) => {
