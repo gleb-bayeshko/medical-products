@@ -128,20 +128,10 @@ router.post(
   isAuth,
   uploadAvatarImageS3TEST.single(FIELDNAME_AVATAR_IMAGE),
   async (req, res) => {
-    console.log("-------------------------------------------");
-    console.log("HERE!");
-    console.log("HERE!");
-    console.log("-------------------------------------------");
     try {
       if (!req.file) {
         throw new Error("File not found");
       }
-      console.log('LOCATION---------------------------------------');
-      console.log(req.file.location);
-      console.log('LOCATION---------------------------------------');
-      console.log('PATH---------------------------------------');
-      console.log(req.file.path);
-      console.log('PATH---------------------------------------');
 
       await sharp(req.file.path)
         .resize(200, 200, {
@@ -156,25 +146,16 @@ router.post(
             Body: buffer
           }, (error, data) => {
             if (error) {
-              console.log('ERROR UPLOAD----------------------------------');
               console.log(error);
-              console.log('ERROR UPLOAD----------------------------------');
               throw new Error(error);
             }
-            console.log('DATA LOCATION---------------');
+            fs.unlinkSync(req.file.path);
+            console.log('DATA LOCATION-----------------');
             console.log(data.Location);
-            console.log('DATA LOCATION---------------');
-            return data.Location;
+            console.log('DATA LOCATION-----------------');
+            return res.send(data.Location);
           })
         })
-        .then((location) => {
-          fs.unlinkSync(req.file.path);
-          console.log('RESULT_--------------------------');
-          console.log(location);
-          console.log('RESULT_--------------------------');
-          return res.send(location);
-        })
-
       // res.send(`/${req.file.path.replace(/\\/g, "/")}`);
       // uploadAvatarImageS3TEST(req, res, async (error) => {
       //   if (error) {
