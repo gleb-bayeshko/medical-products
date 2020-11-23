@@ -4,10 +4,6 @@
 
 [![Demo-button](demo-button.png)](https://medical-products-bayeshko.herokuapp.com/)
 
-> **NOTE:** *To enable admin mode sign in with the following details:*
->   - **email**: bayeshko_gleb@mail.ru;
->   - **password**: frontendisfuture;
-
 ## Technology stack ##
 * **HTML**;
 * **CSS/SASS** *(SCSS)*;
